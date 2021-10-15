@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/recycle_orders/recycle_orders",
     "pages/index/index",
+    "pages/recycle_orders/recycle_orders",
     "pages/goods/goods"
   ],
   "subPackages": [],

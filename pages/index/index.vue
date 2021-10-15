@@ -78,7 +78,7 @@
 	} from '@/components/sn-swiper/esc-swiper/helper.js';
 
 	import step from '@/components/pages/step'
-	
+	import app from '../../App.vue'
 	import NumberBox from './components/number-box'
 	
 
@@ -213,7 +213,7 @@
 				this.orderInfo.expectWeight = this.form.weight
 				uni.request({
 					header: { 'content-type': 'application/x-www-form-urlencoded'},
-				    url: 'http://106.13.18.124/recycle/recycle/add', //仅为示例，并非真实接口地址。
+				    url: app.BaseUrl + '/recycle/add', //仅为示例，并非真实接口地址。
 				    data: this.orderInfo,
 					method: 'POST',
 				    success: (res) => {
