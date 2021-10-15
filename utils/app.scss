@@ -1,0 +1,42 @@
+$app-theme-color: #44aa67;
+
+$app-card-title-color: #090c0b;
+$app-card-title-font-size: 37rpx;
+$app-card-extra-font-size: 28rpx;
+
+.app-block {
+	padding: 30rpx;
+	margin: 30rpx;
+	margin-top: 32rpx;
+	background: #ffffff;
+	box-shadow: 0 1rpx 24rpx 0 #E8F0EB;
+	border-radius: 40rpx;
+}
+
+.block-title-row {
+	margin-bottom: 20rpx;
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+		
+	>text {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+		
+	.title {
+		flex: 1;
+		display: flex;
+		align-items: center;
+	}
+}
+
+.input_placeholder {
+	font-size: 28rpx;
+	font-weight: normal;
+	color: #B0B7B3;
+}

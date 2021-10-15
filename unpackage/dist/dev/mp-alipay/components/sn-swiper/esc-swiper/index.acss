@@ -1,0 +1,15 @@
+
+.box.data-v-5533f2da {
+	position: relative;
+	overflow: hidden;
+}
+.container.data-v-5533f2da {
+	position: absolute;
+	top: 0;
+
+	display: flex;
+
+	flex-direction: row;
+	align-items: center;
+}
+

@@ -1,0 +1,1 @@
+<view ref="__r" data-ref="swiper_item" class="swiper-item data-v-2bab5f63" style="{{(itemStyle)}}"><view class="item-cntent data-v-2bab5f63" bubble="true" data-event-opts="{{[['tap',[['onClick',['$event']]]]]}}" catchTap="__e"><slot></slot></view></view>

@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "pages/recycle_orders/recycle_orders",
+    "pages/index/index",
+    "pages/goods/goods"
+  ],
+  "subPackages": [],
+  "window": {
+    "titleBarColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {}
+}
