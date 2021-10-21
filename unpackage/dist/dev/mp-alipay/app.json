@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/collect/index",
     "pages/recycle_orders/recycle_orders",
     "pages/goods/goods"
   ],

@@ -35,6 +35,8 @@
 </script>
 
 <style lang="scss" scoped>
+	$s_color_green: #44aa67;
+	
 	.schedule {
 		display: flex;
 		align-items: center;
@@ -55,7 +57,7 @@
 
 		.step-icon-choice {
 			background: #ffffff;
-			color: $app-theme-color;
+			color: $s_color_green;
 			font-weight: bolder;
 			opacity: 1;
 		}

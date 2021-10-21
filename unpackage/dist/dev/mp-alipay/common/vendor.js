@@ -9485,9 +9485,9 @@ function walkJsonObj(jsonObj, walk) {
 
 /***/ }),
 /* 5 */
-/*!**********************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/pages.json ***!
-  \**********************************************/
+/*!********************************!*\
+  !*** D:/work/sydog/pages.json ***!
+  \********************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -9628,9 +9628,9 @@ function normalizeComponent (
 
 /***/ }),
 /* 12 */
-/*!*****************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/index.js ***!
-  \*****************************************************/
+/*!***************************************!*\
+  !*** D:/work/sydog/uview-ui/index.js ***!
+  \***************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9779,9 +9779,9 @@ var install = function install(Vue) {
 
 /***/ }),
 /* 13 */
-/*!****************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/mixin/mixin.js ***!
-  \****************************************************************/
+/*!**************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/mixin/mixin.js ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9852,9 +9852,9 @@ var install = function install(Vue) {
 
 /***/ }),
 /* 14 */
-/*!******************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/request/index.js ***!
-  \******************************************************************/
+/*!****************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/request/index.js ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10032,9 +10032,9 @@ new Request();exports.default = _default;
 
 /***/ }),
 /* 15 */
-/*!***********************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/deepMerge.js ***!
-  \***********************************************************************/
+/*!*********************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/deepMerge.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10072,9 +10072,9 @@ deepMerge;exports.default = _default;
 
 /***/ }),
 /* 16 */
-/*!***********************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/deepClone.js ***!
-  \***********************************************************************/
+/*!*********************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/deepClone.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10105,9 +10105,9 @@ deepClone;exports.default = _default;
 
 /***/ }),
 /* 17 */
-/*!******************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/test.js ***!
-  \******************************************************************/
+/*!****************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/test.js ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10346,9 +10346,9 @@ function code(value) {var len = arguments.length > 1 && arguments[1] !== undefin
 
 /***/ }),
 /* 18 */
-/*!*************************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/queryParams.js ***!
-  \*************************************************************************/
+/*!***********************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/queryParams.js ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10414,17 +10414,17 @@ queryParams;exports.default = _default;
 
 /***/ }),
 /* 19 */
-/*!*******************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/route.js ***!
-  \*******************************************************************/
+/*!*****************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/route.js ***!
+  \*****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;} /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         * 路由跳转方法，该方法相对于直接使用uni.xxx的好处是使用更加简单快捷
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         * 并且带有路由拦截功能
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         */var
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    * 路由跳转方法，该方法相对于直接使用uni.xxx的好处是使用更加简单快捷
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    * 并且带有路由拦截功能
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    */var
 
 Router = /*#__PURE__*/function () {
   function Router() {_classCallCheck(this, Router);
@@ -11335,9 +11335,9 @@ if (hadRuntime) {
 
 /***/ }),
 /* 23 */
-/*!************************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/timeFormat.js ***!
-  \************************************************************************/
+/*!**********************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/timeFormat.js ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11396,9 +11396,9 @@ timeFormat;exports.default = _default;
 
 /***/ }),
 /* 24 */
-/*!**********************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/timeFrom.js ***!
-  \**********************************************************************/
+/*!********************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/timeFrom.js ***!
+  \********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11453,9 +11453,9 @@ timeFrom;exports.default = _default;
 
 /***/ }),
 /* 25 */
-/*!***************************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/colorGradient.js ***!
-  \***************************************************************************/
+/*!*************************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/colorGradient.js ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11596,9 +11596,9 @@ function colorToRgba(color) {var alpha = arguments.length > 1 && arguments[1] !=
 
 /***/ }),
 /* 26 */
-/*!******************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/guid.js ***!
-  \******************************************************************/
+/*!****************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/guid.js ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11647,9 +11647,9 @@ guid;exports.default = _default;
 
 /***/ }),
 /* 27 */
-/*!*******************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/color.js ***!
-  \*******************************************************************/
+/*!*****************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/color.js ***!
+  \*****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11694,9 +11694,9 @@ color;exports.default = _default;
 
 /***/ }),
 /* 28 */
-/*!***********************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/type2icon.js ***!
-  \***********************************************************************/
+/*!*********************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/type2icon.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11739,9 +11739,9 @@ type2icon;exports.default = _default;
 
 /***/ }),
 /* 29 */
-/*!*************************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/randomArray.js ***!
-  \*************************************************************************/
+/*!***********************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/randomArray.js ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11756,9 +11756,9 @@ randomArray;exports.default = _default;
 
 /***/ }),
 /* 30 */
-/*!*********************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/addUnit.js ***!
-  \*********************************************************************/
+/*!*******************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/addUnit.js ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11774,9 +11774,9 @@ function addUnit() {var value = arguments.length > 0 && arguments[0] !== undefin
 
 /***/ }),
 /* 31 */
-/*!********************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/random.js ***!
-  \********************************************************************/
+/*!******************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/random.js ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11794,9 +11794,9 @@ random;exports.default = _default;
 
 /***/ }),
 /* 32 */
-/*!******************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/trim.js ***!
-  \******************************************************************/
+/*!****************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/trim.js ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11819,9 +11819,9 @@ trim;exports.default = _default;
 
 /***/ }),
 /* 33 */
-/*!*******************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/toast.js ***!
-  \*******************************************************************/
+/*!*****************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/toast.js ***!
+  \*****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11839,9 +11839,9 @@ toast;exports.default = _default;
 
 /***/ }),
 /* 34 */
-/*!***********************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/getParent.js ***!
-  \***********************************************************************/
+/*!*********************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/getParent.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11896,9 +11896,9 @@ function getParent(name, keys) {
 
 /***/ }),
 /* 35 */
-/*!*********************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/$parent.js ***!
-  \*********************************************************************/
+/*!*******************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/$parent.js ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11924,9 +11924,9 @@ function $parent() {var name = arguments.length > 0 && arguments[0] !== undefine
 
 /***/ }),
 /* 36 */
-/*!*****************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/sys.js ***!
-  \*****************************************************************/
+/*!***************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/sys.js ***!
+  \***************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11942,9 +11942,9 @@ function sys() {
 
 /***/ }),
 /* 37 */
-/*!**********************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/debounce.js ***!
-  \**********************************************************************/
+/*!********************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/debounce.js ***!
+  \********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11981,9 +11981,9 @@ debounce;exports.default = _default;
 
 /***/ }),
 /* 38 */
-/*!**********************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/function/throttle.js ***!
-  \**********************************************************************/
+/*!********************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/function/throttle.js ***!
+  \********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12023,9 +12023,9 @@ throttle;exports.default = _default;
 
 /***/ }),
 /* 39 */
-/*!******************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/config/config.js ***!
-  \******************************************************************/
+/*!****************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/config/config.js ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12046,9 +12046,9 @@ var version = '1.8.4';var _default =
 
 /***/ }),
 /* 40 */
-/*!******************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/config/zIndex.js ***!
-  \******************************************************************/
+/*!****************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/config/zIndex.js ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12081,9 +12081,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* 45 */,
 /* 46 */,
 /* 47 */
-/*!*****************************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/components/sn-swiper/esc-swiper/helper.js ***!
-  \*****************************************************************************/
+/*!***************************************************************!*\
+  !*** D:/work/sydog/components/sn-swiper/esc-swiper/helper.js ***!
+  \***************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12130,15 +12130,23 @@ function getSwiperList(list)
 /* 64 */,
 /* 65 */,
 /* 66 */,
-/* 67 */
-/*!****************************************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/components/sn-swiper/esc-swiper/mixins/base.mixin.js ***!
-  \****************************************************************************************/
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */
+/*!**************************************************************************!*\
+  !*** D:/work/sydog/components/sn-swiper/esc-swiper/mixins/base.mixin.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _style = __webpack_require__(/*! ../../../utils/style.js */ 68);var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _style = __webpack_require__(/*! ../../../utils/style.js */ 76);var _default =
 
 
 
@@ -12441,10 +12449,10 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     } } };exports.default = _default;
 
 /***/ }),
-/* 68 */
-/*!*************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/components/utils/style.js ***!
-  \*************************************************************/
+/* 76 */
+/*!***********************************************!*\
+  !*** D:/work/sydog/components/utils/style.js ***!
+  \***********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12466,10 +12474,10 @@ var getStyleStr = function getStyleStr(styleObject) {
 };exports.getStyleStr = getStyleStr;
 
 /***/ }),
-/* 69 */
-/*!*************************************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/components/sn-swiper/esc-swiper/mixins/mpother.js ***!
-  \*************************************************************************************/
+/* 77 */
+/*!***********************************************************************!*\
+  !*** D:/work/sydog/components/sn-swiper/esc-swiper/mixins/mpother.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12536,14 +12544,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     } } };exports.default = _default;
 
 /***/ }),
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
 /* 78 */,
 /* 79 */,
 /* 80 */,
@@ -12578,10 +12578,25 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* 109 */,
 /* 110 */,
 /* 111 */,
-/* 112 */
-/*!*****************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/util/emitter.js ***!
-  \*****************************************************************/
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */
+/*!***************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/util/emitter.js ***!
+  \***************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12637,10 +12652,10 @@ function _broadcast(componentName, eventName, params) {
     } } };exports.default = _default;
 
 /***/ }),
-/* 113 */
-/*!*************************************************************************!*\
-  !*** C:/Users/HKKK/Desktop/sydog/uview-ui/libs/util/async-validator.js ***!
-  \*************************************************************************/
+/* 128 */
+/*!***********************************************************!*\
+  !*** D:/work/sydog/uview-ui/libs/util/async-validator.js ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14000,10 +14015,10 @@ Schema.warning = warning;
 Schema.messages = messages;var _default =
 
 Schema;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/node-libs-browser/mock/process.js */ 114)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../App/HBuilderX/plugins/uniapp-cli/node_modules/node-libs-browser/mock/process.js */ 129)))
 
 /***/ }),
-/* 114 */
+/* 129 */
 /*!********************************************************!*\
   !*** ./node_modules/node-libs-browser/mock/process.js ***!
   \********************************************************/
@@ -14034,7 +14049,7 @@ exports.binding = function (name) {
     var path;
     exports.cwd = function () { return cwd };
     exports.chdir = function (dir) {
-        if (!path) path = __webpack_require__(/*! path */ 115);
+        if (!path) path = __webpack_require__(/*! path */ 130);
         cwd = path.resolve(dir, cwd);
     };
 })();
@@ -14047,7 +14062,7 @@ exports.features = {};
 
 
 /***/ }),
-/* 115 */
+/* 130 */
 /*!***********************************************!*\
   !*** ./node_modules/path-browserify/index.js ***!
   \***********************************************/
@@ -14357,7 +14372,7 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node-libs-browser/mock/process.js */ 114)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node-libs-browser/mock/process.js */ 129)))
 
 /***/ })
 ]]);

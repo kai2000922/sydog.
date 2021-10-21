@@ -13,62 +13,91 @@
 				</view>
 			</esc-swiper-item>
 		</esc-swiper>
-		
-		<view class="app-block">
-			<view class="block-title-row">
-				<text class="title title-zdy">旧衣鞋帽包回收，换好礼！</text>
+
+		<s-panel>
+			<u-row justify="between" align="center">
+				<text class="s_text_bolder_main s_text_ellipsis">旧衣鞋帽包回收，换好礼！</text>
 				<view class="extra-box">
 					<image src="@/static/question-circle-fill.svg"></image>
 					<text>有哪些好礼</text>
 				</view>
-			</view>
-			<view>
+			</u-row>
+			<view class="s_mt_2">
 				<uni-grid :column="gridData.length + 1" :showBorder="false" :highlight="false">
 					<uni-grid-item v-for="(item, index) in gridData" :key="index">
 						<view class="grid-item">
 							<u-image width="80rpx" height="80rpx" :src="item.img"></u-image>
-							<view class="grid-text" v-text="item.text"/>
+							<view class="grid-text" v-text="item.text" />
 						</view>
 					</uni-grid-item>
-				</uni-grid>				
+				</uni-grid>
 			</view>
-		</view>
-		
-		<view class="app-block">
-			<view class="block-title-row">
-				<text class="title title-zdy title_dot">上门取件信息</text>
+		</s-panel>
+
+		<s-panel>
+			<u-row justify="between" align="center">
+				<text class="s_flex s_text_bolder_main s_text_dot">上门取件信息</text>
 				<text class="extra">您无须承担任何费用</text>
-			</view>
-			
-			<view style="padding-left: 32rpx;" class="">
+			</u-row>
+
+			<view style="padding-left: 32rpx;" class="s_mt_2">
 				<u-form :model="form" ref="uForm" label-position="top">
-					<u-form-item label="您的地址" :label-style="formStyle.lable" right-icon="/static/arrow-right.png" :right-icon-style="formStyle.rightIcon">
-						<input v-model="form.address" class="i_input" placeholder-class="input_placeholder" placeholder="请填写您邮寄旧衣的地址"/>
+					<u-form-item label="您的地址" :label-style="formStyle.lable" right-icon="/static/arrow-right.png"
+						:right-icon-style="formStyle.rightIcon">
+						<input v-model="form.address" class="i_input" placeholder-class="input_placeholder"
+							placeholder="请填写您邮寄旧衣的地址" />
 					</u-form-item>
-					<u-form-item label="上门时间" :label-style="formStyle.lable" right-icon="/static/arrow-right.png" :right-icon-style="formStyle.rightIcon">
+					<u-form-item label="上门时间" :label-style="formStyle.lable" right-icon="/static/arrow-right.png"
+						:right-icon-style="formStyle.rightIcon">
 						<view @click="show = true">
-							<input disabled class="i_input" placeholder-class="input_placeholder" placeholder="请选择上门取件时间" />
+							<input disabled v-model="form.date" class="i_input" placeholder-class="input_placeholder"
+								placeholder="请选择上门取件时间" />
 						</view>
-						<u-select v-model="show" @change="timeChange()" mode="mutil-column" :list="dateList" @confirm="confirm"></u-select>
+						<u-select v-model="show" @change="timeChange()" mode="mutil-column" :list="dateList"
+							@confirm="dateSelect"></u-select>
 					</u-form-item>
 				</u-form>
 			</view>
-			
-			<view style="margin-top: 63rpx;" class="block-title-row">
-				<text class="title title-zdy title_dot">回收重量</text>
-				<number-box :step="1" :min="5" v-model = "form.weight"/>
-				<text class="company">公斤</text>
-				<!-- <u-number-box v-model="form.weight" :min="5"></u-number-box> -->
-			</view>
-			
-			<view style="display: flex; justify-content: center; margin-top: 57rpx;" @click="sendData()">
-				<button class="i_button">预约上门回收</button>
-			</view>
-		</view>
-		
-		<view>
-			
-		</view>
+
+			<u-row justify="between" align="center" customClass="s_mt_2">
+				<text class="s_flex s_text_bolder_main s_text_dot">回收重量</text>
+				<view class="s_flex">
+					<number-box :step="1" :min="5" v-model="form.weight" />
+					<text class="company">公斤</text>
+				</view>
+			</u-row>
+
+			<u-row align="center" justify="center" customClass="s_mt_4">
+				<button @click="submit" class="i_button">预约上门回收</button>
+			</u-row>
+		</s-panel>
+
+		<s-panel>
+			<liuyuno-tabs :tabData="tabConfig.list" :activeIndex="tabConfig.index" @tabClick="onswiperchange"/>
+			<swiper :current="tabConfig.index" :duration="300" @change="onswiperchange">
+				<swiper-item>
+					<view style="height: 500px;">
+						<text class="s_flex s_text_dot s_text_bolder_min s_mt_5 s_mb_3">总回收重量≥5kg可兑换以下好礼</text>
+						<s-goods></s-goods>
+					</view>
+
+				</swiper-item>
+				<swiper-item>
+					<view>
+						<text class="s_flex s_text_dot s_text_bolder_min s_mt_5 s_mb_3">总回收重量≥8kg可兑换以下好礼</text>
+						<s-goods></s-goods>
+					</view>
+				</swiper-item>
+				<swiper-item>
+					<view>
+						<text class="s_flex s_text_dot s_text_bolder_min s_mt_5 s_mb_3">总回收重量≥10kg可兑换以下好礼</text>
+						<s-goods></s-goods>
+					</view>
+				</swiper-item>
+			</swiper>
+		</s-panel>
+
+
 	</view>
 </template>
 
@@ -77,15 +106,21 @@
 		getSwiperList
 	} from '@/components/sn-swiper/esc-swiper/helper.js';
 
+	import sPanel from '@/components/pages/s-panel'
 	import step from '@/components/pages/step'
 	import app from '../../App.vue'
 	import NumberBox from './components/number-box'
-	
+	import liuyunoTabs from "@/components/liuyuno-tabs/liuyuno-tabs.vue"
+	import sGoods from '@/components/pages/s-goods'
+
 
 	export default {
 		components: {
+			sPanel,
+			sGoods,
 			step,
-			NumberBox
+			NumberBox,
+			liuyunoTabs
 		},
 		data() {
 			return {
@@ -131,8 +166,7 @@
 						}
 					]
 				},
-				gridData: [
-					{
+				gridData: [{
 						img: '/static/itemize/yiwu.png',
 						text: '衣物'
 					},
@@ -153,11 +187,6 @@
 						text: '床单'
 					}
 				],
-				form: {
-					address: '',
-					date: '',
-					weight: 5
-				},
 				formStyle: {
 					lable: {
 						fontSize: '24rpx',
@@ -170,15 +199,31 @@
 						height: '22.6rpx'
 					}
 				},
+				tabConfig: {
+					index: 0,
+					list: [{
+							label: '5kg以上专区',
+							code: '0'
+						},
+						{
+							label: '8kg以上专区',
+							code: '1'
+						},
+						{
+							label: '10kg以上专区',
+							code: '2'
+						}
+					]
+				},
+				form: {
+					address: '',
+					date: '',
+					weight: 5
+				},
 				show: false,
 				dateList: [
 					[],
-					[
-						{
-							label: '当日两小时',
-							value: '2'
-						}
-					]
+					[]
 				],
 				orderInfo: {
 					'user': 'kai2000922',
@@ -208,89 +253,84 @@
 			}
 		},
 		methods: {
-			
-			sendData(){
+
+			sendData() {
 				this.orderInfo.expectWeight = this.form.weight
 				uni.request({
-					header: { 'content-type': 'application/x-www-form-urlencoded'},
-				    url: app.BaseUrl + '/recycle/add', //仅为示例，并非真实接口地址。
-				    data: this.orderInfo,
+					header: {
+						'content-type': 'application/x-www-form-urlencoded'
+					},
+					url: app.BaseUrl + '/recycle/add', //仅为示例，并非真实接口地址。
+					data: this.orderInfo,
 					method: 'POST',
-				    success: (res) => {
-						if (res.data.code == 0){
+					success: (res) => {
+						if (res.data.code == 0) {
 							console.log(this.orderInfo)
 							console.log(res.data);
-						}else{
+						} else {
 							console.log(res.data.msg);
 						}
-				        
-				    }
+
+					}
 				})
 			},
-			
+
 			getDateList() {
 				let date = new Date();
+				let year = date.getFullYear();
 				let month = date.getMonth();
 				let days = this.getDaysOfMonth(date.getYear(), month)
 				let weeks = new Array("周日", "周一", "周二", "周三", "周四", "周五", "周六");
 				let day = date.getDate()
 				let week = date.getDay()
 				for (var i = 0; i < 7; i++) {
-					if(day > days) day = 1;
-					if(week > 6) week = 0;
-					if (i == 0){
-						let hour = date.getHours() + 2
-						if (hour > 24){
-							continue
-						}
-						this.dateList[0].push({
-							month: month,
-							day: day,
-							week: weeks[week],
-							label: '今天 ' + weeks[week],
-							value: i,
-						})
-						
-						for (; hour < 24; hour += 2){
-							this.dateList[1].push({
-								month: month,
-								day: day,
-								week: weeks[week],
-								label: hour + ":00 —— " + (hour+2) + ":00",
-								value: i,
-							})
-						}
-					}else{
-						this.dateList[0].push({
-							month: month,
-							day: day,
-							week: weeks[week],
-							label: i === 0 ? '今天 ' + weeks[week] : month + '月' + day + '日 ' + weeks[week],
-							value: i,
-						})
-						for (let hour = 8; hour < 24; hour += 2){
-							this.dateList[1].push({
-								month: month,
-								day: day,
-								week: weeks[week],
-								label: hour + ":00 —— " + (hour+2) + ":00",
-								value: i,
-							})
-						}
-					}
+					if (day > days) day = 1;
+					if (week > 6) week = 0;
+					this.dateList[0].push({
+						label: i === 0 ? '今天 ' + weeks[week] : month + '月' + day + '日 ' + weeks[week],
+						value: year + '-' + month + '-' + day
+					})
 					day++;
 					week++;
 				}
+
+				for (var i = 9; i < 23; i += 2) {
+					if (i == 9) {
+						this.dateList[1].push({
+							label: '当日两小时',
+							value: date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+						})
+					}
+					this.dateList[1].push({
+						label: i + ":00~" + (i + 2) + ":00",
+						value: i + ':00:00'
+					})
+				}
+			},
+
+			getDaysOfMonth(year, month) {
+				let date = new Date(year, month, 0);
+				let days = date.getDate();
+				return days;
+			},
+
+			dateSelect(e) {
+				this.form.date = e[0].label + ' ' + e[1].label
+			},
+
+			onswiperchange(e) {
+				if (Object.prototype.toString.call(e) === '[object Object]') {
+					let index = e.target.current || e.detail.current;
+					this.tabConfig.index = index;
+				} else {
+					this.tabConfig.index = e;
+				}
 			},
 			
-			getDaysOfMonth(year,month){
-			    let date=new Date(year, month, 0);
-			    let days=date.getDate();
-			    return days;
-			},
-			
-			confirm(e) {
-				this.form.date = e[0].label + e[1].label
+			submit() {
+				uni.redirectTo({
+					url:'../collect/index'
+				})
 			}
 		}
 	}
@@ -334,43 +374,25 @@
 		}
 
 		text {
-			font-size: $app-card-extra-font-size;
+			font-size: 28rpx;
 			font-weight: bold;
-			color: $app-theme-color;
+			color: $s_color_green;
 		}
 	}
-	
+
 	.grid-item {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		
+
 		.grid-text {
 			font-size: 24rpx;
 			color: #B0B7B3;
 			letter-spacing: 0;
 		}
 	}
-	
-	.title-zdy {
-		font-family: PingFangSC-Semibold;
-		font-size: 36rpx;
-		font-weight: bolder;
-		color: #06180C;
-		letter-spacing: 0;
-	}
-	
-	.title_dot:before {
-		content: '';
-		display: block;
-		margin-right: 16rpx;
-		width: 16rpx;
-		height: 16rpx;
-		border-radius: 8rpx;
-		background: #FA9E19;
-	}
-	
+
 	.extra {
 		font-family: PingFangSC-Semibold;
 		font-size: 28rpx;
@@ -379,16 +401,22 @@
 		letter-spacing: 0;
 		text-align: right;
 	}
-	
+
 	.i_input {
-		padding-left: 0rpx;
+		padding-left: 0;
 		font-family: PingFangSC-Semibold;
 		font-size: 28rpx;
 		font-weight: bolder;
 		color: #06180C;
-		letter-spacing: 0;
+
+		&:disabled {
+			color: #06180C;
+			opacity: 1;
+			-webkit-text-fill-color: #06180C;
+			-webkit-opacity: 1;
+		}
 	}
-	
+
 	.company {
 		padding-left: 16rpx;
 		font-family: PingFangSC-Regular;
@@ -396,14 +424,14 @@
 		color: #B0B7B3;
 		letter-spacing: 0;
 	}
-	
+
 	.i_button {
 		box-sizing: border-box;
 		border: 0;
 		width: 566rpx;
 		height: 120rpx;
 		background: #43A668;
-		box-shadow: 0 2rpx 16rpx 0 rgba(67,166,104,0.56);
+		box-shadow: 0 2rpx 16rpx 0 rgba(67, 166, 104, 0.56);
 		border-radius: 60rpx;
 		line-height: 120rpx;
 		font-family: PingFangSC-Semibold;

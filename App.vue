@@ -10,7 +10,7 @@
 			console.log('App Hide')
 		},
 		userAcount: 'kai2000922',
-		BaseUrl: 'http://localhost/recycle'
+		BaseUrl: 'http://106.13.18.124/recycle'
 	}
 </script>
 

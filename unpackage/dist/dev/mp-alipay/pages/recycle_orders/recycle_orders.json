@@ -1,5 +1,9 @@
 {
   "defaultTitle": "",
   "pullRefresh": false,
-  "usingComponents": {}
+  "usingComponents": {
+    "liuyuno-tabs": "/components/liuyuno-tabs/liuyuno-tabs",
+    "dot-line": "/components/pages/s_dot_line/index",
+    "s-panel": "/components/pages/s-panel/index"
+  }
 }

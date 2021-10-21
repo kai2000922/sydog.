@@ -8,6 +8,13 @@
 			}
 		},
 		{
+			"path": "pages/collect/index",
+			"style": {
+				"navigationBarBackgroundColor": "#44aa67",
+				"backgroundColor": "#fafafa"
+			}
+		},
+		{
 		    "path" : "pages/recycle_orders/recycle_orders",
 		    "style" :                                                                                    
 		    {
@@ -15,8 +22,8 @@
 		        "enablePullDownRefresh": false
 		    }
 		    
-		}
-	    ,{
+		},
+		{
             "path" : "pages/goods/goods",
             "style" :                                                                                    
             {
@@ -27,6 +34,15 @@
         }
         
     ],
+	"condition": { //模式配置，仅开发期间生效
+	    "current": 0, //当前激活的模式（list 的索引项）
+	    "list": [
+	        {
+	            "name": "test",
+	            "path": "pages/recycle_orders/recycle_orders"
+	        }
+	    ]
+	},
 	"globalStyle": {
 		// "navigationBarTextStyle": "black",
 		// "navigationBarTitleText": "uni-app",

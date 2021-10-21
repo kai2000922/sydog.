@@ -164,7 +164,7 @@
 		
 		>.numbox-text {
 			font-size: 36rpx;
-			line-height: 48rpx;;
+			line-height: 48rpx;
 		}
 		
 		>.numbox-company {
