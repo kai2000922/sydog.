@@ -68,7 +68,7 @@
 			</u-row>
 
 			<u-row align="center" justify="center" customClass="s_mt_4">
-				<button @click="submit" class="i_button">预约上门回收</button>
+				<button @click="sendData" class="i_button">预约上门回收</button>
 			</u-row>
 		</s-panel>
 
@@ -256,6 +256,12 @@
 
 			sendData() {
 				this.orderInfo.expectWeight = this.form.weight
+				if (this.form.date == ''){
+					uni.showToast({
+						title: '请选择上门时间'
+					});
+					return
+				}
 				uni.request({
 					header: {
 						'content-type': 'application/x-www-form-urlencoded'
@@ -266,7 +272,10 @@
 					success: (res) => {
 						if (res.data.code == 0) {
 							console.log(this.orderInfo)
-							console.log(res.data);
+							console.log(res.data)
+							uni.redirectTo({
+								url:'../collect/index'
+							})
 						} else {
 							console.log(res.data.msg);
 						}
@@ -316,6 +325,7 @@
 
 			dateSelect(e) {
 				this.form.date = e[0].label + ' ' + e[1].label
+				console.log(this.form.date)
 			},
 
 			onswiperchange(e) {
@@ -325,12 +335,6 @@
 				} else {
 					this.tabConfig.index = e;
 				}
-			},
-			
-			submit() {
-				uni.redirectTo({
-					url:'../collect/index'
-				})
 			}
 		}
 	}
