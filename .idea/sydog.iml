@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/temp" />
+      <excludeFolder url="file://$MODULE_DIR$/.tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-alipay/components/pages/s-goods" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-alipay/components/pages/s-goods-item" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-alipay/components/pages/s-panel" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-alipay/components/pages/s_dot_line" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-alipay/components/liuyuno-tabs" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-alipay/pages/recycle_orders/components" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-alipay/pages/collect" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-alipay/.mini-ide" />
+      <excludeFolder url="file://$MODULE_DIR$/.hbuilderx" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
