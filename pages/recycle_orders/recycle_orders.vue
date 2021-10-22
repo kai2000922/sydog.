@@ -5,6 +5,7 @@
 		<swiper class="page_swiper" :current="titleConfig.index" @change="onswiperchange">
 			<swiper-item class="page_swiper_item">
 				<scroll-view class="page_swiper_item_view" style="flex: 1;" enableBackToTop="true" scroll-y>
+					<view v-for="(item, index) in orders">
 					<view class="order">
 						<text class="order_title">旧衣上门回收</text>
 						<text class="order_situation">订单完成啦!</text>
@@ -12,7 +13,7 @@
 						<view class="order_weight">
 							<span class="order_weight_left" />
 							<view class="order_weight_words">
-								<text>8.0</text>
+								<text>{{item.expectWeight}}</text>
 								<text>公斤</text>
 							</view>
 							<span class="order_weight_right" />
@@ -30,32 +31,32 @@
 							<view class="order_order_info">
 								<view>
 									<label>取件地址：</label>
-									<text>北京市西城区槐柏树街南里8号楼12单元1098室</text>
+									<text>{{item.address}}</text>
 								</view>
 								<view>
-									<label>李二 18827767866</label>
+									<label>{{item.name}} {{item.phone}}</label>
 								</view>
 								<view>
 									<label>取件时间：</label>
-									<text>9月24日 10:00~11:00</text>
+									<text>{{item.expectTime}}</text>
 								</view>
 								<view>
 									<label>取件员：</label>
-									<text>圆通速递 | 李明 18801146821、</text>
+									<text>德邦快递 | {{item.Courier != null ? item.Courier : '暂无信息' }}</text>
 								</view>
 								<view>
 									<label>下单时间：</label>
-									<text>2021-9-20 8:00</text>
+									<text>{{item.createTime}}</text>
 								</view>
 								<view>
 									<label>订单编号：</label>
-									<text>1289767657VGH27786</text>
+									<text>{{item.orderNum}}</text>
 								</view>
 								
 							</view>
 						</view>
 					</view>
-					
+				</view>
 				</scroll-view>
 			</swiper-item>
 			<swiper-item class="page_swiper_item">
@@ -167,7 +168,7 @@
 						method: 'POST',
 						success: (res) => {
 							this.orders = res.data.rows
-							console.log(this.orders[0].city)
+							console.log(this.orders[0])
 						},
 						fail(err) {
 							console.log(err)
