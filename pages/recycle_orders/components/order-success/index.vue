@@ -24,26 +24,26 @@
 			<view class="order_order_info">
 				<view>
 					<label>取件地址：</label>
-					<text>北京市西城区槐柏树街南里8号楼12单元1098室</text>
+					<text>{{order.address}}</text>
 				</view>
 				<view>
-					<label>李二 18827767866</label>
+					<label>{{order.name}} {{order.phone}}</label>
 				</view>
 				<view>
 					<label>取件时间：</label>
-					<text>9月24日 10:00~11:00</text>
+					<text>{{order.expectTime}}</text>
 				</view>
 				<view>
 					<label>取件员：</label>
-					<text>圆通速递 | 李明 18801146821、</text>
+					<text>德邦快递 | {{order.Courier != null ? order.Courier : '暂无信息' }}</text>
 				</view>
 				<view>
 					<label>下单时间：</label>
-					<text>2021-9-20 8:00</text>
+					<text>{{order.createTime}}</text>
 				</view>
 				<view>
 					<label>订单编号：</label>
-					<text>1289767657VGH27786</text>
+					<text>{{order.orderNum}}</text>
 				</view>
 			</view>
 		</view>
@@ -54,9 +54,16 @@
 	import dotLine from '@/components/pages/s-dot-line'
 	
 	export default {
+		props:{
+			order: {},
+		},
 		components: {
 			dotLine
-		}
+		},
+		props:{
+			order: {},
+			cancels: false
+		},
 	}
 </script>
 
@@ -67,7 +74,7 @@
 		justify-content: center;
 		margin: 30rpx 30rpx 0rpx 30rpx;
 		padding: 30rpx;
-		background: $s_color_white;
+		background: #FFFFFF;
 		box-shadow: 0 1px 24px 0 #E8F0EB;
 		border-radius: 40rpx;
 	

@@ -5,104 +5,17 @@
 		<swiper class="page_swiper" :current="titleConfig.index" @change="onswiperchange">
 			<swiper-item class="page_swiper_item">
 				<scroll-view class="page_swiper_item_view" style="flex: 1;" enableBackToTop="true" scroll-y>
-					<order-init @click="alterPopup = true"/>
 					<view v-for="(item, index) in orders">
-					<view class="order">
-						<text class="order_title">旧衣上门回收</text>
-						<text class="order_situation">订单完成啦!</text>
-						<text class="order_label">本次回收旧衣物</text>
-						<view class="order_weight">
-							<span class="order_weight_left" />
-							<view class="order_weight_words">
-								<text>{{item.expectWeight}}</text>
-								<text>公斤</text>
-							</view>
-							<span class="order_weight_right" />
+						<view v-if = "item.orderStatus == '待上门'">
+							<order-init @click="alterPopup = true" @updateOrder="updateOrderStatus" :order = "item"/>
 						</view>
-						<text class="order_exchange">可兑换5kg～8kg的专属好礼！</text>
-						<view>
-							<button class="order_button">已兑换，去查看好礼订单！</button>
+						<view v-else-if = "item.orderStatus == '邮寄中'">
+							<order-success :order = "item"/>
 						</view>
-						<dot-line :height="20" :itemNumber="25" :customStyle="{marginRight: '-30rpx', marginLeft: '-30rpx', marginTop: '40rpx'}"/>
-						<view class="order_order">
-							<view class="order_order_title">
-								<image src="@/static/dingdan.png"></image>
-								<text>订单信息</text>
-							</view>
-							<view class="order_order_info">
-								<view>
-									<label>取件地址：</label>
-									<text>{{item.address}}</text>
-								</view>
-								<view>
-									<label>{{item.name}} {{item.phone}}</label>
-								</view>
-								<view>
-									<label>取件时间：</label>
-									<text>{{item.expectTime}}</text>
-								</view>
-								<view>
-									<label>取件员：</label>
-									<text>德邦快递 | {{item.Courier != null ? item.Courier : '暂无信息' }}</text>
-								</view>
-								<view>
-									<label>下单时间：</label>
-									<text>{{item.createTime}}</text>
-								</view>
-								<view>
-									<label>订单编号：</label>
-									<text>{{item.orderNum}}</text>
-								</view>
-							</view>
+						<view v-else-if = "item.orderStatus == '已取消'">
+							<order-init deleteOrder="deleteOrder" :order = "item" :cancels = "true"/>
 						</view>
 					</view>
-				</view>
-				</scroll-view>
-			</swiper-item>
-			<swiper-item class="page_swiper_item">
-				<scroll-view class="page_swiper_item_view" style="flex: 1;" enableBackToTop="true" scroll-y>
-					<s-panel>
-						<view class="commodity">
-							<view class="commodity_info">
-								<view class="commodity_info_img">
-									
-								</view>
-								<view class="commodity_info_box">
-									<view class="commodity_info_box_row1">
-										<text class="commodity_name">布婷4层卷纸｜2提装</text>
-										<view class="commodity_price">
-											<text class="commodity_price_original">¥30</text>
-											<text class="commodity_price_now">¥0</text>
-										</view>
-									</view>
-									<view class="commodity_info_box_row2">
-										<text>2提装</text>
-									</view>
-									<view class="commodity_info_box_row3">
-										<text>付邮领</text>
-									</view>
-									<view class="commodity_info_box_row4">
-										<text>运费：</text>
-										<text>¥9.9</text>
-										<text style="margin-left: 24rpx;">实付款：</text>
-										<text>¥9.9</text>
-									</view>
-								</view>
-							</view>
-							<view class="commodity_express">
-								<image src="@/static/che.png"></image>
-								<text>您已下单，我们将在48小时内发货</text>
-							</view>
-							<view class="commodity_service">
-								<button>联系客服</button>
-								<button>退款</button>
-								<button>查看物流</button>
-							</view>
-							<view class="commodity_details">
-								<text>查看订单详情</text>
-								<image src="@/static/arrow-right-24.png"></image>
-							</view>
-						</view>
 					</s-panel>
 				</scroll-view>
 			</swiper-item>
@@ -113,7 +26,10 @@
 					<text>修改订单信息</text>
 				</view>
 				<view class="alter_form">
-					<order-form></order-form>
+					<order-form :date.sync="updateInfo.expectTime" :weight.sync="updateInfo.expectWeight"></order-form>
+				</view>
+				<view>
+					<button class="i_button" @click="updateOrderStatus(-1)">确认修改</button>
 				</view>
 			</view>
 		</u-popup>
@@ -126,12 +42,14 @@
 	import sPanel from '@/components/pages/s-panel'
 	import orderInit from './components/order-init'
 	import orderForm from '@/components/pages/oder-form'
+	import orderSuccess from './components/order-success'
 	export default {
 		components: {
 			dotLine,
 			sPanel,
 			orderInit,
-			orderForm
+			orderForm,
+			orderSuccess
 		},
 		data() {
 			return {
@@ -144,7 +62,11 @@
 					]
 				},
 				alterPopup: false,
-				statusList: ["取消订单", "修改时间", "修改地址"]
+				statusList: ["取消订单", "修改时间", "修改地址"],
+				updateInfo: {
+					expectTime: '',
+					expectWeight: ''
+				}
 			}
 		},
 		onReady() {
@@ -159,6 +81,34 @@
 			this.getRecycleOrders()
 		},
 		methods: {
+			deleteOrder(){
+				id = app.ChooseID
+				if(id != ''){
+					uni.request({
+						header: {
+							'content-type': 'application/x-www-form-urlencoded'
+						},
+						url: app.BaseUrl + '/recycle/remove',
+						data: {
+							'ids': id
+						},
+						method: 'POST',
+						success: (res) => {
+							if (res.code == 0){
+								uni.showToast({
+									title: '删除成功！'
+								});
+							}
+						},
+						fail(err) {
+							uni.showToast({
+								title: '查询订单失败，请稍后再试！'
+							});
+							console.log(err)
+						}
+					})
+				}
+			},
 			
 			test() {
 				console.log(1111);
@@ -189,6 +139,9 @@
 							console.log(this.orders[0])
 						},
 						fail(err) {
+							uni.showToast({
+								title: '查询订单失败，请稍后再试！'
+							});
 							console.log(err)
 						}
 					})
@@ -203,29 +156,17 @@
 				3. 修改地址 重新获取后拼接成的字符串，由
 				省份 城市 地区 详细地址 姓名 联系电话 6部分组成，中间用英文";"分割。
 			*/
-			updateOrderStatus(orderID, status, param) {
-				let data = {
-					'orderStatus': '',
-					'param': param,
-					'orderID': orderID
-				}
-				if (this.statusList[0] == status) {
-					data.orderStatus = '-1'
-				} else if (this.statusList[1] == status) {
-					data.orderStatus = '-2'
-				} else if (this.statusList[2] == status) {
-					data.orderStatus = '-3'
-				} else {
-					console.log("status不存在")
-					return
-				}
-
+			updateOrderStatus(status) {
 				uni.request({
 					header: {
 						'content-type': 'application/x-www-form-urlencoded'
 					},
-					url: app.BaseUrl + '/recycle/edit',
-					data: data,
+					url: app.BaseUrl + '/recycle/editOrder',
+					data: {
+					'orderStatus': status,
+					'param': this.updateInfo.expectTime + "," + this.updateInfo.expectWeight,
+					'orderID': app.ChooseID,
+					},
 					method: 'POST',
 					success: (res) => {
 						this.orders = res.data.rows

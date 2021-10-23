@@ -72,7 +72,7 @@
 		},
 		data() {
 			return {
-				weightVlaue: 0,
+				weightVlaue: 5,
 				dateList: [],
 				dateSelectShow: false,
 				dateLabel: '',

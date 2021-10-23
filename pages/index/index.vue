@@ -171,7 +171,6 @@
 					method: 'POST',
 					success: (res) => {
 						if (res.data.code == 0) {
-							console.log(this.orderInfo)
 							console.log(res.data)
 							uni.navigateTo({
 								url:'../collect/index'
@@ -299,3 +298,4 @@
 		}
 	}
 </style>
+

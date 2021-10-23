@@ -11,20 +11,20 @@
 		</view>
 		<view class="order_row3" :class="cancel ? 'color_cancel' : 'color_normal'">
 			<view class="order_row3_row1">
-				<text>9月24日 周六</text>
+				<text>{{order.expectTime}}</text>
 			</view>
 			<view class="order_row3_row2">
-				<text>10:00 ~ 11:00 上门取件</text>
+				<text>上门取件</text>
 				<button v-if="!cancel" @click="click">修改时间</button>
 			</view>
 		</view>
 		<view class="order_row2">
 			<image src="@/static/kuaidiyuan.png"></image>
-			<text>取件员联系方式：</text>
+			<text>取件员联系方式：{{order.Courier != null ? order.Courier : '暂无信息' }}</text>
 			<view v-if="cancel" class="order_row2_cancel"></view>
 		</view>
 		<view class="order_row4" :class="cancel ? 'color_cancel' : 'color_normal'">
-			<text>取件当天，会展示出取件员的信息哦~</text>
+			<text v-if="!cancel">取件当天，会展示出取件员的信息哦~</text>
 		</view>
 		<dot-line :height="20" 
 				:itemNumber="25" 
@@ -38,9 +38,9 @@
 			<view class="order_row5_address">
 				<view>
 					<text>取件地址：</text>
-					<text>北京市西城区槐柏树街南里8号楼12单元1098室</text>
+					<text>{{order.address}}</text>
 				</view>
-				<text>李二 18827767866</text>
+				<text>{{order.name}} {{order.phone}}</text>
 			</view>
 			<view class="order_row5_btn" >
 				<button @click="click" v-if="!cancel">修改地址</button>
@@ -49,38 +49,57 @@
 		<view class="order_row6">
 			<view>
 				<label>下单时间：</label>
-				<text>2021-9-20 8:00</text>
+				<text>{{order.createTime}}</text>
 			</view>
 			<view>
 				<label>订单编号：</label>
-				<text>1289767657VGH27786</text>
+				<text>{{order.orderNum}}</text>
 				<text style="margin-left: 16rpx;">复制</text>
+				<view class="order_row5_btn" >
+					<button @click="cancelOrder" v-if="cancel">删除订单</button>
+				</view>
 			</view>
 		</view>
 		<view class="order_row7" v-if="!cancel">
 			<button>能换哪些好礼？</button>
 		</view>
 		<view class="order_row8" v-if="!cancel">
-			<text>取消订单</text>
+			<text @click="updateOrder()">取消订单</text>
 		</view>
 	</view>
 </template>
 
 <script>
 	import dotLine from '@/components/pages/s-dot-line'
+	import app from '../../../../App.vue'
 	
 	export default {
+		props:{
+			order: {},
+			cancels: false
+		},
 		components: {
 			dotLine
 		},
 		data() {
 			return {
-				cancel: false
+				cancel: this.$props.cancels,
+				test:1
 			}
 		},
 		methods: {
 			click() {
+				app.ChooseID = this.$props.order.recycleID
+				console.log(this.$props.order)
 				this.$emit('click')
+			},
+			deleteOrder(){
+				app.ChooseID = this.$props.order.recycleID
+				this.$emit('deleteOrder')
+			},
+			updateOrder(){
+				app.ChooseID = this.$props.order.recycleID
+				this.$emit('updateOrder', '-2')
 			}
 		}
 	}
