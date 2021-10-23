@@ -15,6 +15,16 @@
 			<view style="display: flex; align-items: center; justify-content: center; margin-top: 48rpx;">
 				<button @click="sendData" class="i_button">预约上门回收</button>
 			</view>
+			<view class="movable_box">
+				<movable-area>
+					<movable-view direction="vertical">
+						<view class="movable_box_view" @click="toRecycleOrders">
+							<image src="../../static/order.png"></image>
+							<text>我的订单</text>
+						</view>
+					</movable-view>
+				</movable-area>
+			</view>
 		</s-panel>
 
 		<s-panel>
@@ -41,7 +51,6 @@
 				</swiper-item>
 			</swiper>
 		</s-panel>
-		
 	</view>
 </template>
 
@@ -174,6 +183,12 @@
 					}
 				})
 			},
+			
+			toRecycleOrders() {
+				uni.navigateTo({
+					url: '/pages/recycle_orders/recycle_orders'
+				})
+			},
 
 			onswiperchange(e) {
 				if (Object.prototype.toString.call(e) === '[object Object]') {
@@ -188,6 +203,7 @@
 </script>
 
 <style lang="scss" scoped>
+	
 	.top-background {
 		position: absolute;
 		left: 0;
@@ -196,6 +212,52 @@
 		height: 300rpx;
 		background: #44aa67;
 		z-index: -1;
+	}
+	
+	.movable_box {
+		position: absolute;
+		top: 0;
+		right: -30rpx;
+		height: 666rpx;
+		width: 30rpx;
+		
+		&>movable-area {
+			height: 100%;
+			width: 100%;
+			
+			&>movable-view {
+				display: flex;
+				align-items: center;
+				height: 100rpx;
+				border-top-left-radius: 50rpx;
+				border-bottom-left-radius: 50rpx;
+				width: 150rpx;
+				margin-left: -120rpx;
+				background-image: linear-gradient(135deg, #ffffff -20%, #43A668 100%);
+				color: #fff;
+				overflow: hidden;
+				
+				&>.movable_box_view {
+					width: 100%;
+					height: 100%;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					
+					&>image {
+						width: 40rpx;
+						height: 40rpx;
+					}
+					
+					&>text {
+						margin-left: 8rpx;
+						width: 65rpx;
+						font-size: 30rpx;
+					}
+				}
+			}
+		}
+		
 	}
 
 	.i_button {

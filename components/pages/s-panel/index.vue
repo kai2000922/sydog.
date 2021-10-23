@@ -19,6 +19,7 @@
 	$s_box-shadow: 0 1rpx 24rpx 0 #E8F0EB;
 	
 	.s_panel {
+		position: relative;
 		padding: $s_space_3;
 		margin: $s_margin;
 		background: $s_bg_white;

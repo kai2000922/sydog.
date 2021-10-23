@@ -9,6 +9,7 @@
 			<view class="form_row_content">
 				<text :class="addressLabel === '请填写您邮寄旧衣的地址' ? 'form_row_content_placeholder' : 'form_row_content_text'" v-text="addressLabel"/>
 				<image class="form_arrow_right" src="@/static/arrow-right.png"></image>
+				<slot></slot>
 			</view>
 			<label v-if="contactsLabel != ''" class="form_row_personal" v-text="contactsLabel"/>
 		</view>
@@ -213,6 +214,7 @@
 			}
 
 			&_content {
+				// position: relative;
 				margin-top: 8rpx;
 				display: flex;
 				justify-content: space-between;
