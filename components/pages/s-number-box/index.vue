@@ -1,18 +1,18 @@
 <template>
 	<view class="numbox">
-		<view @click="_calcValue('minus')" class="numbox__minus" :class="{ 'numbox-disabled': inputValue <= min || disabled }">
-			<text class="numbox-text">-</text>
+		<view @click="_calcValue('minus')" class="numbox_minus" :class="{ 'numbox_disabled': inputValue <= min || disabled }">
+			<text class="numbox_text">-</text>
 		</view>
 		<input class="numbox_value" @blur="_onBlur" type="number" v-model="inputValue"/>
-		<view @click="_calcValue('plus')" class="numbox_plus">
-			<text class="numbox-text">+</text>
+		<view @click="_calcValue('plus')" class="numbox_plus" :class="{ 'numbox_disabled': inputValue >= max || disabled }">
+			<text class="numbox_text">+</text>
 		</view>
 	</view>
 </template>
 
 <script>
 	export default {
-		name: 'NumberBox',
+		name: 'SNumberBox',
 		props: {
 			value: {
 				type: [Number, String],
@@ -59,6 +59,7 @@
 				if (type === "minus") {
 					value -= step;
 					if (value < (this.min * scale)) {
+						this.$emit("minimum")
 						return;
 					}
 					if (value > (this.max * scale)) {
@@ -78,10 +79,8 @@
 			
 				this.inputValue = (value / scale).toFixed(String(scale).length - 1);
 				this.$emit("change", +this.inputValue);
-				// TODO vue2 兼容
 				this.$emit("input", +this.inputValue);
-				// TODO vue3 兼容
-				this.$emit("update:modelValue", +this.inputValue);
+				//this.$emit("update:value", +this.inputValue);
 			},
 			_getDecimalScale() {
 			
@@ -93,7 +92,6 @@
 				return scale;
 			},
 			_onBlur(event) {
-				// console.log(event.detail.value);
 				this.$emit('blur', event)
 				let value = event.detail.value;
 				if (!value || isNaN(value)) {
@@ -129,7 +127,7 @@
 		background: #F6F7F9;
 		border-radius: 36rpx;
 		
-		>.numbox_value {
+		&_value {
 			width: 100rpx;
 			text-align: center;
 			background: none;
@@ -139,7 +137,7 @@
 			letter-spacing: 0;
 		}
 		
-		>.numbox__minus {
+		&_minus {
 			width: 48rpx;
 			height: 48rpx;
 			border-radius: 24rpx;
@@ -148,12 +146,12 @@
 			color: #ffffff;
 		}
 		
-		>.numbox-disabled {
-			background: #DFDFDF;
-			color: #BDBDBD;
+		&_disabled {
+			background: #DFDFDF!important;
+			color: #BDBDBD!important;
 		}
 		
-		>.numbox_plus {
+		&_plus {
 			width: 48rpx;
 			height: 48rpx;
 			border-radius: 24rpx;
@@ -162,12 +160,12 @@
 			color: #ffffff;
 		}
 		
-		>.numbox-text {
+		&_text {
 			font-size: 36rpx;
-			line-height: 48rpx;
+			line-height: 46rpx;
 		}
 		
-		>.numbox-company {
+		&_company {
 			padding-left: 16rpx;
 		}
 	}

@@ -5,6 +5,7 @@
 		<swiper class="page_swiper" :current="titleConfig.index" @change="onswiperchange">
 			<swiper-item class="page_swiper_item">
 				<scroll-view class="page_swiper_item_view" style="flex: 1;" enableBackToTop="true" scroll-y>
+					<order-init @click="alterPopup = true"/>
 					<view v-for="(item, index) in orders">
 					<view class="order">
 						<text class="order_title">旧衣上门回收</text>
@@ -52,7 +53,6 @@
 									<label>订单编号：</label>
 									<text>{{item.orderNum}}</text>
 								</view>
-								
 							</view>
 						</view>
 					</view>
@@ -107,29 +107,43 @@
 				</scroll-view>
 			</swiper-item>
 		</swiper>
+		<u-popup v-model="alterPopup" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3">
+			<view class="alter">
+				<view class="alter_title">
+					<text>修改订单信息</text>
+				</view>
+				<view class="alter_form">
+					<order-form></order-form>
+				</view>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
 <script>
 	import app from '../../App.vue'
-	import dotLine from '@/components/pages/s_dot_line'
-	import sPanel from '@/components/pages/s-panel/index.vue'
-
+	import dotLine from '@/components/pages/s-dot-line'
+	import sPanel from '@/components/pages/s-panel'
+	import orderInit from './components/order-init'
+	import orderForm from '@/components/pages/oder-form'
 	export default {
 		components: {
 			dotLine,
-			sPanel
+			sPanel,
+			orderInit,
+			orderForm
 		},
 		data() {
 			return {
 				orders: [],
 				titleConfig: {
-					index: 1,
+					index: 0,
 					list: [
 						'旧衣回收订单',
 						'商城订单'
 					]
 				},
+				alterPopup: false,
 				statusList: ["取消订单", "修改时间", "修改地址"]
 			}
 		},
@@ -145,6 +159,10 @@
 			this.getRecycleOrders()
 		},
 		methods: {
+			
+			test() {
+				console.log(1111);
+			},
 			
 			onswiperchange(e) {
 				if (Object.prototype.toString.call(e) === '[object Object]') {
@@ -255,7 +273,7 @@
 		justify-content: center;
 		margin: 30rpx 30rpx 0rpx 30rpx;
 		padding: 30rpx;
-		background: $s_color_white;
+		background: #ffffff;
 		box-shadow: 0 1px 24px 0 #E8F0EB;
 		border-radius: 40rpx;
 
@@ -562,6 +580,24 @@
 				height: 24rpx;
 				vertical-align: middle;
 			}
+		}
+	}
+	
+	.alter {
+		&_title {
+			display: flex;
+			justify-content: center;
+			margin-top: 40rpx;
+			font-family: PingFangSC-Semibold;
+			font-size: 36rpx;
+			font-weight: bold;
+			color: $s_font_color;
+			letter-spacing: 0;
+			line-height: 54rpx;
+		}
+		
+		&_form {
+			padding: 56rpx 92rpx 48rpx 92rpx;
 		}
 	}
 </style>

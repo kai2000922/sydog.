@@ -3,7 +3,10 @@
   "pullRefresh": false,
   "usingComponents": {
     "liuyuno-tabs": "/components/liuyuno-tabs/liuyuno-tabs",
-    "dot-line": "/components/pages/s_dot_line/index",
-    "s-panel": "/components/pages/s-panel/index"
+    "u-popup": "/uview-ui/components/u-popup/u-popup",
+    "dot-line": "/components/pages/s-dot-line/index",
+    "s-panel": "/components/pages/s-panel/index",
+    "order-init": "/pages/recycle_orders/components/order-init/index",
+    "order-form": "/components/pages/oder-form/index"
   }
 }

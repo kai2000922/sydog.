@@ -51,7 +51,7 @@
 </template>
 
 <script>
-	import dotLine from '@/components/pages/s_dot_line'
+	import dotLine from '@/components/pages/s-dot-line'
 	
 	export default {
 		components: {

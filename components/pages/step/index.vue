@@ -1,14 +1,17 @@
 <template>
-	<view :style="stepStyle">
+	<view class="step" :style="stepStyle">
 		<u-row :gutter="itemGutter">
 			<u-col v-for="(item,index) in dataList" :key="index" :span="item.span">
-				<view class="schedule">
-					<span class="step-icon" :class="{'step-icon-choice': item.choice === true}">{{ item.index }}</span>
-					<view class="step-text" :class="{'step-text-choice': item.choice === true}">
-						<span v-text="item.title"></span>
-						<span v-text="item.subTitle"></span>
+				<view style="display: flex; justify-content: center;">
+					<view class="step_schedule">
+						<view class="step_schedule_icon" :class="{'step_schedule_icon_choice': item.choice === true}">{{ item.index }}</view>
+						<view class="step_schedule_text" :class="{'step_schedule_text_choice': item.choice === true}">
+							<text v-text="item.title"></text>
+							<text v-text="item.subTitle"></text>
+						</view>
 					</view>
 				</view>
+				
 			</u-col>
 		</u-row>
 	</view>
@@ -35,59 +38,65 @@
 </script>
 
 <style lang="scss" scoped>
+	
 	$s_color_green: #44aa67;
 	
-	.schedule {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		.step-icon {
-			display: inline-block;
-			box-sizing: border-box;
-			height: 48rpx;
-			width: 48rpx;
-			border-radius: 50%;
-			border: 1rpx dashed #ffffff;
-			color: #ffffff;
-			text-align: center;
-			font-size: 24rpx;
-			opacity: 0.7;
-		}
-
-		.step-icon-choice {
-			background: #ffffff;
-			color: $s_color_green;
-			font-weight: bolder;
-			opacity: 1;
-		}
-
-		.step-text {
-			display: inline-flex;
-			margin-left: 16rpx;
-			height: 100%;
-			flex-direction: column;
+	.step {
+		
+		&_schedule {
+			display: flex;
+			align-items: center;
 			justify-content: space-between;
-			vertical-align: top;
-			opacity: 0.7;
-		}
-
-		.step-text-choice {
-			color: #ffffff;
-			font-weight: bolder;
-			opacity: 1;
-		}
-
-		.step-text>span:first-child {
-			line-height: normal;
-			font-size: 32rpx;
-			color: #ffffff;
-		}
-
-		.step-text>span:last-child {
-			line-height: normal;
-			font-size: 24rpx;
-			color: #ffffff;
+			
+			&_icon {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				box-sizing: border-box;
+				height: 48rpx;
+				width: 48rpx;
+				border-radius: 24rpx;
+				border: 1rpx dashed #ffffff;
+				color: #ffffff;
+				font-size: 24rpx;
+				font-weight: lighter;
+				opacity: 0.7;
+				
+				&_choice {
+					background: #ffffff;
+					color: $s_color_green;
+					font-weight: bold;
+					opacity: 1;
+				}
+			}
+			
+			&_text {
+				flex: 1;
+				display: flex;
+				margin-left: 16rpx;
+				height: 100%;
+				flex-direction: column;
+				vertical-align: top;
+				opacity: 0.7;
+				
+				&>text:first-child {
+					line-height: normal;
+					font-size: 32rpx;
+					color: #ffffff;
+				}
+				
+				&>text:last-child {
+					line-height: normal;
+					font-size: 24rpx;
+					color: #ffffff;
+				}
+				
+				&_choice {
+					color: #ffffff;
+					font-weight: bold;
+					opacity: 1;
+				}
+			}
 		}
 	}
 </style>

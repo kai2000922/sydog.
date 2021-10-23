@@ -711,56 +711,6 @@
 .uicon-share-fill.data-v-6e20bb40:before {
 	content: "\e65e";
 }
-.s_flex.data-v-6e20bb40 {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.s_mt_2.data-v-6e20bb40 {
-  margin-top: 20rpx;
-}
-.s_mt_4.data-v-6e20bb40 {
-  margin-top: 40rpx;
-}
-.s_mt_5.data-v-6e20bb40 {
-  margin-top: 50rpx;
-}
-.s_mb_3.data-v-6e20bb40 {
-  margin-bottom: 30rpx;
-}
-.s_text_ellipsis.data-v-6e20bb40 {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.s_text_bolder_main.data-v-6e20bb40 {
-  font-family: PingFangSC-Semibold;
-  font-size: 36rpx;
-  font-weight: bolder;
-  color: #06180C;
-  letter-spacing: 0;
-}
-.s_text_bolder_min.data-v-6e20bb40 {
-  font-family: PingFangSC-Semibold;
-  font-size: 28rpx;
-  font-weight: bolder;
-  color: #06180C;
-  letter-spacing: 0;
-}
-.s_text_dot.data-v-6e20bb40:before {
-  content: '';
-  display: block;
-  margin-right: 16rpx;
-  width: 16rpx;
-  height: 16rpx;
-  border-radius: 8rpx;
-  background: #FA9E19;
-}
-.input_placeholder.data-v-6e20bb40 {
-  font-size: 28rpx;
-  font-weight: normal;
-  color: #B0B7B3;
-}
 .u-icon.data-v-6e20bb40 {
   display: inline-flex;
   align-items: center;

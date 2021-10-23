@@ -25,101 +25,53 @@
 /* 透明度 */
 /* 文章场景相关 */
 /* 引入uView全局scss变量文件 */
-.s_flex.data-v-ef974196 {
+.step_schedule.data-v-ef974196 {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 }
-.s_mt_2.data-v-ef974196 {
-  margin-top: 20rpx;
-}
-.s_mt_4.data-v-ef974196 {
-  margin-top: 40rpx;
-}
-.s_mt_5.data-v-ef974196 {
-  margin-top: 50rpx;
-}
-.s_mb_3.data-v-ef974196 {
-  margin-bottom: 30rpx;
-}
-.s_text_ellipsis.data-v-ef974196 {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.s_text_bolder_main.data-v-ef974196 {
-  font-family: PingFangSC-Semibold;
-  font-size: 36rpx;
-  font-weight: bolder;
-  color: #06180C;
-  letter-spacing: 0;
-}
-.s_text_bolder_min.data-v-ef974196 {
-  font-family: PingFangSC-Semibold;
-  font-size: 28rpx;
-  font-weight: bolder;
-  color: #06180C;
-  letter-spacing: 0;
-}
-.s_text_dot.data-v-ef974196:before {
-  content: '';
-  display: block;
-  margin-right: 16rpx;
-  width: 16rpx;
-  height: 16rpx;
-  border-radius: 8rpx;
-  background: #FA9E19;
-}
-.input_placeholder.data-v-ef974196 {
-  font-size: 28rpx;
-  font-weight: normal;
-  color: #B0B7B3;
-}
-.schedule.data-v-ef974196 {
+.step_schedule_icon.data-v-ef974196 {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.schedule .step-icon.data-v-ef974196 {
-  display: inline-block;
   box-sizing: border-box;
   height: 48rpx;
   width: 48rpx;
-  border-radius: 50%;
+  border-radius: 24rpx;
   border: 1rpx dashed #ffffff;
   color: #ffffff;
-  text-align: center;
   font-size: 24rpx;
+  font-weight: lighter;
   opacity: 0.7;
 }
-.schedule .step-icon-choice.data-v-ef974196 {
+.step_schedule_icon_choice.data-v-ef974196 {
   background: #ffffff;
   color: #44aa67;
-  font-weight: bolder;
+  font-weight: bold;
   opacity: 1;
 }
-.schedule .step-text.data-v-ef974196 {
-  display: inline-flex;
+.step_schedule_text.data-v-ef974196 {
+  flex: 1;
+  display: flex;
   margin-left: 16rpx;
   height: 100%;
   flex-direction: column;
-  justify-content: space-between;
   vertical-align: top;
   opacity: 0.7;
 }
-.schedule .step-text-choice.data-v-ef974196 {
-  color: #ffffff;
-  font-weight: bolder;
-  opacity: 1;
-}
-.schedule .step-text > ._span.data-v-ef974196:first-child {
+.step_schedule_text > text.data-v-ef974196:first-child {
   line-height: normal;
   font-size: 32rpx;
   color: #ffffff;
 }
-.schedule .step-text > ._span.data-v-ef974196:last-child {
+.step_schedule_text > text.data-v-ef974196:last-child {
   line-height: normal;
   font-size: 24rpx;
   color: #ffffff;
+}
+.step_schedule_text_choice.data-v-ef974196 {
+  color: #ffffff;
+  font-weight: bold;
+  opacity: 1;
 }
 
