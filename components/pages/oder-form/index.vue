@@ -6,7 +6,7 @@
 		</view>
 		<view class="form_row">
 			<label class="form_row_title">上门地址</label>
-			<view class="form_row_content">
+			<view class="form_row_content" @click="addressChoose">
 				<text :class="addressLabel === '请填写您邮寄旧衣的地址' ? 'form_row_content_placeholder' : 'form_row_content_text'" v-text="addressLabel"/>
 				<image class="form_arrow_right" src="@/static/arrow-right.png"></image>
 				<slot></slot>
@@ -77,7 +77,8 @@
 				dateSelectShow: false,
 				dateLabel: '',
 				addressLabel: '',
-				contactsLabel: ''
+				contactsLabel: '',
+				addressInfo: {}
 			}
 		},
 		created() {
@@ -88,6 +89,28 @@
 			this.getDateList()
 		},
 		methods: {
+			
+			addressChoose(){
+				uni.chooseAddress({
+					success: (res) => {
+						try{
+							if (res.resultStatus == 9000){
+								this.addressLabel = res.result.prov + res.result.city + res.result.area + res.result.street + res.result.address
+								this.contactsLabel = res.result.fullname + "  " + res.result.mobilePhone
+								this.$emit("update:addressInfo", res.result)
+							}
+						}catch(e){
+							console.log(e)
+						}
+					},
+					fail: (err) => {
+						uni.showToast({
+							title: '请允许获取地址权限！'
+						});
+					}
+				})
+			},
+			
 			getDateList() {
 				let date = new Date();
 				let year = date.getFullYear();

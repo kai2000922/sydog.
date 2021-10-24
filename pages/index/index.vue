@@ -10,7 +10,7 @@
 
 		<s-panel>
 			<view style="padding-left: 32rpx;">
-				<orde-form :date.sync="orderInfo.expectTime" :weight.sync="orderInfo.expectWeight"></orde-form>
+				<orde-form :addressInfo.sync="addressInfo" :date.sync="orderInfo.expectTime" :weight.sync="orderInfo.expectWeight"></orde-form>
 			</view>
 			<view style="display: flex; align-items: center; justify-content: center; margin-top: 48rpx;">
 				<button @click="sendData" class="i_button">预约上门回收</button>
@@ -147,21 +147,28 @@
 					expectWeight: 5,
 					address: '河南省安阳市内黄县梁庄镇',
 					area: '内黄县',
-					orderStatus: '待上门'
+					orderStatus: '待上门',
 				},
-				baseURL: '106.13.18.124'
+				baseURL: '106.13.18.124',
+				addressInfo: {}
 			}
 		},
 		methods: {
 
 			sendData() {
-				console.log(this.orderInfo);
-				if (this.orderInfo.expectTime == ''){
+				if (this.orderInfo.expectTime == '' || this.addressInfo.prov == null){
 					uni.showToast({
-						title: '请选择上门时间'
+						title: '请补全信息！'
 					});
 					return
 				}
+				this.orderInfo.prov = this.addressInfo.prov
+				this.orderInfo.city = this.addressInfo.city
+				this.orderInfo.area = this.addressInfo.area
+				this.orderInfo.address = this.addressInfo.prov+this.addressInfo.city+this.addressInfo.area+this.addressInfo.street+this.addressInfo.address
+				this.orderInfo.name = this.addressInfo.fullname
+				this.orderInfo.phone = this.addressInfo.mobilePhone
+				console.log(this.orderInfo);
 				uni.request({
 					header: {
 						'content-type': 'application/x-www-form-urlencoded'

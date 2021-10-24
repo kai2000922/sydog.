@@ -11,7 +11,7 @@
 		},
 		userAcount: 'kai2000922',
 		BaseUrl: 'http://106.13.18.124/recycle',
-		ChooseID: ''
+		ChooseOrder: {}
 	}
 </script>
 

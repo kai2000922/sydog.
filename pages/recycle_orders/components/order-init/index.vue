@@ -56,7 +56,7 @@
 				<text>{{order.orderNum}}</text>
 				<text style="margin-left: 16rpx;">复制</text>
 				<view class="order_row5_btn" >
-					<button @click="cancelOrder" v-if="cancel">删除订单</button>
+					<button @click="deleteOrder" v-if="cancel">删除订单</button>
 				</view>
 			</view>
 		</view>
@@ -89,16 +89,16 @@
 		},
 		methods: {
 			click() {
-				app.ChooseID = this.$props.order.recycleID
+				app.ChooseOrder = this.$props.order
 				console.log(this.$props.order)
 				this.$emit('click')
 			},
 			deleteOrder(){
-				app.ChooseID = this.$props.order.recycleID
+				app.ChooseOrder = this.$props.order
 				this.$emit('deleteOrder')
 			},
 			updateOrder(){
-				app.ChooseID = this.$props.order.recycleID
+				app.ChooseOrder = this.$props.order
 				this.$emit('updateOrder', '-2')
 			}
 		}
