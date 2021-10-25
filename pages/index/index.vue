@@ -210,6 +210,10 @@
 
 <style lang="scss" scoped>
 	
+	.container {
+		position: relative;
+	}
+	
 	.top-background {
 		position: absolute;
 		left: 0;
