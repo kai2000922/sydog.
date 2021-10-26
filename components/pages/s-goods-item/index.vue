@@ -1,12 +1,12 @@
-<template>
-	<view :style="[customStyle]" class="s_gd_item">
+<template >
+	<view :style="[customStyle]" class="s_gd_item" @click="goodsClick">
 		<view class="s_gd_item_img">
-			<image src="https://picsum.photos/300/200"></image>
+			<image :src="goods.images"></image>
 		</view>
 		<view>
-			<text class="s_gd_item_name">布婷4层卷纸｜2提装</text>
+			<text class="s_gd_item_name">{{goods.goodsName}}</text>
 			<view class="s_gd_item_con">
-				<text class="s_gd_item_con_price">价值¥30</text>
+				<text class="s_gd_item_con_price">价值¥{{goods.hxPrice}}</text>
 				<text class="s_gd_item_con_man">99999+人已换</text>
 			</view>
 		</view>
@@ -20,6 +20,12 @@
 			customStyle: {
 				type: Object,
 				default: () => {}
+			},
+			goods: {}
+		},
+		methods:{
+			goodsClick(){
+				this.$emit('toGoodsPage', this.goods)
 			}
 		}
 	}

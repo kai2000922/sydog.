@@ -35,19 +35,6 @@
 						<text class="swiper_item_title">总回收重量≥5kg可兑换以下好礼</text>
 						<s-goods></s-goods>
 					</view>
-
-				</swiper-item>
-				<swiper-item>
-					<view>
-						<text class="swiper_item_title">总回收重量≥8kg可兑换以下好礼</text>
-						<s-goods></s-goods>
-					</view>
-				</swiper-item>
-				<swiper-item>
-					<view>
-						<text class="swiper_item_title">总回收重量≥10kg可兑换以下好礼</text>
-						<s-goods></s-goods>
-					</view>
 				</swiper-item>
 			</swiper>
 		</s-panel>
@@ -123,16 +110,8 @@
 				tabConfig: {
 					index: 0,
 					list: [{
-							label: '5kg以上专区',
+							label: '兑换好礼专区',
 							code: '0'
-						},
-						{
-							label: '8kg以上专区',
-							code: '1'
-						},
-						{
-							label: '10kg以上专区',
-							code: '2'
 						}
 					]
 				},

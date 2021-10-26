@@ -19,6 +19,53 @@
 					</s-panel>
 				</scroll-view>
 			</swiper-item>
+			<swiper-item class="page_swiper_item">
+				<scroll-view class="page_swiper_item_view" style="flex: 1;" enableBackToTop="true" scroll-y>
+					<s-panel>
+						<view class="commodity">
+							<view class="commodity_info">
+								<view class="commodity_info_img">
+									
+								</view>
+								<view class="commodity_info_box">
+									<view class="commodity_info_box_row1">
+										<text class="commodity_name">布婷4层卷纸｜2提装</text>
+										<view class="commodity_price">
+											<text class="commodity_price_original">¥30</text>
+											<text class="commodity_price_now">¥0</text>
+										</view>
+									</view>
+									<view class="commodity_info_box_row2">
+										<text>2提装</text>
+									</view>
+									<view class="commodity_info_box_row3">
+										<text>付邮领</text>
+									</view>
+									<view class="commodity_info_box_row4">
+										<text>运费：</text>
+										<text>¥9.9</text>
+										<text style="margin-left: 24rpx;">实付款：</text>
+										<text>¥9.9</text>
+									</view>
+								</view>
+							</view>
+							<view class="commodity_express">
+								<image src="@/static/che.png"></image>
+								<text>您已下单，我们将在48小时内发货</text>
+							</view>
+							<view class="commodity_service">
+								<button>联系客服</button>
+								<button>退款</button>
+								<button>查看物流</button>
+							</view>
+							<view class="commodity_details">
+								<text>查看订单详情</text>
+								<image src="@/static/arrow-right-24.png"></image>
+							</view>
+						</view>
+					</s-panel>
+				</scroll-view>
+			</swiper-item>
 		</swiper>
 		<u-popup v-model="alterPopup" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3">
 			<view class="alter">
@@ -131,11 +178,7 @@
 						title: '订单不存在'
 					});
 				}
-			},
-			
-			test() {
-				console.log(1111);
-			},
+			},	
 			
 			onswiperchange(e) {
 				if (Object.prototype.toString.call(e) === '[object Object]') {

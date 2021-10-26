@@ -4,7 +4,7 @@
 			<scroll-view class="goods_main_view" enableBackToTop="true" scroll-y>
 				<view class="goods_info">
 					<view class="goods_info_img">
-						<u-image src="https://picsum.photos/seed/picsum/750/750" width="100%" height="100%"></u-image>
+						<u-image :src="goods.images" width="100%" height="100%"></u-image>
 					</view>
 					<view class="goods_info_cost">
 						<view class="goods_info_cost_describe">
@@ -12,7 +12,7 @@
 							<text>回收公斤数门槛</text>
 						</view>
 						<view class="goods_info_cost_price">
-							<cost :present-price="9.9" :original-price="60"/>
+							<cost present-price="0" original-price="30"/>
 							<view class="goods_info_cost_price_right">
 								<text>8公斤及以上</text>
 							</view>
@@ -29,7 +29,7 @@
 							</view>
 						</view>
 						<view class="goods_explain_title">
-							<text class="goods_explain_title_text">布婷4层卷纸 | 2提装</text>
+							<text class="goods_explain_title_text">{{goods.goodsName}}</text>
 						</view>
 					</view>
 				</s-panel>
@@ -60,8 +60,8 @@
 							<u-image src="https://picsum.photos/seed/picsum/200/200" width="100%" height="100%"></u-image>
 						</view>
 						<view class="goods_pm_show_right">
-							<cost present-price="0" :original-price="52" font-color="#06180C" original-price-color="#B0B7B3"/>
-							<freight :custom-style="{marginTop: '25rpx'}"/>
+							<cost :presentPrice="1" :original-price="26" font-color="#06180C" original-price-color="#B0B7B3"/>
+							<freight :custom-style="{marginTop: '25rpx'}" :freight="goods.expressPrice"/>
 						</view>
 					</view>
 					<u-line color="#DFDFDF" margin="30rpx 0"/>
@@ -133,10 +133,13 @@
 						label: '绿色',
 						value: '绿色'
 					}
-				]
+				],
+				goods: {}
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			this.goods = JSON.parse(decodeURIComponent(option.goods))
+			console.log(this.goods)
 			uni.setNavigationBarColor({
 				backgroundColor: '#FFFFFF'
 			})
