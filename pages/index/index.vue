@@ -10,7 +10,7 @@
 
 		<s-panel>
 			<view style="padding-left: 32rpx;">
-				<orde-form :addressInfo.sync="addressInfo" :date.sync="orderInfo.expectTime" :weight.sync="orderInfo.expectWeight"></orde-form>
+				<orde-form :addressObj.sync="addressInfo" :date.sync="orderInfo.expectTime" :weight.sync="orderInfo.expectWeight"></orde-form>
 			</view>
 			<view style="display: flex; align-items: center; justify-content: center; margin-top: 48rpx;">
 				<button @click="sendData" class="i_button">预约上门回收</button>
@@ -157,43 +157,24 @@
 
 			sendData() {
 				if (this.orderInfo.expectTime == '' || this.addressInfo.prov == null){
-					uni.showToast({
-						title: '请补全信息！'
-					});
+					this.$tip.toast("请补全信息！")
 					return
 				}
 				this.orderInfo.prov = this.addressInfo.prov
 				this.orderInfo.city = this.addressInfo.city
 				this.orderInfo.area = this.addressInfo.area
-				this.orderInfo.address = this.addressInfo.prov+this.addressInfo.city+this.addressInfo.area+this.addressInfo.street+this.addressInfo.address
+				this.orderInfo.address = this.addressInfo.prov + this.addressInfo.city + this.addressInfo.area + this.addressInfo.street + this.addressInfo.address
 				this.orderInfo.name = this.addressInfo.fullname
 				this.orderInfo.phone = this.addressInfo.mobilePhone
-				console.log(this.orderInfo);
-				uni.request({
-					header: {
-						'content-type': 'application/x-www-form-urlencoded'
-					},
-					url: app.BaseUrl + '/recycle/add', //仅为示例，并非真实接口地址。
-					data: this.orderInfo,
-					method: 'POST',
-					success: (res) => {
-						if (res.data.code == 0) {
-							console.log(res.data)
-							uni.navigateTo({
-								url:'../collect/index'
-							})
-						} else {
-							console.log(res.data.msg);
-						}
-
-					}
+				this.$tip.loading('请求中')
+				this.$http.post('/recycle/add', this.orderInfo).then(res => {
+					this.$tip.loaded()
+					uni.navigateTo({ url:'../collect/index' })
 				})
 			},
 			
 			toRecycleOrders() {
-				uni.navigateTo({
-					url: '/pages/recycle_orders/recycle_orders'
-				})
+				uni.navigateTo({ url: '/pages/recycle_orders/recycle_orders' })
 			},
 
 			onswiperchange(e) {

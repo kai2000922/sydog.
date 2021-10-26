@@ -7,7 +7,7 @@
 				<scroll-view class="page_swiper_item_view" style="flex: 1;" enableBackToTop="true" scroll-y>
 					<view v-for="(item, index) in orders">
 						<view v-if = "item.orderStatus == '待上门'">
-							<order-init @click="showUpdate" @updateOrder="updateOrderStatus" :order = "item"/>
+							<order-init @click="showUpdate(item)" @updateOrder="updateOrderStatus" :order = "item"/>
 						</view>
 						<view v-else-if = "item.orderStatus == '邮寄中'">
 							<order-success :order = "item"/>
@@ -26,7 +26,7 @@
 					<text>修改订单信息</text>
 				</view>
 				<view class="alter_form">
-					<order-form :addressInfo.sync="updateInfo.expectAddress" :date.sync="updateInfo.expectTime" :weight.sync="updateInfo.expectWeight" :date="choosedDate" :weight="chooseWeight" :address="chooseAddress"></order-form>
+					<order-form :addressObj.sync="updateInfo.expectAddress" :date.sync="updateInfo.expectTime" :weight.sync="updateInfo.expectWeight" :address="updateInfo.expectAddressLabel"/>
 				</view>
 				<view>
 					<button class="i_button" @click="updateOrderStatus(-1)">确认修改</button>
@@ -43,6 +43,7 @@
 	import orderInit from './components/order-init'
 	import orderForm from '@/components/pages/oder-form'
 	import orderSuccess from './components/order-success'
+	
 	export default {
 		components: {
 			dotLine,
@@ -64,36 +65,28 @@
 				alterPopup: false,
 				statusList: ["取消订单", "修改时间", "修改地址"],
 				updateInfo: {
+					recycleID: '',
 					expectTime: '',
 					expectWeight: 0,
+					expectAddressLabel: '',
 					expectAddress: {}
 				},
-				
-				choosedDate: '',
-				chooseWeight: 0,
-				chooseAddress: '',
-				chooseContact: ''
 			}
 		},
 		onReady() {
-			if (my.canIUse('hideBackHome')) {
-				my.hideBackHome();
-			}
 		},
 		onLoad() {
-			uni.setNavigationBarColor({
-				backgroundColor: '#FFFFFF'
-			})
+			uni.setNavigationBarColor({ backgroundColor: '#FFFFFF' })
 			this.getRecycleOrders()
 		},
 		methods: {
 			
-			showUpdate(){
+			showUpdate(item){
+				this.updateInfo.recycleID = item.recycleID
+				this.updateInfo.expectAddressLabel = item.address
+				this.updateInfo.expectTime = item.expectTime
+				this.updateInfo.expectWeight = item.expectWeight
 				this.alterPopup = true
-				this.choosedDate = app.ChooseOrder.expectTime
-				this.chooseWeight = app.ChooseOrder.expectWeight
-				this.chooseAddress = app.ChooseOrder.address
-				console.log(this.chooseWeight)
 			},
 			
 			deleteOrder(){
@@ -116,9 +109,9 @@
 								//刷新界面
 								let page = getCurrentPages().pop();
 								this.$u.route({  
-								                url: page.route, // 获取当前页面路由  
-								                type:"redirectTo", // 关闭当前页面，跳转到应用内的某个页面。  
-								                params: page.options // 获取当前页面传参  
+								    url: page.route, // 获取当前页面路由  
+								    type:"redirectTo", // 关闭当前页面，跳转到应用内的某个页面。  
+								    params: page.options // 获取当前页面传参  
 								})
 							}else{
 								uni.showToast({
@@ -154,26 +147,15 @@
 			},
 			
 			getRecycleOrders() {
+				this.$tip.loading()
+				this.orders = []
 				if (app.userAcount != '') {
-					uni.request({
-						header: {
-							'content-type': 'application/x-www-form-urlencoded'
-						},
-						url: app.BaseUrl + '/recycle/list',
-						data: {
-							'user': app.userAcount
-						},
-						method: 'POST',
-						success: (res) => {
-							this.orders = res.data.rows
-							console.log(this.orders[0])
-						},
-						fail(err) {
-							uni.showToast({
-								title: '查询订单失败，请稍后再试！'
-							});
-							console.log(err)
-						}
+					this.$http.post('/recycle/list',{ user: app.userAcount }).then(res => {
+						this.orders = res.data.rows
+					}).catch(err => {
+						this.$tip.toast('查询订单失败，请稍后再试！')
+					}).finally(() => {
+						this.$tip.loaded()
 					})
 				}
 			},
@@ -187,39 +169,50 @@
 				省份 城市 地区 详细地址 姓名 联系电话 6部分组成，中间用英文";"分割。
 			*/
 			updateOrderStatus(status) {
-				console.log(this.getAddressString())
-				uni.request({
-					header: {
-						'content-type': 'application/x-www-form-urlencoded'
-					},
-					url: app.BaseUrl + '/recycle/editOrder',
-					data: {
-					'orderStatus': status,
-					'param': this.getAddressString(),
-					'orderID': app.ChooseOrder.recycleID,
-					},
-					method: 'POST',
-					success: (res) => {
-						if (res.data.code == 0){
-							uni.showToast({
-								title: '修改成功！'
-							});
-							let page = getCurrentPages().pop();
-							this.$u.route({  
-							                url: page.route, // 获取当前页面路由  
-							                type:"redirectTo", // 关闭当前页面，跳转到应用内的某个页面。  
-							                params: page.options // 获取当前页面传参  
-							})
-						}else{
-							uni.showToast({
-								title: '修改失败！' + res.data.msg
-							});
-						}
-					},
-					fail(err) {
-						console.log(err)
-					}
+				this.$http.post('/recycle/editOrder',{
+					orderStatus: status,
+					param: this.getAddressString(),
+					orderID: this.updateInfo.recycleID
+				}).then(res => {
+					this.$tip.toast('修改成功！')
+					this.getRecycleOrders()
+				}).catch(err => {
+					this.$tip.toast('修改失败！' + res.data.msg)
+				}).finally(() => {
+					this.alterPopup = false
 				})
+				// uni.request({
+				// 	header: {
+				// 		'content-type': 'application/x-www-form-urlencoded'
+				// 	},
+				// 	url: app.BaseUrl + '/recycle/editOrder',
+				// 	data: {
+				// 		'orderStatus': status,
+				// 		'param': this.getAddressString(),
+				// 		'orderID': app.ChooseOrder.recycleID,
+				// 	},
+				// 	method: 'POST',
+				// 	success: (res) => {
+				// 		if (res.data.code == 0){
+				// 			uni.showToast({
+				// 				title: '修改成功！'
+				// 			});
+				// 			let page = getCurrentPages().pop();
+				// 			this.$u.route({  
+				// 			    url: page.route, // 获取当前页面路由  
+				// 			    type:"redirectTo", // 关闭当前页面，跳转到应用内的某个页面。  
+				// 			    params: page.options // 获取当前页面传参  
+				// 			})
+				// 		}else{
+				// 			uni.showToast({
+				// 				title: '修改失败！' + res.data.msg
+				// 			});
+				// 		}
+				// 	},
+				// 	fail(err) {
+				// 		console.log(err)
+				// 	}
+				// })
 			},
 			
 			getAddressString(){
@@ -240,9 +233,9 @@
 			flushPage(){
 				let page = getCurrentPages().pop();
 				this.$u.route({  
-				                url: page.route, // 获取当前页面路由  
-				                type:"redirectTo", // 关闭当前页面，跳转到应用内的某个页面。  
-				                params: page.options // 获取当前页面传参  
+				    url: page.route, // 获取当前页面路由  
+				    type:"redirectTo", // 关闭当前页面，跳转到应用内的某个页面。  
+				    params: page.options // 获取当前页面传参  
 				})
 			}
 			

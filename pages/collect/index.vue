@@ -5,7 +5,7 @@
 		
 		<s-panel>
 			<view class="ok">
-				<image class="ok_img" src="../../static/ok.png"></image>
+				<image class="ok_img" src="@/static/ok.png"></image>
 				<text class="ok_title">预约旧衣回收成功</text>
 				<text class="ok_tips">快递员将按您要求的时间上门</text>
 				<button class="ok_btn" @click="toRecycleOrders">查看订单</button>

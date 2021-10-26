@@ -65,6 +65,11 @@
 			minMsg: {
 				type: String,
 				default: '最低不能低于5KG'
+			},
+			// 地址对象
+			addressObj: {
+				type: Object,
+				default: () => ({})
 			}
 		},
 		components: {
@@ -86,6 +91,7 @@
 			this.dateLabel = this.date === '' ? '请选择上门取件时间' : this.date
 			this.addressLabel = this.address
 			this.contactsLabel = this.contacts
+			this.addressInfo = this.addressObj
 			this.getDateList()
 		},
 		methods: {
@@ -93,20 +99,19 @@
 			addressChoose(){
 				uni.chooseAddress({
 					success: (res) => {
+						console.log(res);
 						try{
 							if (res.resultStatus == 9000){
 								this.addressLabel = res.result.prov + res.result.city + res.result.area + res.result.street + res.result.address
 								this.contactsLabel = res.result.fullname + "  " + res.result.mobilePhone
-								this.$emit("update:addressInfo", res.result)
+								this.$emit("update:addressObj", res.result)
 							}
 						}catch(e){
 							console.log(e)
 						}
 					},
 					fail: (err) => {
-						uni.showToast({
-							title: '请允许获取地址权限！'
-						});
+						this.$tip.toast("请允许获取地址权限！")
 					}
 				})
 			},
@@ -120,8 +125,13 @@
 				let day = date.getDate()
 				let week = date.getDay()
 				for (var i = 0; i < 7; i++) {
-					if (day > days) day = 1;
-					if (week > 6) week = 0;
+					if (day > days) {
+						day = 1;
+						month++;
+					}
+					if (week > 6) {
+						week = 0;	
+					}
 					this.dateList.push({
 						label: i === 0 ? '今天 ' + weeks[week] : month + '月' + day + '日 ' + weeks[week],
 						value: year + '-' + month + '-' + day,

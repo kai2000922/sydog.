@@ -11,20 +11,23 @@
 		</view>
 		<view class="order_row3" :class="cancel ? 'color_cancel' : 'color_normal'">
 			<view class="order_row3_row1">
-				<text>{{order.expectTime}}</text>
+				<text>{{data.expectTime.month + '月' + data.expectTime.day + '日 ' + data.expectTime.week}}</text>
 			</view>
 			<view class="order_row3_row2">
-				<text>上门取件</text>
+				<text>{{ data.expectTime.startHour + ':00 ~ ' + data.expectTime.endHour + ':00 上门取件' }}</text>
 				<button v-if="!cancel" @click="click">修改时间</button>
 			</view>
 		</view>
 		<view class="order_row2">
 			<image src="@/static/kuaidiyuan.png"></image>
-			<text>取件员联系方式：{{order.Courier != null ? order.Courier : '暂无信息' }}</text>
-			<view v-if="cancel" class="order_row2_cancel"></view>
+			<text>取件员联系方式：{{cancel ? '' : order.Courier != null ? order.Courier : '暂无信息' }}</text>
+			<view v-if="cancel" class="order_row2_cancel">
+				<image src="@/static/quxiao.png" style="width: 100%; height: 100%;"></image>
+			</view>
 		</view>
 		<view class="order_row4" :class="cancel ? 'color_cancel' : 'color_normal'">
 			<text v-if="!cancel">取件当天，会展示出取件员的信息哦~</text>
+			<text v-if="cancel">已取消取件</text>
 		</view>
 		<dot-line :height="20" 
 				:itemNumber="25" 
@@ -38,9 +41,9 @@
 			<view class="order_row5_address">
 				<view>
 					<text>取件地址：</text>
-					<text>{{order.address}}</text>
+					<text>{{data.address}}</text>
 				</view>
-				<text>{{order.name}} {{order.phone}}</text>
+				<text>{{data.name}} {{data.phone}}</text>
 			</view>
 			<view class="order_row5_btn" >
 				<button @click="click" v-if="!cancel">修改地址</button>
@@ -49,14 +52,14 @@
 		<view class="order_row6">
 			<view>
 				<label>下单时间：</label>
-				<text>{{order.createTime}}</text>
+				<text>{{data.createTime}}</text>
 			</view>
-			<view>
+			<view class="order_row6_relative">
 				<label>订单编号：</label>
-				<text>{{order.orderNum}}</text>
-				<text style="margin-left: 16rpx;">复制</text>
-				<view class="order_row5_btn" >
-					<button @click="deleteOrder" v-if="cancel">删除订单</button>
+				<text>{{data.orderNum}}</text>
+				<text style="margin-left: 16rpx;" @click="copy">复制</text>
+				<view class="order_row6_relative_btn" >
+					<button @click="showModal('delete')" v-if="cancel">删除订单</button>
 				</view>
 			</view>
 		</view>
@@ -64,7 +67,7 @@
 			<button>能换哪些好礼？</button>
 		</view>
 		<view class="order_row8" v-if="!cancel">
-			<text @click="updateOrder()">取消订单</text>
+			<text @click="showModal('update')">取消订单</text>
 		</view>
 	</view>
 </template>
@@ -72,6 +75,7 @@
 <script>
 	import dotLine from '@/components/pages/s-dot-line'
 	import app from '../../../../App.vue'
+	import {getDate} from '../utils/dateUtil.js'
 	
 	export default {
 		props:{
@@ -83,15 +87,64 @@
 		},
 		data() {
 			return {
+				data: {
+					// 取件时间
+					expectTime: {},
+					// 地址
+					address: '',
+					// 姓名
+					name: '',
+					// 电话
+					phone: '',
+					// 订单创建时间
+					createTime: '',
+					// 订单号
+					orderNum: ''
+				},
 				cancel: this.$props.cancels,
 				test:1
 			}
 		},
+		created() {
+			this.setData()
+		},
 		methods: {
+			setData() {
+				this.data.expectTime = getDate(this.order.expectTime)
+				this.data.address = this.order.address
+				this.data.name = this.order.name
+				this.data.phone = this.order.phone
+				this.data.createTime = this.order.createTime
+				this.data.orderNum = this.order.orderNum
+				console.log(this.data);
+			},
 			click() {
 				app.ChooseOrder = this.$props.order
 				console.log(this.$props.order)
 				this.$emit('click')
+			},
+			showModal(type) {
+				let that = this
+				
+				let title = '提示'
+				let content = type === 'delete' ? '确认删除该订单？' : '确认取消该订单'
+				
+				uni.showModal({
+				    title: title,
+				    content: content,
+					confirmColor: '#43A668',
+				    success: function (res) {
+				        if (res.confirm) {
+							if(type === 'delete') {
+								that.deleteOrder()
+							} else {
+								that.updateOrder()
+							}
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
 			},
 			deleteOrder(){
 				app.ChooseOrder = this.$props.order
@@ -100,6 +153,14 @@
 			updateOrder(){
 				app.ChooseOrder = this.$props.order
 				this.$emit('updateOrder', '-2')
+			},
+			copy() {
+				uni.setClipboardData({
+				    data: this.data.orderNum,
+					success: () => {
+						this.$success('复制成功')
+					}
+				});
 			}
 		}
 	}
@@ -197,8 +258,6 @@
 				width: 150rpx;
 				height: 131rpx;
 				right: 20rpx;
-				background: #007AFF;
-				
 			}
 		}
 		
@@ -276,6 +335,7 @@
 					height: 56rpx;
 					border: 1rpx solid #707070;
 					border-radius: 28rpx;
+					font-weight: bold;
 					font-family: PingFangSC-Semibold;
 					font-size: 28rpx;
 					color: $s_font_color;
@@ -295,6 +355,31 @@
 			color: #7F8581;
 			letter-spacing: 0;
 			line-height: 36rpx;
+			
+			&_relative {
+				position: relative;
+				display: flex;
+				align-items: center;
+				
+				&_btn {
+					position: absolute;
+					right: 0;
+					
+					&>button {
+						width: 160rpx;
+						height: 56rpx;
+						border: 1rpx solid #707070;
+						border-radius: 28rpx;
+						font-weight: bold;
+						font-family: PingFangSC-Semibold;
+						font-size: 28rpx;
+						color: $s_font_color;
+						letter-spacing: 0;
+						text-align: center;
+						line-height: 54rpx;
+					}
+				}
+			}
 		}
 		
 		&_row7 {
