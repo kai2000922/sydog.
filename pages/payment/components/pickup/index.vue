@@ -4,12 +4,12 @@
 			<view class="main">
 				<image class="main_che" src="@/static/che.png"/>
 				<view class="main_content">
-					<text class="placeholder">+添加收货地址</text>
-					<!-- <view class="contact">
+					<!-- <text class="placeholder">+添加收货地址</text> -->
+					<view class="contact">
 						<text class="man">李一</text>
 						<text class="phone">18801146821</text>
 					</view>
-					<text class="address">北京市西城区槐柏树街南里8-12-002 </text> -->
+					<text class="address">北京市西城区槐柏树街南里8-12-002</text>
 				</view>
 			</view>
 			<image class="right" src="@/static/arrow-right.png"/>
@@ -42,8 +42,10 @@
 		justify-content: space-between;
 		
 		.main {
+			flex: 1;
 			display: flex;
 			align-items: center;
+			overflow: hidden;
 			
 			&_che {
 				margin-left: 22rpx;
@@ -53,8 +55,10 @@
 			}
 			
 			&_content {
+				flex: 1;
 				display: flex;
 				flex-direction: column;
+				overflow: hidden;
 				
 				.placeholder {
 					font-family: PingFangSC-Regular;
@@ -64,6 +68,7 @@
 				}
 				
 				.contact {
+					flex: 1;
 					display: flex;
 					align-items: center;
 					
@@ -85,10 +90,14 @@
 				
 				.address {
 					margin-top: 7rpx;
+					flex: 1;
 					font-family: PingFangSC-Regular;
 					font-size: 24rpx;
 					color: #06180C;
 					letter-spacing: 0;
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
 				}
 			}
 		}
