@@ -12,7 +12,7 @@
 							<text>回收公斤数门槛</text>
 						</view>
 						<view class="goods_info_cost_price">
-							<cost present-price="0" original-price="30"/>
+							<cost present-price="0" :original-price="goods.hxPrice" />
 							<view class="goods_info_cost_price_right">
 								<text>8公斤及以上</text>
 							</view>
@@ -23,7 +23,7 @@
 				<s-panel>
 					<view class="goods_explain">
 						<view class="goods_explain_row1">
-							<freight :custom-style="{flex: 1}"/>
+							<freight :custom-style="{flex: 1}" :freight="goods.expressPrice"/>
 							<view class="goods_explain_row1_right">
 								<text class="goods_explain_row1_right_people">65598人已换</text>
 							</view>
@@ -60,7 +60,7 @@
 							<u-image src="https://picsum.photos/seed/picsum/200/200" width="100%" height="100%"></u-image>
 						</view>
 						<view class="goods_pm_show_right">
-							<cost :presentPrice="1" :original-price="26" font-color="#06180C" original-price-color="#B0B7B3"/>
+							<cost :present-price="1" :original-price="26" font-color="#06180C" original-price-color="#B0B7B3"/>
 							<freight :custom-style="{marginTop: '25rpx'}" :freight="goods.expressPrice"/>
 						</view>
 					</view>
@@ -143,9 +143,6 @@
 			uni.setNavigationBarColor({
 				backgroundColor: '#FFFFFF'
 			})
-		},
-		methods: {
-
 		}
 	}
 </script>
