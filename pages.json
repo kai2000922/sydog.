@@ -31,7 +31,15 @@
                 "enablePullDownRefresh": false
             }
             
-        }
+        },
+		{
+			"path" : "pages/payment/index",
+			"style" :                                                                                    
+			{
+			    "navigationBarTitleText": "",
+			    "enablePullDownRefresh": false
+			}
+		}
         
     ],
 	"condition": { //模式配置，仅开发期间生效

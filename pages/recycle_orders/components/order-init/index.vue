@@ -124,27 +124,15 @@
 				this.$emit('click')
 			},
 			showModal(type) {
-				let that = this
-				
-				let title = '提示'
 				let content = type === 'delete' ? '确认删除该订单？' : '确认取消该订单'
 				
-				uni.showModal({
-				    title: title,
-				    content: content,
-					confirmColor: '#43A668',
-				    success: function (res) {
-				        if (res.confirm) {
-							if(type === 'delete') {
-								that.deleteOrder()
-							} else {
-								that.updateOrder()
-							}
-				        } else if (res.cancel) {
-				            console.log('用户点击取消');
-				        }
-				    }
-				});
+				this.$tip.confirm(content, true).then(() => {
+					if(type === 'delete') {
+						this.deleteOrder()
+					} else {
+						this.updateOrder()
+					}
+				})
 			},
 			deleteOrder(){
 				app.ChooseOrder = this.$props.order
@@ -152,7 +140,7 @@
 			},
 			updateOrder(){
 				app.ChooseOrder = this.$props.order
-				this.$emit('updateOrder', '-2')
+				this.$emit('updateOrder')
 			},
 			copy() {
 				uni.setClipboardData({
