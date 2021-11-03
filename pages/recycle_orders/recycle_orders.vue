@@ -164,7 +164,7 @@
 				this.$tip.loading()
 				this.orders = []
 				if (app.userAcount != '') {
-					this.$http.post('/recycle/list',{ user: app.userAcount }).then(res => {
+					this.$http.post('recycle/recycle/list',{ user: app.userAcount }).then(res => {
 						this.orders = res.data.rows
 					}).catch(err => {
 						this.$tip.toast('查询订单失败，请稍后再试！')

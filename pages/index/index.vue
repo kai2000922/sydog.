@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="top-background"/>
 		<step step-style="padding: 63rpx 0;" :dataList="stepList" />
-		<index-swiper></index-swiper>
+		<index-swiper/>
 		
 		<s-panel>
 			<index-grid :gridList="gridList"/>
@@ -13,15 +13,13 @@
 				<orde-form :addressObj.sync="addressInfo" :date.sync="orderInfo.expectTime" :weight.sync="orderInfo.expectWeight"></orde-form>
 			</view>
 			<view style="display: flex; align-items: center; justify-content: center; margin-top: 48rpx;">
-				<button @click="sendData" class="i_button">预约上门回收</button>
+				<s-button background="#43A668" width="570" height="120" color="#FFFFFF" @click="sendData" text="预约上门回收"/>
 			</view>
+			<!-- 首页-我的订单 -->
 			<view class="movable_box">
 				<movable-area>
 					<movable-view direction="vertical">
-						<view class="movable_box_view" @click="toRecycleOrders">
-							<image src="../../static/order.png"></image>
-							<text>我的订单</text>
-						</view>
+						<image src="@/static/sydd.png"/>
 					</movable-view>
 				</movable-area>
 			</view>
@@ -50,6 +48,7 @@
 	import app from '../../App.vue'
 	import liuyunoTabs from "@/components/liuyuno-tabs/liuyuno-tabs.vue"
 	import sGoods from '@/components/pages/s-goods'
+	import sButton from '@/components/pages/s-button'
 
 
 	export default {
@@ -60,7 +59,8 @@
 			indexSwiper,
 			indexGrid,
 			ordeForm,
-			liuyunoTabs
+			liuyunoTabs,
+			sButton
 		},
 		data() {
 			return {
@@ -128,7 +128,6 @@
 					area: '内黄县',
 					orderStatus: '待上门',
 				},
-				baseURL: '106.13.18.124',
 				addressInfo: {}
 			}
 		},
@@ -146,7 +145,7 @@
 				this.orderInfo.name = this.addressInfo.fullname
 				this.orderInfo.phone = this.addressInfo.mobilePhone
 				this.$tip.loading('请求中')
-				this.$http.post('/recycle/add', this.orderInfo).then(res => {
+				this.$http.post('recycle//recycle/add', this.orderInfo).then(res => {
 					this.$tip.loaded()
 					uni.navigateTo({ url:'../collect/index' })
 				})
@@ -196,54 +195,20 @@
 			width: 100%;
 			
 			&>movable-view {
-				display: flex;
-				align-items: center;
-				height: 100rpx;
-				border-top-left-radius: 50rpx;
-				border-bottom-left-radius: 50rpx;
+				height: 105rpx;
+				border-top-left-radius: 53rpx;
+				border-bottom-left-radius: 53rpx;
 				width: 150rpx;
 				margin-left: -120rpx;
-				background-image: linear-gradient(135deg, #ffffff -20%, #43A668 100%);
-				color: #fff;
 				overflow: hidden;
 				
-				&>.movable_box_view {
+				&>image {
 					width: 100%;
 					height: 100%;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					
-					&>image {
-						width: 40rpx;
-						height: 40rpx;
-					}
-					
-					&>text {
-						margin-left: 8rpx;
-						width: 65rpx;
-						font-size: 30rpx;
-					}
 				}
 			}
 		}
 		
-	}
-
-	.i_button {
-		box-sizing: border-box;
-		border: 0;
-		width: 566rpx;
-		height: 120rpx;
-		background: #43A668;
-		box-shadow: 0 2rpx 16rpx 0 rgba(67, 166, 104, 0.56);
-		border-radius: 60rpx;
-		line-height: 120rpx;
-		font-family: PingFangSC-Semibold;
-		font-size: 36rpx;
-		color: #FFFFFF;
-		letter-spacing: 0;
-		text-align: center;
 	}
 	
 	.swiper_item_title {

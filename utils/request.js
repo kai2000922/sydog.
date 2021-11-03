@@ -1,6 +1,6 @@
 import Request from '@/utils/luch-request/index.js'
 
-const BASE_URL = 'http://106.13.18.124/recycle'
+const BASE_URL = 'http://49.235.238.110/'
 
 const http = new Request()
 http.setConfig((config) => {

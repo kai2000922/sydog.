@@ -39,6 +39,14 @@
 			    "navigationBarTitleText": "",
 			    "enablePullDownRefresh": false
 			}
+		},
+		{
+			"path" : "pages/end/index",
+			"style" :                                                                                    
+			{
+			    "navigationBarTitleText": "",
+			    "enablePullDownRefresh": false
+			}
 		}
         
     ],
