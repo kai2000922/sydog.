@@ -17,23 +17,34 @@
 <script>
 	export default {
 		props: {
-			colorList: Array
+			colorList: Array,
+			choose: {
+				type: Number,
+				default: -1
+			}
 		},
 		data() {
 			return {
 				selectIndex: -1
 			}
 		},
+		created() {
+			this.selectIndex = this.choose
+		},
+		watch: {
+			choose(val) {
+				this.selectIndex = val
+			}
+		},
 		methods: {
 			itemSelect(index, item) {
-				console.log(item);
 				if(index === this.selectIndex) {
 					this.selectIndex = -1
 					this.$emit('cancel')
 					return
 				}
 				this.selectIndex = index
-				this.$emit('click', item.value)
+				this.$emit('click', 'color', index, item)
 			}
 		}
 	}

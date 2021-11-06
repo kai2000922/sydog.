@@ -1,12 +1,18 @@
 <template>
-	<view class="s_panel">
+	<view class="s_panel" :style="customStyle">
 		<slot></slot>
 	</view>
 </template>
 
 <script>
 	export default {
-		name: 's-panel'
+		name: 's-panel',
+		props: {
+			customStyle: {
+				type: Object,
+				default: () => ({})
+			}
+		}
 	}
 </script>
 

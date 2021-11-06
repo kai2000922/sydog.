@@ -4,7 +4,7 @@
 			<scroll-view class="goods_main_view" enableBackToTop="true" scroll-y>
 				<view class="goods_info">
 					<view class="goods_info_img">
-						<u-image :src="goods.images" width="100%" height="100%"></u-image>
+						<u-image :src="utils.getImgUrl(goods.images)" width="100%" height="100%"></u-image>
 					</view>
 					<view class="goods_info_cost">
 						<view class="goods_info_cost_describe">
@@ -38,7 +38,7 @@
 					<view class="goods_norms">
 						<view class="goods_norms_row" @click="show = true">
 							<view class="goods_norms_row_left">
-								<text class="goods_norms_row_left_text">选择商品规格：</text>
+								<text class="goods_norms_row_left_text">{{ '选择商品规格：' + infoLabel }}</text>
 							</view>
 							<view class="goods_norms_row_right">
 								<image src="@/static/arrow-right.png"></image>
@@ -49,7 +49,30 @@
 			</scroll-view>
 		</view>
 		<view class="goods_bottom">
-			<button class="goods_bottom_btn">立即付邮兑换</button>
+			<s-button v-if="buy === '1'"
+				background="#43A668" 
+				width="690" 
+				height="120" 
+				color="#FFFFFF" 
+				:custom-style="{}"
+				text="去环保回收，即可兑换"
+				@click="toIndex"/>
+			<s-button v-if="buy === '2'"
+				background="#BFBFBF" 
+				width="690" 
+				height="120" 
+				color="#FFFFFF" 
+				:custom-style="{}"
+				text="称重后即可兑换"/>
+			<s-button v-if="buy === '3'"
+				background="#43A668" 
+				width="690" 
+				height="120" 
+				color="#FFFFFF" 
+				:custom-style="{}"
+				text="立即付邮兑换"
+				@click="toPaymnet"/>
+			<!-- <button class="goods_bottom_btn">立即付邮兑换</button> -->
 		</view>
 		
 		<u-popup v-model="show" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3">
@@ -57,20 +80,42 @@
 				<scroll-view scroll-y="true" style="height: 75%">
 					<view class="goods_pm_show">
 						<view class="goods_pm_show_left">
-							<u-image src="https://picsum.photos/seed/picsum/200/200" width="100%" height="100%"></u-image>
+							<u-image :src="utils.getImgUrl(goods.images)" width="100%" height="100%"></u-image>
 						</view>
 						<view class="goods_pm_show_right">
-							<cost :present-price="1" :original-price="26" font-color="#06180C" original-price-color="#B0B7B3"/>
+							<cost present-price="0" :original-price="goods.hxPrice" font-color="#06180C" original-price-color="#B0B7B3"/>
 							<freight :custom-style="{marginTop: '25rpx'}" :freight="goods.expressPrice"/>
 						</view>
 					</view>
 					<u-line color="#DFDFDF" margin="30rpx 0"/>
-					<size :size-list="sizeList"/>
+					<size :size-list="sizeList" :choose="choose.size" @click="sizeSelect"/>
 					<u-line color="#DFDFDF" margin="30rpx 0"/>
-					<color :color-list="colorList"/>
+					<color :color-list="colorList" :choose="choose.color" @click="colorSelect"/>
 				</scroll-view>
 				<view class="confrim-btn" style="padding-top: 30rpx;">
-					<button class="goods_bottom_btn">立即付邮兑换</button>
+					<s-button v-if="buy === '1'"
+						background="#43A668" 
+						width="690" 
+						height="120" 
+						color="#FFFFFF" 
+						:custom-style="{}"
+						text="去环保回收，即可兑换"
+						@click="toIndex"/>
+					<s-button v-if="buy === '2'"
+						background="#BFBFBF" 
+						width="690" 
+						height="120" 
+						color="#FFFFFF" 
+						:custom-style="{}"
+						text="称重后即可兑换"/>
+					<s-button v-if="buy === '3'"
+						background="#43A668" 
+						width="690" 
+						height="120" 
+						color="#FFFFFF" 
+						:custom-style="{}"
+						text="立即付邮兑换"
+						@click="toPaymnet"/>
 				</view>
 			</view>
 			
@@ -84,16 +129,22 @@
 	import freight from './components/freight'
 	import size from './components/size'
 	import color from './components/color'
+	import sButton from '@/components/pages/s-button'
+	
+	import api from '@/utils/api.js'
+	
 	export default {
 		components: {
 			sPanel,
 			cost,
 			freight,
 			size,
-			color
+			color,
+			sButton
 		},
 		data() {
 			return {
+				utils: api,
 				show: false,
 				sizeList: [
 					{
@@ -134,15 +185,103 @@
 						value: '绿色'
 					}
 				],
-				goods: {}
+				goodID: '',
+				goods: {},
+				buy: 0,
+				choose: {
+					size: -1,
+					color: -1
+				},
+				select: {
+					size: undefined,
+					color: undefined
+				},
+				infoLabel: '',
+				payQuery: {
+					funGoods: {
+						goodID: ''
+					},
+					userID: '',
+				}
 			}
 		},
 		onLoad(option) {
-			this.goods = JSON.parse(decodeURIComponent(option.goods))
-			console.log(this.goods)
 			uni.setNavigationBarColor({
 				backgroundColor: '#FFFFFF'
 			})
+			this.goodID = option.goodID
+			this.buy = option.buy
+			this.getGoods()
+		},
+		methods: {
+			// pay() {
+			// 	this.payQuery.goodID = this.goods.goodID
+			// 	this.payQuery.userID = this.$store.getters.userid
+			// 	this.$http.post('/ali/queryOrderNum', this.payQuery).then(res => {
+			// 		console.log(res.data);
+			// 	})
+			// },
+			
+			// 获取商品信息
+			getGoods() {
+				this.$tip.loading('加载中')
+				this.$http.post('/recycle/goods/listByID', {goodsID: this.goodID}).then(res => {
+					this.goods = res.data.data
+					this.$tip.loaded()
+				}).catch(err => {
+					this.$tip.loaded()
+					this.$tip.toast('获取商品信息失败，请稍后重试')
+				})
+			},
+			
+			sizeSelect(name = '', index = -1, item = null) {
+				if(item === null) {
+					this.choose.size = -1
+					this.select.size = undefined
+				} else {
+					this.select.size = item
+					this.choose.size = index
+				}
+				this.setLabel()
+			},
+			
+			colorSelect(name = '', index = -1, item = null) {
+				if(item === null) {
+					this.choose.color = -1
+					this.select.color = undefined
+				} else {
+					this.select.color = item
+					this.choose.color = index
+				}
+				this.setLabel()
+			},
+			
+			setLabel() {
+				this.infoLabel = ''
+				for(let key in this.select) {
+					if(this.select[key] != undefined) {
+						this.infoLabel += this.select[key].label + ' '
+					}
+				}
+			},
+			
+			// 返回首页
+			toIndex() {
+				uni.navigateBack({
+				    delta: 1
+				});
+			},
+			
+			toPaymnet() {
+				let that = this
+				uni.navigateTo({
+				    url: '/pages/payment/index?from=goods',
+					success: function(res) {
+					    // 通过eventChannel向被打开页面传送数据
+					    res.eventChannel.emit('setData', { goods: that.goods })
+					}
+				});
+			}
 		}
 	}
 </script>

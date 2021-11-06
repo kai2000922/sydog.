@@ -5,8 +5,10 @@
 		<swiper class="page_swiper" :current="titleConfig.index" @change="onswiperchange">
 			<swiper-item class="page_swiper_item">
 				<scroll-view class="page_swiper_item_view" style="flex: 1;" enableBackToTop="true" scroll-y>
+					<u-empty v-if="isNull.order" text="订单为空" mode="order"/>
 					<view v-for="(item, index) in orders">
 						<view v-if = "item.orderStatus == '待上门'">
+							<!-- <order-success :order = "item" @btnClick="toExchange"/> -->
 							<order-init @click="showUpdate(item)" @updateOrder="updateOrderStatus(item.recycleID, -2)" :order = "item"/>
 						</view>
 						<view v-else-if = "item.orderStatus == '邮寄中'">
@@ -21,52 +23,17 @@
 			</swiper-item>
 			<swiper-item class="page_swiper_item">
 				<scroll-view class="page_swiper_item_view" style="flex: 1;" enableBackToTop="true" scroll-y>
-					<s-panel>
-						<view class="commodity">
-							<view class="commodity_info">
-								<view class="commodity_info_img">
-									
-								</view>
-								<view class="commodity_info_box">
-									<view class="commodity_info_box_row1">
-										<text class="commodity_name">布婷4层卷纸｜2提装</text>
-										<view class="commodity_price">
-											<text class="commodity_price_original">¥30</text>
-											<text class="commodity_price_now">¥0</text>
-										</view>
-									</view>
-									<view class="commodity_info_box_row2">
-										<text>2提装</text>
-									</view>
-									<view class="commodity_info_box_row3">
-										<text>付邮领</text>
-									</view>
-									<view class="commodity_info_box_row4">
-										<text>运费：</text>
-										<text>¥9.9</text>
-										<text style="margin-left: 24rpx;">实付款：</text>
-										<text>¥9.9</text>
-									</view>
-								</view>
-							</view>
-							<view class="commodity_express">
-								<image src="@/static/che.png"></image>
-								<text>您已下单，我们将在48小时内发货</text>
-							</view>
-							<view class="commodity_service">
-								<button>联系客服</button>
-								<button>退款</button>
-								<button>查看物流</button>
-							</view>
-							<view class="commodity_details">
-								<text>查看订单详情</text>
-								<image src="@/static/arrow-right-24.png"></image>
-							</view>
-						</view>
-					</s-panel>
+					<u-empty v-if="isNull.recycle" text="订单为空" mode="order"/>
+					<commodity 
+						v-for="(item, index) in commodityOrders" 
+						:key="index" 
+						:item="item"
+						@zfClick="toPayment"
+						@tkClick="refund"/>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
+		<!-- 修改订单弹窗 -->
 		<u-popup v-model="alterPopup" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3">
 			<view class="alter">
 				<view class="alter_title">
@@ -75,33 +42,63 @@
 				<view class="alter_form">
 					<order-form :addressObj.sync="updateInfo.expectAddress" :date.sync="updateInfo.expectTime" :weight.sync="updateInfo.expectWeight" :address="updateInfo.expectAddressLabel" :contacts="updateInfo.contacts"/>
 				</view>
-				<view>
-					<button class="i_button" @click="updateOrderStatus(updateInfo.recycleID, -1)">确认修改</button>
+				<view style="display: flex; align-items: center; justify-content: center; margin-bottom: 48rpx;">
+					<s-button
+						background="#43A668" 
+						width="690" 
+						height="120" 
+						color="#FFFFFF" 
+						:custom-style="{}"
+						text="确认修改"
+						@click="updateOrderStatus(updateInfo.recycleID, -1)"/>
 				</view>
 			</view>
 		</u-popup>
+		<!-- 退款弹窗 -->
+		<refund :show.sync="refundPopup" :order="refundItem" :goods="refundGoods" @tk="tk"/>
+		<refund-ok :show.sync="refundOkPopup" :img="refundGoods.orderImages" :price="refundItem.zfPrice"/>
 	</view>
 </template>
 
 <script>
-	import app from '../../App.vue'
 	import dotLine from '@/components/pages/s-dot-line'
 	import sPanel from '@/components/pages/s-panel'
+	import sTag from '@/components/pages/s-tag'
+	import sButton from '@/components/pages/s-button'
 	import orderInit from './components/order-init'
 	import orderForm from '@/components/pages/oder-form'
 	import orderSuccess from './components/order-success'
+	import commodity from './components/commodity'
+	import refund from '@/components/pages/refund'
+	import refundOk from '@/components/pages/refund_ok'
+	
+	import api from '@/utils/api.js'
 	
 	export default {
 		components: {
 			dotLine,
 			sPanel,
+			sTag,
+			sButton,
 			orderInit,
 			orderForm,
-			orderSuccess
+			orderSuccess,
+			commodity,
+			refund,
+			refundOk
 		},
 		data() {
 			return {
+				// 回收订单数据
 				orders: [],
+				// 商品订单
+				commodityOrders: [],
+				// 数据为空
+				isNull: {
+					order: true,
+					recycle: true
+				},
+				// tab
 				titleConfig: {
 					index: 0,
 					list: [
@@ -109,8 +106,9 @@
 						'商城订单'
 					]
 				},
+				// 修改弹出层
 				alterPopup: false,
-				statusList: ["取消订单", "修改时间", "修改地址"],
+				// 修改表单
 				updateInfo: {
 					recycleID: '',
 					contacts: '',
@@ -119,16 +117,65 @@
 					expectAddressLabel: '',
 					expectAddress: {}
 				},
+				// 退款弹出层
+				refundPopup: false,
+				// 退款成功弹出层
+				refundOkPopup: false,
+				// 需要退款的订单
+				refundItem: {},
+				// 退款商品信息
+				refundGoods: {}
 			}
-		},
-		onReady() {
 		},
 		onLoad() {
 			uni.setNavigationBarColor({ backgroundColor: '#FFFFFF' })
-			this.getRecycleOrders()
+		},
+		onShow() {
+			if(this.$store.getters.userid === '') {
+				api.getUserId().then(() => {
+					this.getRecycleOrders()
+					this.getCommodityOrders()
+				})
+			} else {
+				this.getRecycleOrders()
+				this.getCommodityOrders()
+			}
+		},
+		// created() {
+		// 	if(this.$store.getters.userid === '') {
+		// 		api.getUserId().then(() => {
+		// 			this.getRecycleOrders()
+		// 			this.getCommodityOrders()
+		// 		})
+		// 	} else {
+		// 		this.getRecycleOrders()
+		// 		// this.getCommodityOrders()
+		// 	}
+		// },
+		watch: {
+			orders: {
+				handler(newValue, oldValue) {
+					if(this.orders.length === 0) {
+						this.isNull.order = true
+					} else {
+						this.isNull.order = false
+					}
+				},
+				deep: true
+			},
+			commodityOrders: {
+				handler(newValue, oldValue) {
+					if(this.commodityOrders.length === 0) {
+						this.isNull.recycle = true
+					} else {
+						this.isNull.recycle = false
+					}
+				},
+				deep: true
+			}
 		},
 		methods: {
-			
+			// 修改弹窗弹出
 			showUpdate(item){
 				this.updateInfo.recycleID = item.recycleID
 				this.updateInfo.contacts = item.name + ' ' + item.phone
@@ -138,19 +185,24 @@
 				this.alterPopup = true
 			},
 			
+			// 删除回收订单
 			deleteOrder(item){
+				this.$tip.loading('删除中')
 				if(item.recycleID !== '') {
-					this.$http.post('/recycle/remove', { ids: item.recycleID }).then(res => {
-						this.$tip.toast('删除成功！')
+					this.$http.post('/recycle/recycle/remove', { ids: item.recycleID }).then(res => {
+						this.$tip.loaded()
+						this.$tip.success('删除成功')
 						this.getRecycleOrders()
 					}).catch(err => {
-						this.$tip.toast(res.data.msg)
+						this.$tip.loaded()
+						this.$tip.error('删除失败')
 					})
 				}else{
 					this.$tip.toast('订单不存在')
 				}
 			},	
 			
+			// 标题页改变
 			onswiperchange(e) {
 				if (Object.prototype.toString.call(e) === '[object Object]') {
 					let index = e.target.current || e.detail.current;
@@ -160,19 +212,32 @@
 				}
 			},
 			
+			//获取回收订单
 			getRecycleOrders() {
 				this.$tip.loading()
 				this.orders = []
-				if (app.userAcount != '') {
-					this.$http.post('recycle/recycle/list',{ user: app.userAcount }).then(res => {
-						this.orders = res.data.rows
-					}).catch(err => {
-						this.$tip.toast('查询订单失败，请稍后再试！')
-					}).finally(() => {
-						this.$tip.loaded()
-					})
-				}
+				this.$http.post('/recycle/recycle/list',{ user: this.$store.getters.userid }).then(res => {
+					this.$tip.loaded()
+					this.orders = res.data.rows
+				}).catch(err => {
+					this.$tip.loaded()
+					this.$tip.toast('查询订单失败，请稍后再试！')
+				})
 			},
+			
+			getCommodityOrders() {
+				this.$tip.loading()
+				this.commodityOrders = []
+				this.$http.post('/recycle/orders/list',{ user: this.$store.getters.userid }).then(res => {
+					console.log(res);
+					this.$tip.loaded()
+					this.commodityOrders = res.data.rows
+				}).catch(err => {
+					this.$tip.loaded()
+					this.$tip.toast('查询订单失败，请稍后再试！')
+				})
+			},
+			
 			/*
 				orderID 订单ID
 				status 修改后的订单状态，
@@ -183,14 +248,17 @@
 				省份 城市 地区 详细地址 姓名 联系电话 6部分组成，中间用英文";"分割。
 			*/
 			updateOrderStatus(recycleID, status) {
-				this.$http.post('/recycle/editOrder',{
+				this.$tip.loading('修改中')
+				this.$http.post('/recycle/recycle/editOrder',{
 					orderStatus: status,
 					param: this.getAddressString(),
 					orderID: recycleID
 				}).then(res => {
+					this.$tip.loaded()
 					this.$tip.success('修改成功！')
 					this.getRecycleOrders()
 				}).catch(err => {
+					this.$tip.loaded()
 					this.$tip.toast('修改失败！' + res.data.msg)
 				}).finally(() => {
 					this.alterPopup = false
@@ -204,23 +272,42 @@
 				this.updateInfo.expectAddress.address + ";" + this.updateInfo.expectAddress.fullname + ";" + this.updateInfo.expectAddress.mobilePhone
 				
 				//修改后的时间
-				let timeInfo = this.updateInfo.expectTime == '' ? app.ChooseOrder.expectTime : this.updateInfo.expectTime
+				let timeInfo = this.updateInfo.expectTime
 				
 				//修改后的期望重量
-				let weightInfo = this.updateInfo.expectWeight == 0 ? app.ChooseOrder.expectWeight : this.updateInfo.expectWeight
+				let weightInfo = this.updateInfo.expectWeight
 				
 				return timeInfo + "," +  weightInfo + "," + addressInfo
 			},
 			
-			// flushPage(){
-			// 	let page = getCurrentPages().pop();
-			// 	this.$u.route({  
-			// 	    url: page.route, // 获取当前页面路由  
-			// 	    type:"redirectTo", // 关闭当前页面，跳转到应用内的某个页面。  
-			// 	    params: page.options // 获取当前页面传参  
-			// 	})
-			// }
+			//跳转到商品兑换页
+			toExchange() {
+				uni.navigateTo({ url:'/pages/end/index?from=order'})
+			},
 			
+			// 前往支付页面
+			toPayment(goods) {
+				uni.navigateTo({ 
+					url:'/pages/payment/index?from=order',
+					success: function(res) {
+					    // 通过eventChannel向被打开页面传送数据
+					    res.eventChannel.emit('setData', { goods: goods })
+					}
+				})
+			},
+			
+			// 退款弹窗
+			refund(refundItem, refundGoods) {
+				this.refundItem = refundItem
+				this.refundGoods = refundGoods
+				this.refundPopup = true
+			},
+			
+			// 退款
+			tk() {
+				this.refundPopup = false
+				this.refundOkPopup = true
+			}
 		}
 	}
 </script>
@@ -397,172 +484,6 @@
 				color: #B0B7B3;
 				letter-spacing: 0;
 				line-height: 36rpx;
-			}
-		}
-	}
-	
-	.commodity {
-		display: flex;
-		flex-direction: column;
-		
-		&_info {
-			height: 200rpx;
-			display: flex;
-			flex-direction: row;
-			
-			&_img {
-				width: 200rpx;
-				border-radius: 30rpx;
-				background: #007AFF;
-			}
-			
-			&_box {
-				flex: 1;
-				margin-left: 16rpx;
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-				// background: #18B566;
-				
-				&_row1 {
-					display: flex;
-					justify-content: space-between;
-					
-					&>.commodity_name {
-						font-family: PingFangSC-Semibold;
-						font-size: 28rpx;
-						color: $s_font_color;
-						letter-spacing: 0;
-						line-height: 42rpx;
-					}
-					
-					&>.commodity_price {
-						
-						.commodity_price_original {
-							font-family: PingFangSC-Regular;
-							font-size: 28rpx;
-							text-decoration: line-through;
-							color: #B0B7B3;
-							letter-spacing: 0;
-							line-height: 42rpx;
-						}
-						
-						.commodity_price_now {
-							margin-left: 8rpx;
-							font-family: PingFangSC-Regular;
-							font-size: 28rpx;
-							color: $s_font_color;
-							letter-spacing: 0;
-							line-height: 42rpx;
-						}
-					}
-				}
-				
-				&_row2 {
-					margin-top: 4rpx;
-					font-family: PingFangSC-Regular;
-					font-size: 24rpx;
-					color: $s_font_color;
-					letter-spacing: 0;
-					line-height: 36rpx;
-				}
-				
-				&_row3 {
-					margin-top: 20rpx;
-					
-					&>text {
-						padding: 3rpx 16rpx;
-						font-family: PingFangSC-Regular;
-						font-size: 20rpx;
-						color: $s_font_color;
-						letter-spacing: 0;
-						line-height: 30rpx;
-						border: 1rpx solid #F7970D;
-						border-radius: 20rpx;
-					}
-				}
-				
-				&_row4 {
-					margin-top: 10rpx;
-					display: flex;
-					justify-content: flex-end;
-					font-family: PingFangSC-Regular;
-					font-size: 28rpx;
-					color: $s_font_color;
-					letter-spacing: 0;
-					line-height: 42rpx;
-				}
-			}
-		}
-		
-		&_express {
-			box-sizing: border-box;
-			margin-top: 40rpx;
-			padding: 16rpx;
-			display: flex;
-			align-items: center;
-			background: #F8F8F8;
-			border-radius: 20rpx;
-			
-			&>image {
-				margin-right: 24rpx;
-				height: 64rpx;
-				width: 64rpx;
-				vertical-align: middle;
-			}
-			
-			&>text {
-				flex: 1;
-				font-family: PingFangSC-Semibold;
-				font-size: 28rpx;
-				color: $s_font_color;
-				letter-spacing: 0;
-				line-height: 42rpx;
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-			}
-		}
-		
-		&_service {
-			margin-top: 40rpx;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			
-			&>button {
-				width: 184rpx;
-				height: 64rpx;
-				border: 1rpx solid #707070;
-				border-radius: 32rpx;
-				font-family: PingFangSC-Semibold;
-				font-size: 28rpx;
-				color: #06180C;
-				letter-spacing: 0;
-				text-align: center;
-				line-height: 64rpx;
-			}
-		}
-		
-		&_details {
-			margin-top: 30rpx;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			
-			&>text {
-				font-family: PingFangSC-Regular;
-				font-size: 24rpx;
-				color: #7F8581;
-				letter-spacing: 0;
-				text-align: center;
-				line-height: 36rpx;
-			}
-			
-			&>image {
-				width: 24rpx;
-				height: 24rpx;
-				vertical-align: middle;
 			}
 		}
 	}

@@ -4,16 +4,39 @@
 			<view class="text_bottom">
 				<text class="left_text">合计：</text>
 				<text class="left_text">¥</text>
-				<text class="left_text price">9.9</text>
+				<text class="left_text price">{{ zfPrice }}</text>
 			</view>
 		</view>
-		<view class="right">
-			<button>立即支付</button>
+		<view>
+			<s-button
+				background="#43A668" 
+				width="360" 
+				height="120" 
+				color="#FFFFFF" 
+				:custom-style="{}"
+				text="立即支付"
+				:bold="false"
+				@click="zfBtnClick"/>
 		</view>
 	</view>
 </template>
 
 <script>
+	import sButton from '@/components/pages/s-button'
+	
+	export default {
+		components: {
+			sButton
+		},
+		props: {
+			zfPrice: [String, Number]
+		},
+		methods: {
+			zfBtnClick() {
+				this.$emit('zfBtnClick')
+			}
+		}
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -47,21 +70,6 @@
 				margin-left: 4rpx;
 				font-size: 46rpx;
 				font-weight: bold;
-			}
-		}
-		
-		.right {
-			&>button {
-				width: 360rpx;
-				height: 120rpx;
-				background: #43A668;
-				border-radius: 60rpx;
-				font-family: PingFangSC-Semibold;
-				font-size: 36rpx;
-				color: #FFFFFF;
-				letter-spacing: 0;
-				text-align: center;
-				line-height: 120rpx;
 			}
 		}
 	}

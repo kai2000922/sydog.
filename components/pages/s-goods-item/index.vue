@@ -1,31 +1,58 @@
 <template >
 	<view :style="[customStyle]" class="s_gd_item" @click="goodsClick">
 		<view class="s_gd_item_img">
-			<image :src="goods.images"></image>
+			<image :src="'http://49.235.238.110' + goods.descImages"/>
 		</view>
 		<view>
 			<text class="s_gd_item_name">{{goods.goodsName}}</text>
-			<view class="s_gd_item_con">
+			<view v-if="type === '1'" class="s_gd_item_con">
 				<text class="s_gd_item_con_price">价值¥{{goods.hxPrice}}</text>
 				<text class="s_gd_item_con_man">99999+人已换</text>
+			</view>
+			
+			<view v-if="type === '2' || type === '3' || type === '4'" class="s_gd_item_no">
+				<view class="s_gd_item_no_info">
+					<text class="s_gd_item_no_info_price">价值¥{{goods.hxPrice}}</text>
+					<text class="s_gd_item_no_info_man">99999+人已换</text>
+				</view>
+				<s-button width="128" 
+						height="56" 
+						:custom-style="{}" 
+						:background="type === '2' || type === '4' ? '#BFBFBF' :  '#43A668'"
+						color="#FFFFFF"
+						:text="type === '2' ? '未称重' : type === '3' ? '付邮领' : '不可领'"
+						fontSize="28"
+						:bold="false"/>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import sButton from '../s-button'
 	export default {
+		components: {
+			sButton
+		},
 		props: {
 			// 自定义样式
 			customStyle: {
 				type: Object,
-				default: () => {}
+				default: () => ({})
 			},
-			goods: {}
+			goods: {
+				type: Object,
+				default: () => ({})
+			},
+			// 类型：{1: 默认, 2: 未称重, 3: 已解锁, 4: 未解锁}
+			type: {
+				type: String,
+				default: '1'
+			}
 		},
 		methods:{
 			goodsClick(){
-				this.$emit('toGoodsPage', this.goods)
+				this.$emit('click', this.goods)
 			}
 		}
 	}
@@ -62,6 +89,7 @@
 		}
 		
 		&_con {
+			margin-top: 4rpx;
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
@@ -75,6 +103,31 @@
 			
 			&_man {
 				color: #B0B7B3;
+			}
+		}
+		
+		&_no {
+			margin-top: 4rpx;
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-end;
+			
+			&_info {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				font-size: 24rpx;
+				line-height: 36rpx;
+				letter-spacing: 0;
+				
+				&_price {
+					color: #06180C;
+				}
+				
+				&_man {
+					margin-top: 8rpx;
+					color: #B0B7B3;
+				}
 			}
 		}
 	}

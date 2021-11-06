@@ -11,9 +11,16 @@
 			</view>
 			<span class="order_weight_right" />
 		</view>
-		<text class="order_exchange">可兑换5kg～8kg的专属好礼！</text>
-		<view>
-			<button class="order_button">已兑换，去查看好礼订单！</button>
+		<!-- <text class="order_exchange">可兑换5kg～8kg的专属好礼！</text> -->
+		<view >
+			<s-button
+				background="#43A668" 
+				width="600" 
+				height="120" 
+				color="#FFFFFF" 
+				:custom-style="{margin: '30rpx auto 0 auto'}"
+				text="去兑换好礼 GO"
+				@click="btnClick"/>
 		</view>
 		<dot-line :height="20" :itemNumber="25" :customStyle="{marginRight: '-30rpx', marginLeft: '-30rpx', marginTop: '40rpx'}"/>
 		<view class="order_order">
@@ -35,7 +42,7 @@
 				</view>
 				<view>
 					<label>取件员：</label>
-					<text>德邦快递 | {{order.Courier != null ? order.Courier : '暂无信息' }}</text>
+					<text>{{order.Courier != null ? order.Courier : '暂无信息' }}</text>
 				</view>
 				<view>
 					<label>下单时间：</label>
@@ -52,18 +59,21 @@
 
 <script>
 	import dotLine from '@/components/pages/s-dot-line'
+	import sButton from '@/components/pages/s-button'
 	
 	export default {
-		props:{
-			order: {},
-		},
 		components: {
-			dotLine
+			dotLine,
+			sButton
 		},
 		props:{
-			order: {},
-			cancels: false
+			order: {}
 		},
+		methods: {
+			btnClick() {
+				this.$emit('btnClick')
+			}
+		}
 	}
 </script>
 

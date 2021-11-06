@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="container">
 		<view class="top-background"/>
 		<step step-style="padding: 63rpx 0;" :dataList="stepList" />
 		
@@ -8,7 +8,13 @@
 				<image class="ok_img" src="@/static/ok.png"></image>
 				<text class="ok_title">预约旧衣回收成功</text>
 				<text class="ok_tips">快递员将按您要求的时间上门</text>
-				<button class="ok_btn" @click="toRecycleOrders">查看订单</button>
+				<s-button
+					width="600"
+					height="120"
+					text="查看订单"
+					:custom-style="{border: '1px solid #43A668', marginTop: '40rpx', marginBottom: '10rpx'}"
+					color="#43A668"
+					@click="toRecycleOrders"/>
 			</view>
 		</s-panel>
 		
@@ -23,20 +29,37 @@
 				</view>
 			</view>
 		</s-panel>
+		
+		<s-panel>
+			<view class="title_row">
+				<text class="title">兑换好礼专区</text>
+				<text class="extra">称重后即可兑换</text>
+			</view>
+			<s-goods item-type="2" 
+				:goods-list="goodsList" 
+				:item-style="{paddingTop: '56rpx'}" 
+				@itemClick="toGoodPage"/>
+			<u-loadmore margin-top="20" :status="goodsStatus" />
+		</s-panel>
 	</view>
 </template>
 
 <script>
 	import step from '@/components/pages/step'
 	import sPanel from '@/components/pages/s-panel'
+	import sButton from '@/components/pages/s-button'
+	import sGoods from '@/components/pages/s-goods'
 	
 	export default {
 		components: {
 			step,
-			sPanel
+			sPanel,
+			sButton,
+			sGoods
 		},
 		data() {
 			return {
+				from: '',
 				stepList: [{
 						index: '01',
 						span: '4',
@@ -59,19 +82,71 @@
 						subTitle: '付邮领取'
 					}
 				],
+				goodsRequest: {
+					pageSize: 10,
+					pageNum: 0,
+					over: false
+				},
+				goodsList: [],
+				goodsStatus: 'loading'
+			}
+		},
+		onLoad(option) {
+			this.from = option.from
+		},
+		created() {
+			this.getGoodsList()
+		},
+		onReachBottom() {
+			if(!this.goodsRequest.over) {
+				this.getGoodsList()
 			}
 		},
 		methods: {
-			toRecycleOrders() {
-				uni.navigateTo({
-					url:'/pages/recycle_orders/recycle_orders'
+			// 获取商品列表
+			getGoodsList() {
+				this.goodsStatus = 'loading'
+				this.goodsRequest.pageNum++
+				this.$http.post('/recycle/goods/list', this.goodsRequest).then(res => {
+					let rows = res.data.rows
+					if(rows.length < this.goodsRequest.pageSize) {
+						this.goodsRequest.over = true
+					}
+					if(rows.length > 0) {
+						this.goodsList = this.goodsList.concat(rows)
+					}
+				}).finally(() => {
+					console.log(this.goodsList);
+					this.goodsStatus = 'nomore'
 				})
+			},
+			
+			toGoodPage(goods){
+				uni.navigateTo({
+					url:'/pages/goods/goods?goodID=' + goods.goodID + '&buy=2'
+				})
+			},
+			
+			toRecycleOrders() {
+				if(this.from === 'recycle_order') {
+					uni.navigateBack({
+					    delta: 1
+					});
+				} else {
+					uni.navigateTo({
+						url:'/pages/recycle_orders/recycle_orders'
+					})
+				}
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.container {
+		position: relative;
+	}
+	
 	.top-background {
 		position: absolute;
 		left: 0;
@@ -181,4 +256,41 @@
 			line-height: 36rpx;
 		}
 	}
+	
+	.title_row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		
+		.title {
+			flex: 1;
+			display: flex;
+			align-items: center;
+			font-family: PingFangSC-Semibold;
+			font-size: 36rpx;
+			font-weight: bold;
+			color: #06180C;
+			letter-spacing: 0;
+			
+			&::before {
+				content: '';
+				display: block;
+				margin-right: 16rpx;
+				width: 16rpx;
+				height: 16rpx;
+				border-radius: 8rpx;
+				background: #FA9E19;
+			}
+		}
+		
+		.extra {
+			font-family: PingFangSC-Regular;
+			font-size: 28rpx;
+			font-weight: bold;
+			color: #43A668;
+			letter-spacing: 0;
+		}
+	}
+	
+	
 </style>

@@ -1,6 +1,7 @@
 import Request from '@/utils/luch-request/index.js'
 
-const BASE_URL = 'http://49.235.238.110/'
+const BASE_URL = 'http://49.235.238.110'
+// const BASE_URL = 'http://192.168.0.101'
 
 const http = new Request()
 http.setConfig((config) => {
@@ -36,5 +37,6 @@ http.interceptors.response.use((response) => {
 })
 
 export {
+	BASE_URL,
 	http
 }

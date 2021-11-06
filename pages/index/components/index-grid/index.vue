@@ -8,7 +8,7 @@
 			</view>
 		</view>
 		<view class="grid_row2">
-			<uni-grid :column="6" :showBorder="false" :highlight="false">
+			<uni-grid :column="5" :showBorder="false" :highlight="false">
 				<uni-grid-item v-for="(item, index) in gridList" :key="index">
 					<view class="grid_row2_item">
 						<u-image :width="size + 'rpx'" :height="size + 'rpx'" :src="item.img"></u-image>

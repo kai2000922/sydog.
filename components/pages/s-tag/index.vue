@@ -5,7 +5,7 @@
 		height: height + 'rpx',
 		borderRadius: borderRadius + 'rpx'
 		}">
-		<text :style="{color: color, fontSize: fontSize + 'rpx'}" v-text="text"/>
+		<text :style="{color: fontColor === '' ? color : fontColor, fontSize: fontSize + 'rpx'}" v-text="text"/>
 	</view>
 </template>
 
@@ -31,6 +31,10 @@
 			color: {
 				type: String,
 				default: '#43A668'
+			},
+			fontColor: {
+				type: String,
+				default: ''
 			}
 		},
 		data() {
@@ -46,6 +50,7 @@
 
 <style lang="scss" scoped>
 	.tag {
+		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		justify-content: center;

@@ -47,6 +47,14 @@
 			    "navigationBarTitleText": "",
 			    "enablePullDownRefresh": false
 			}
+		},
+		{
+			"path" : "pages/order_details/index",
+			"style" :                                                                                    
+			{
+			    "navigationBarTitleText": "",
+			    "enablePullDownRefresh": false
+			}
 		}
         
     ],

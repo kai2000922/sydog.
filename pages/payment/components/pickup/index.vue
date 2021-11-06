@@ -1,15 +1,18 @@
 <template>
-	<s-panel>
-		<view class="pickup">
+	<s-panel :custom-style="{overflow: 'hidden'}">
+		<view class="pickup" @click="addressSelect">
 			<view class="main">
 				<image class="main_che" src="@/static/che.png"/>
 				<view class="main_content">
-					<!-- <text class="placeholder">+添加收货地址</text> -->
-					<view class="contact">
-						<text class="man">李一</text>
-						<text class="phone">18801146821</text>
+					<text v-if="showModel === 1" class="placeholder">+添加收货地址</text>
+					<view v-if="showModel === 2">
+						<view class="contact">
+							<text class="man">{{ info.user }}</text>
+							<text class="phone">{{ info.phone }}</text>
+						</view>
+						<text class="address">{{ info.prov + info.city + info.area + info.address }}</text>
 					</view>
-					<text class="address">北京市西城区槐柏树街南里8-12-002</text>
+					
 				</view>
 			</view>
 			<image class="right" src="@/static/arrow-right.png"/>
@@ -29,6 +32,51 @@
 		components: {
 			SPanel,
 			SDotLine
+		},
+		data() {
+			return {
+				// 显示模式
+				showModel: 1,
+				
+				info: {
+					// 联系人
+					user: '',
+					// 联系电话
+					phone: '',
+					// 省
+					prov: '',
+					// 市
+					city: '',
+					// 区
+					area: '',
+					// 详细地址
+					address: ''
+				}
+			}
+		},
+		methods: {
+			addressSelect() {
+				uni.chooseAddress({
+					success: (res) => {
+						try{
+							if (res.resultStatus == 9000){
+								this.info.user = res.userName
+								this.info.phone = res.telNumber
+								this.info.prov = res.result.prov
+								this.info.city = res.result.city
+								this.info.area = res.result.area
+								this.info.address = res.result.address
+								this.showModel = 2
+							}
+						}catch(e){
+							console.log(e)
+						}
+					},
+					fail: (res) => {
+						console.log(rs);
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -95,9 +143,7 @@
 					font-size: 24rpx;
 					color: #06180C;
 					letter-spacing: 0;
-					overflow: hidden;
-					white-space: nowrap;
-					text-overflow: ellipsis;
+
 				}
 			}
 		}

@@ -11,23 +11,47 @@
 		</view>
 		<view class="order_row3" :class="cancel ? 'color_cancel' : 'color_normal'">
 			<view class="order_row3_row1">
-				<text>{{data.expectTime.month + '月' + data.expectTime.day + '日 ' + data.expectTime.week}}</text>
+				<text>{{ data.expectTime.isToday ? '今日' : data.expectTime.month + '月' + data.expectTime.day + '日 ' + data.expectTime.week}}</text>
+				<text v-if="cancel">（订单已取消）</text>
 			</view>
 			<view class="order_row3_row2">
 				<text>{{ data.expectTime.startHour + ':00 ~ ' + data.expectTime.endHour + ':00 上门取件' }}</text>
-				<button v-if="!cancel" @click="click">修改时间</button>
+				<s-button
+					v-if="!cancel"
+					width="160"
+					height="56"
+					text="修改时间"
+					fontSize="28"
+					:custom-style="{border: '1px solid #707070', marginLeft: '46rpx'}"
+					@click="click"/>
 			</view>
 		</view>
 		<view class="order_row2">
 			<image src="@/static/kuaidiyuan.png"></image>
-			<text>取件员联系方式：{{cancel ? '' : order.Courier != null ? order.Courier : '暂无信息' }}</text>
+			<text>取件员联系方式：</text>
 			<view v-if="cancel" class="order_row2_cancel">
-				<image src="@/static/quxiao.png" style="width: 100%; height: 100%;"></image>
+				<image src="@/static/quxiao.png" style="width: 100%; height: 100%;"/>
 			</view>
 		</view>
 		<view class="order_row4" :class="cancel ? 'color_cancel' : 'color_normal'">
-			<text v-if="!cancel">取件当天，会展示出取件员的信息哦~</text>
-			<text v-if="cancel">已取消取件</text>
+			<view v-if="!cancel">
+				<text v-if="order.Courier == null">取件当天，会展示出取件员的信息哦~</text>
+				<text v-else>{{ order.Courier }}</text>
+			</view>
+			<!-- <text v-if="!cancel">取件当天，会展示出取件员的信息哦~</text> -->
+			<!-- <view>
+				<text>圆通速递 | 李明</text>
+				<text style="margin-left: 16rpx;">18801146821</text>
+			</view>
+			<s-button
+				v-if="!cancel"
+				width="160"
+				height="56"
+				text="拨打"
+				fontSize="28"
+				:custom-style="{border: '1px solid #707070', marginLeft: '46rpx'}"
+				@click="call"/> -->
+			<text v-else>已取消取件</text>
 		</view>
 		<dot-line :height="20" 
 				:itemNumber="25" 
@@ -46,7 +70,14 @@
 				<text>{{data.name}} {{data.phone}}</text>
 			</view>
 			<view class="order_row5_btn" >
-				<button @click="click" v-if="!cancel">修改地址</button>
+				<s-button
+					v-if="!cancel"
+					width="160"
+					height="56"
+					text="修改地址"
+					fontSize="28"
+					:custom-style="{border: '1px solid #707070'}"
+					@click="click"/>
 			</view>
 		</view>
 		<view class="order_row6">
@@ -63,8 +94,14 @@
 				</view>
 			</view>
 		</view>
-		<view class="order_row7" v-if="!cancel">
-			<button>能换哪些好礼？</button>
+		<view v-if="!cancel">
+			<s-button
+				width="600"
+				height="120"
+				text="能换哪些好礼？"
+				:custom-style="{border: '1px solid #43A668', marginTop: '40rpx', marginBottom: '10rpx'}"
+				color="#43A668"
+				@click="toCollect"/>
 		</view>
 		<view class="order_row8" v-if="!cancel">
 			<text @click="showModal('update')">取消订单</text>
@@ -76,14 +113,16 @@
 	import dotLine from '@/components/pages/s-dot-line'
 	import app from '../../../../App.vue'
 	import {getDate} from '../utils/dateUtil.js'
+	import sButton from '@/components/pages/s-button'
 	
 	export default {
+		components: {
+			dotLine,
+			sButton
+		},
 		props:{
 			order: {},
 			cancels: false
-		},
-		components: {
-			dotLine
 		},
 		data() {
 			return {
@@ -116,7 +155,6 @@
 				this.data.phone = this.order.phone
 				this.data.createTime = this.order.createTime
 				this.data.orderNum = this.order.orderNum
-				console.log(this.data);
 			},
 			click() {
 				app.ChooseOrder = this.$props.order
@@ -146,9 +184,17 @@
 				uni.setClipboardData({
 				    data: this.data.orderNum,
 					success: () => {
-						this.$success('复制成功')
+						this.$tip.toast('复制成功')
 					}
 				});
+			},
+			call() {
+				uni.makePhoneCall({
+				    phoneNumber: '114' //仅为示例
+				});
+			},
+			toCollect() {
+				uni.navigateTo({ url:'/pages/collect/index?from=recycle_order' })
 			}
 		}
 	}
@@ -265,30 +311,16 @@
 			&_row2 {
 				display: flex;
 				justify-content: space-between;
-				
-				&>button {
-					box-sizing: border-box;
-					width: 160rpx;
-					height: 56rpx;
-					border: 1rpx solid #707070;
-					border-radius: 28rpx;
-					font-family: PingFangSC-Semibold;
-					font-size: 28rpx;
-					font-weight: bold;
-					color: $s_font_color;
-					letter-spacing: 0;
-					text-align: center;
-					line-height: 54rpx;
-				}
 			}
 		}
 		
 		&_row4 {
 			margin-top: 29rpx;
 			display: flex;
+			align-items: center;
 			justify-content: space-between;
 			
-			&>text {
+			text {
 				font-family: PingFangSC-Semibold;
 				font-size: 28rpx;
 				font-weight: bold;
@@ -317,20 +349,6 @@
 				display: flex;
 				align-items: center;
 				margin-left: 46rpx;
-				
-				&>button {
-					width: 160rpx;
-					height: 56rpx;
-					border: 1rpx solid #707070;
-					border-radius: 28rpx;
-					font-weight: bold;
-					font-family: PingFangSC-Semibold;
-					font-size: 28rpx;
-					color: $s_font_color;
-					letter-spacing: 0;
-					text-align: center;
-					line-height: 54rpx;
-				}
 			}
 		}
 		
@@ -367,28 +385,6 @@
 						line-height: 54rpx;
 					}
 				}
-			}
-		}
-		
-		&_row7 {
-			margin-top: 40rpx;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			
-			&>button {
-				box-sizing: border-box;
-				width: 600rpx;
-				height: 120rpx;
-				border: 1rpx solid #43A668;
-				border-radius: 60rpx;
-				font-family: PingFangSC-Semibold;
-				font-size: 36rpx;
-				font-weight: bold;
-				color: #43A668;
-				letter-spacing: 0;
-				text-align: center;
-				line-height: 118rpx;
 			}
 		}
 		

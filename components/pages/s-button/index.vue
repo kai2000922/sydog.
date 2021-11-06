@@ -1,15 +1,15 @@
 <template>
 	<view>
 		<button class="s_button" 
-				:style="{
+				:style="[{
 					height: height + 'rpx', 
 					width: width + 'rpx', 
 					background: background, 
 					borderRadius: height / 2,
 					color: color,
 					fontSize: fontSize + 'rpx',
-					
-				}" 
+					fontWeight: bold ? 'bold' : 'normal'
+				}, customStyle]" 
 				@click="click"
 				v-text="text"/>
 	</view>
@@ -26,7 +26,17 @@
 				type: [String, Number],
 				default: 36
 			},
-			text: String
+			bold: {
+				type: Boolean,
+				default: true
+			},
+			text: String,
+			customStyle: {
+				type: Object,
+				default: () => ({
+					boxShadow: '0 2rpx 16rpx 0 rgba(67, 166, 104, 0.56)'
+				})
+			}
 		},
 		methods: {
 			click() {
@@ -43,12 +53,16 @@
 		justify-content: center;
 		box-sizing: border-box;
 		border: 0;
-		box-shadow: 0 2rpx 16rpx 0 rgba(67, 166, 104, 0.56);
 		font-family: PingFangSC-Semibold;
 		letter-spacing: 0;
-		font-weight: bold;
-	}
-	.s_button:hover {
-		background: none;
+		// font-weight: normal;
+		
+		&:hover {
+			background: none;
+		}
+		
+		&:checked {
+			background: none;
+		}
 	}
 </style>

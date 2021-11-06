@@ -14,7 +14,6 @@ export default class Tips {
       uni.showToast({
         title: title,
         icon: "success",
-        mask: true,
         duration: duration
       });
     }, 300);
@@ -74,8 +73,7 @@ export default class Tips {
   static alert(title) {
     uni.showToast({
       title: title,
-      image: "../../static/alert.png",
-      mask: true,
+      image: "@/static/alert.png",
       duration: 1500
     });
   }
@@ -87,8 +85,7 @@ export default class Tips {
   static error(title, onHide) {
     uni.showToast({
       title: title,
-      image: "../../static/error.png",
-      mask: true,
+      image: "@/static/error.png",
       duration: 1500
     });
     // 隐藏结束回调
@@ -109,7 +106,6 @@ export default class Tips {
     Tips.isLoading = true;
     uni.showLoading({
       title: title,
-      mask: true
     });
   }
 

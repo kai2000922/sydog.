@@ -4,8 +4,11 @@ function week(day) {
 }
 
 function  getDate(time) {
+	let today = new Date()
 	let date = new Date(time)
+	
 	return {
+		isToday: date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate() ? true : false,
 		month: date.getMonth() + 1,
 		day: date.getDate(),
 		week: week(date.getDay()),

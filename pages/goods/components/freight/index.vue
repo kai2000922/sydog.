@@ -1,12 +1,16 @@
 <template>
 	<view class="freight" :style="customStyle">
-		<view class="freight_tag" v-text="tag"/>
+		<s-tag width="92" height="36" text="付邮领"/>
 		<text class="freight_freight" v-text="'需支付运费' + freight + '元'"/>
 	</view>
 </template>
 
 <script>
+	import sTag from '@/components/pages/s-tag'
 	export default {
+		components: {
+			sTag
+		},
 		props: {
 			tag: {
 				type: String,
@@ -28,20 +32,6 @@
 	.freight {
 		display: flex;
 		align-items: center;
-	
-		&_tag {
-			width: 92rpx;
-			height: 32rpx;
-			box-sizing: border-box;
-			border: 1rpx solid #43A668;
-			border-radius: 16rpx;
-			text-align: center;
-			font-family: PingFangSC-Regular;
-			font-size: 20rpx;
-			color: #43A668;
-			letter-spacing: 0;
-			line-height: 30rpx;
-		}
 	
 		&_freight {
 			margin-left: 8rpx;

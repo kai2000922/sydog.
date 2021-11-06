@@ -2,45 +2,58 @@
 	<s-panel>
 		<view class="top">
 			<view class="top_img">
-				<u-image src="https://picsum.photos/seed/picsum/200/200" height="100%" width="100%"/>
+				<u-image :src="baseUrl + goods.images" height="100%" width="100%"/>
 			</view>
 			<view class="top_content">
-				<text class="title">布婷4层卷纸｜2提装</text>
-				<text class="info">2提装</text>
+				<text class="title">{{ goods.goodsName }}</text>
+				<text class="info">{{ goods.goodsDescribe }}</text>
 			</view>
 		</view>
 		<view class="main">
 			<view class="main_item">
 				<text class="name">商品价格</text>
 				<view class="price">
-					<text class="price_original">¥30</text>
+					<text class="price_original">{{ '¥' + goods.hxPrice }}</text>
 					<text class="price_now">¥0</text>
 				</view>
 			</view>
 			<view class="main_item">
 				<text class="name">运费</text>
-				<text>¥9.9</text>
+				<text>{{ '¥' + goods.expressPrice }}</text>
 			</view>
 			<view class="main_item">
 				<text class="name">享受优惠</text>
-				<tag/>
+				<s-tag/>
 			</view>
 		</view>
 		<view class="bottom">
 			<text class="xiaoji">小计：</text>
-			<text>¥9.9</text>
+			<text>{{ '¥' + goods.zfPrice }}</text>
 		</view>
 	</s-panel>
 </template>
 
 <script>
 	import SPanel from '@/components/pages/s-panel'
-	import Tag from '../tag'
+	import sTag from '@/components/pages/s-tag'
+	import { BASE_URL } from '@/utils/request.js'
 	
 	export default {
 		components: {
 			SPanel,
-			Tag
+			sTag
+		},
+		props: {
+			goods: Object
+		},
+		data() {
+			return {
+				baseUrl: ''
+			}
+		},
+		created() {
+			console.log(this);
+			this.baseUrl = BASE_URL
 		}
 	}
 </script>
@@ -74,7 +87,7 @@
 			.info {
 				margin-top: 4rpx;
 				font-size: 24rpx;
-				font-weight: bold;
+				// font-weight: bold;
 				color: #06180C;
 				letter-spacing: 0;
 				line-height: 36rpx;

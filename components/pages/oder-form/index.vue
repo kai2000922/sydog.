@@ -29,7 +29,7 @@
 		<view class="form_row2">
 			<text class="form_row2_text">回收重量</text>
 			<view class="form_row2_numberbox">
-				<s-number-box :min="5" :value="weightVlaue" @change="weightChange" @minimum="minimum"></s-number-box>
+				<s-number-box :min="8" :value="weightVlaue" @change="weightChange" @minimum="minimum"></s-number-box>
 				<text>公斤</text>
 			</view>
 		</view>
@@ -64,7 +64,7 @@
 			// 弹窗信息
 			minMsg: {
 				type: String,
-				default: '最低不能低于5KG'
+				default: '最低不能低于8KG'
 			},
 			// 地址对象
 			addressObj: {
@@ -179,7 +179,7 @@
 			},
 			// 低于5KG弹窗
 			minimum() {
-				this.$error(this.minMsg)
+				this.$tip.error(this.minMsg)
 			}
 		}
 	}
@@ -261,9 +261,9 @@
 					color: $s_font_color;
 					letter-spacing: 0;
 					line-height: 42rpx;
-					overflow: hidden;
-					white-space: nowrap;
-					text-overflow: ellipsis;
+					// overflow: hidden;
+					// white-space: nowrap;
+					// text-overflow: ellipsis;
 				}
 				
 				&_placeholder {

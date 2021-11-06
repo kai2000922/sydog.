@@ -14,11 +14,23 @@
 <script>
 	export default {
 		props: {
-			sizeList: Array
+			sizeList: Array,
+			choose: {
+				type: Number,
+				default: -1
+			}
 		},
 		data() {
 			return {
 				selectIndex: -1
+			}
+		},
+		created() {
+			this.selectIndex = this.choose
+		},
+		watch: {
+			choose(val) {
+				this.selectIndex = val
 			}
 		},
 		methods: {
@@ -29,7 +41,7 @@
 					return
 				}
 				this.selectIndex = index
-				this.$emit('click', item.value)
+				this.$emit('click', 'size', index, item)
 			}
 		}
 	}
