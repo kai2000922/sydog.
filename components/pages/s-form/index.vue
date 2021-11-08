@@ -169,6 +169,9 @@
 					if (week > 6) {
 						week = 0;	
 					}
+					if(date.getHours() > 19) {
+						continue
+					}
 					this.dateList.push({
 						label: i === 0 ? '今天 ' + weeks[week] : month + '月' + day + '日 ' + weeks[week],
 						value: year + '-' + month + '-' + day,
@@ -188,10 +191,18 @@
 						value: date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
 					})
 					i = date.getHours() + 2
-				} else { i = 9 }
-				for ( ; i + 2 <= 24; i += 2) {
+				} else { 
+					i = 9
+				}
+				for ( ; i + 2 <= 19; i += 2) {
 					list.push({
 						label: i + ":00~" + (i + 2) + ":00",
+						value: i + ':00:00'
+					})
+				}
+				if(i + 1 === 19) {
+					list.push({
+						label: i + ":00~" + (i + 1) + ":00",
 						value: i + ':00:00'
 					})
 				}
