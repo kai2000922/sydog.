@@ -12,7 +12,7 @@
 			<span class="order_weight_right" />
 		</view>
 		<!-- <text class="order_exchange">可兑换5kg～8kg的专属好礼！</text> -->
-		<view >
+		<!-- <view >
 			<s-button
 				background="#43A668" 
 				width="600" 
@@ -21,7 +21,7 @@
 				:custom-style="{margin: '30rpx auto 0 auto'}"
 				text="去兑换好礼 GO"
 				@click="btnClick"/>
-		</view>
+		</view> -->
 		<dot-line :height="20" :itemNumber="25" :customStyle="{marginRight: '-30rpx', marginLeft: '-30rpx', marginTop: '40rpx'}"/>
 		<view class="order_order">
 			<view class="order_order_title">
@@ -94,7 +94,7 @@
 			font-family: PingFangSC-Regular;
 			font-size: 24rpx;
 			font-weight: bolder;
-			color: $s_font_color;
+			color: #06180C;
 			letter-spacing: 0;
 			line-height: 36rpx;
 	
@@ -114,7 +114,7 @@
 			font-family: PingFangSC-Semibold;
 			font-size: 36rpx;
 			font-weight: bolder;
-			color: $s_font_color;
+			color: #06180C;
 			text-align: center;
 			letter-spacing: 0;
 			line-height: 54rpx;
@@ -123,7 +123,7 @@
 		&_label {
 			font-family: PingFangSC-Regular;
 			font-size: 24rpx;
-			color: $s_font_color;
+			color: #06180C;
 			letter-spacing: 0;
 			text-align: center;
 			line-height: 36rpx;
@@ -142,7 +142,7 @@
 				&>text:first-child {
 					font-family: PingFangSC-Semibold;
 					font-size: 76rpx;
-					color: $s_font_color;
+					color: #06180C;
 					letter-spacing: 0;
 				}
 			
@@ -150,7 +150,7 @@
 					margin-left: 9rpx;
 					font-family: PingFangSC-Regular;
 					font-size: 28rpx;
-					color: $s_font_color;
+					color: #06180C;
 					letter-spacing: 0;
 				}
 			}
@@ -192,7 +192,7 @@
 			border-radius: 60rpx;
 			font-family: PingFangSC-Regular;
 			font-size: 36rpx;
-			color: $s_font_color;
+			color: #06180C;
 			letter-spacing: 0;
 			line-height: 120rpx;
 		}
@@ -211,7 +211,7 @@
 					margin-left: 16rpx;
 					font-family: PingFangSC-Regular;
 					font-size: 28rpx;
-					color: $s_font_color;
+					color: #06180C;
 					letter-spacing: 0;
 					line-height: 42rpx;
 				}

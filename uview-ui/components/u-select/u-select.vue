@@ -395,7 +395,7 @@ export default {
 
 	&__body {
 		width: 100%;
-		height: 360rpx;
+		height: 500rpx;
 		overflow: hidden;
 		background-color: #fff;
 

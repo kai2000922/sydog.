@@ -6,7 +6,7 @@
 			<text v-if="cancel" class="order_title_row_tips2">已取消</text>
 		</view>
 		<view class="order_row2">
-			<image src="@/static/men.png"></image>
+			<image src="@/static/men.png"/>
 			<text>上门取件时间：</text>
 		</view>
 		<view class="order_row3" :class="cancel ? 'color_cancel' : 'color_normal'">
@@ -80,7 +80,7 @@
 					@click="click"/>
 			</view>
 		</view>
-		<view class="order_row6">
+		<view class="order_row6" style="margin-bottom: 10rpx;">
 			<view>
 				<label>下单时间：</label>
 				<text>{{data.createTime}}</text>
@@ -94,7 +94,7 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="!cancel">
+<!-- 		<view v-if="!cancel">
 			<s-button
 				width="600"
 				height="120"
@@ -102,7 +102,7 @@
 				:custom-style="{border: '1px solid #43A668', marginTop: '40rpx', marginBottom: '10rpx'}"
 				color="#43A668"
 				@click="toCollect"/>
-		</view>
+		</view> -->
 		<view class="order_row8" v-if="!cancel">
 			<text @click="showModal('update')">取消订单</text>
 		</view>
@@ -202,7 +202,7 @@
 
 <style lang="scss" scoped>
 	.color_normal {
-		color: $s_font_color;
+		color: #06180C;
 	}
 	
 	.color_cancel {
@@ -230,7 +230,7 @@
 				font-family: PingFangSC-Regular;
 				font-size: 24rpx;
 				font-weight: bolder;
-				color: $s_font_color;
+				color: #06180C;
 				letter-spacing: 0;
 				line-height: 36rpx;
 				
@@ -282,7 +282,7 @@
 				margin-left: 16rpx;
 				font-family: PingFangSC-Regular;
 				font-size: 28rpx;
-				color: $s_font_color;
+				color: #06180C;
 				letter-spacing: 0;
 				line-height: 40rpx;
 			}
@@ -379,7 +379,7 @@
 						font-weight: bold;
 						font-family: PingFangSC-Semibold;
 						font-size: 28rpx;
-						color: $s_font_color;
+						color: #06180C;
 						letter-spacing: 0;
 						text-align: center;
 						line-height: 54rpx;

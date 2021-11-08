@@ -1,35 +1,34 @@
 <template>
-	<view :style="'border-radius: ' + borderRadius + 'rpx'" class="uni-card card-base"
-		:class="{ 'uni-card--full': isFull === true || isFull === 'true', 'uni-card--shadow': isShadow === true && isShadow === 'true'}">
+	<view class="uni-card uni-border"
+		:class="{ 'uni-card--full': isFull === true || isFull === 'true', 'uni-card--shadow': isShadow === true || isShadow === 'true'}">
 		<!-- 基础 -->
-		<view v-if="mode === 'basic' && title" @click.stop="onClick" :class="headClass">
-			<view class="uni-card__header" :class="{'uni-border-bottom': cardBorder === true && headBorderBottom === true}">
+		<view v-if="mode === 'basic' && title" @click.stop="onClick" class="uni-card__head-padding">
+			<view class="uni-card__header uni-border-bottom">
 				<slot name="header">
 					<view v-if="thumbnail" class="uni-card__header-extra-img-view">
 						<image :src="thumbnail" class="uni-card__header-extra-img" />
 					</view>
-					<text :class="titleClass" class="uni-card__header-title-text">{{ title }}</text>
+					<text class="uni-card__header-title-text">{{ title }}</text>
 					<text v-if="extra" class="uni-card__header-extra-text">{{ extra }}</text>
 				</slot>
 			</view>
 		</view>
 		<!-- 标题 -->
-		<view v-if="mode === 'title'" @click.stop="onClick" :class="headClass">
-			<view class="uni-card__title" :class="{'uni-border-bottom': cardBorder === true && headBorderBottom === true}">
+		<view v-if="mode === 'title'" @click.stop="onClick" class="uni-card__head-padding">
+			<view class="uni-card__title uni-border-bottom">
 				<slot name="header">
 					<view class="uni-card__title-box">
 						<view v-if="thumbnail" class="uni-card__title-header">
 							<image class="uni-card__title-header-image" :src="thumbnail" mode="scaleToFill" />
 						</view>
 						<view class="uni-card__title-content">
-							<text :class="titleClass" class="uni-card__title-content-title uni-ellipsis">{{ title }}</text>
+							<text class="uni-card__title-content-title uni-ellipsis">{{ title }}</text>
 							<text class="uni-card__title-content-extra uni-ellipsis">{{ subTitle }}</text>
 						</view>
 					</view>
 					<view v-if="extra">
 						<text class="uni-card__header-extra-text">{{ extra }}</text>
 					</view>
-					<slot name="extra"/>
 				</slot>
 			</view>
 		</view>
@@ -40,17 +39,17 @@
 				<uni-icons v-if="!thumbnail" type="image" size="30" color="#999" />
 			</view>
 			<view v-if="title" class="uni-card__thumbnailimage-title">
-				<text :class="titleClass" class="uni-card__thumbnailimage-title-text">{{ title }}</text>
+				<text class="uni-card__thumbnailimage-title-text">{{ title }}</text>
 			</view>
 		</view>
 		<!-- 内容 -->
-		<view class="uni-card__content" :class="contextClass" @click.stop="onClick">
+		<view class="uni-card__content uni-card__content--pd" @click.stop="onClick">
 			<view v-if="mode === 'style' && extra" class=""><text class="uni-card__content-extra">{{ extra }}</text>
 			</view>
 			<slot />
 		</view>
 		<!-- 底部 -->
-		<view v-if="note" class="uni-card__footer" :class="{'uni-border-top': cardBorder === true && footerBorderBottom === true}">
+		<view v-if="note" class="uni-card__footer uni-border-top">
 			<slot name="footer">
 				<text class="uni-card__footer-text">{{ note }}</text>
 			</slot>
@@ -74,17 +73,6 @@
 	 * 	@value title 标题卡片
 	 * @property {Boolean} isFull = [true | false] 卡片内容是否通栏，为 true 时将去除padding值
 	 * @property {Boolean} isShadow = [true | false] 卡片内容是否开启阴影
-	 * 
-	 * @property {Number} borderRadius 卡片自定义圆角
-	 * @property {String} cardClass 卡片自定义class
-	 * @property {String} titleClass 标题自定义class
-	 * @property {Boolean} cardBorder 卡片边框
-	 * @property {Boolean} headBorderBottom 头部下边框
-	 * @property {Boolean} footerBorderBottom 脚部上边框
-	 * @property {Boolean} cardPadding 是否启用默认padding
-	 * @property {String} headClass 头部class
-	 * @property {String} contextClass 内容class
-	 * 
 	 * @event {Function} click 点击 Card 触发事件
 	 * @example <uni-card title="标题文字" thumbnail="xxx.jpg" extra="额外信息" note="Tips">内容主体，可自定义内容及样式</uni-card>
 	 */
@@ -125,38 +113,6 @@
 				// 是否开启阴影
 				type: [Boolean, String],
 				default: false
-			},
-			borderRadius: {
-				type: Number,
-				default: 5
-			},
-			cardBorder: {
-				type: Boolean,
-				default: true
-			},
-			headBorderBottom: {
-				type: Boolean,
-				default: true
-			},
-			footerBorderBottom: {
-				type: Boolean,
-				default: true
-			},
-			cardClass: {
-				type: String,
-				default: ''
-			},
-			titleClass: {
-				type: String,
-				default: ''
-			},
-			headClass: {
-				type: String,
-				default: 'uni-card__head-padding'
-			},
-			contextClass: {
-				type: String,
-				default: 'uni-card__content--pd'
 			}
 		},
 		methods: {
@@ -178,7 +134,7 @@
 		background-color: $uni-bg-color;
 		position: relative;
 		flex-direction: column;
-		// border-radius: 5px;
+		border-radius: 5px;
 		overflow: hidden;
 		/* #ifdef H5 */
 		cursor: pointer;
@@ -327,6 +283,7 @@
 		/* #endif */
 		flex-direction: row;
 		align-items: center;
+		padding: 10px;
 
 	}
 
@@ -470,6 +427,5 @@
 
 	.uni-card__head-padding {
 		// mar: 12px;
-		padding: 10px;
 	}
 </style>

@@ -114,7 +114,7 @@
 	}
 
 	.u-grid-item-box {
-		// padding: 30rpx 0;
+		padding: 30rpx 0;
 		@include vue-flex;
 		align-items: center;
 		justify-content: center;
@@ -122,9 +122,5 @@
 		flex: 1;
 		width: 100%;
 		height: 100%;
-		
-		text {
-			
-		}
 	}
 </style>

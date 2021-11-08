@@ -8,20 +8,23 @@ const api = {
 		return new Promise((resolve, reject) => {
 			tip.loading('获取用户信息中')
 			my.getAuthCode({
-			  scopes: ['auth_base'],
 			  success: (res) => {
 			    if (res.authCode) {
 				  http.post('/ali/auth',{authCode: res.authCode}).then(res => {
+					  console.log(res.data);
 					  store.commit('SET_USERID', res.data.msg);
 					  tip.loaded()
 					  resolve(res.data.msg)
-				  }).catch(res => {
+				  }).catch(err => {
 					  tip.loaded()
+					  tip.toast(err.data.msg)
 					  tip.confirm('获取用户信息失败，是否重试', true).then(() => {
 						  this.getUserId()
 					  }).catch(() => {
 						  reject()
 					  })
+				  }).finally(() => {
+					  tip.loaded()
 				  })
 			    }
 			  }

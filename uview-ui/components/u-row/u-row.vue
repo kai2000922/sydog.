@@ -1,5 +1,5 @@
 <template>
-	<view class="u-row" :class="customClass" :style="{
+	<view class="u-row" :style="{
 			alignItems: uAlignItem,
 			justifyContent: uJustify
 		}"
@@ -41,14 +41,7 @@
 			stop: {
 				type: Boolean,
 				default: true
-			},
-			customClass: {
-				type: String,
-				default: ''
 			}
-			// couclass: {
-				
-			// }
 		},
 		computed: {
 			uJustify() {

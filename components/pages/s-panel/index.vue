@@ -32,6 +32,5 @@
 		background: $s_bg_white;
 		box-shadow: $s_box-shadow;
 		border-radius: $s_space_4;
-		// overflow: hidden;
 	}
 </style>

@@ -62,7 +62,7 @@
 			<view class="u-input__right-icon__clear u-input__right-icon__item" v-if="passwordIcon && type == 'password'">
 				<u-icon size="32" :name="!showPassword ? 'eye' : 'eye-fill'" color="#c0c4cc" @click="showPassword = !showPassword"/>
 			</view>
-			<view class="u-input__right-icon--select u-input__right-icon__item" v-if="selectIcon && type == 'select'" :class="{
+			<view class="u-input__right-icon--select u-input__right-icon__item" v-if="type == 'select'" :class="{
 				'u-input__right-icon--select--reverse': selectOpen
 			}">
 				<u-icon name="arrow-down-fill" size="26" color="#c0c4cc"></u-icon>
@@ -156,11 +156,6 @@ export default {
 		},
 		// 密码类型时，是否显示右侧的密码图标
 		passwordIcon: {
-			type: Boolean,
-			default: true
-		},
-		// 选择器类型时，是否显示右侧的选择图标
-		selectIcon: {
 			type: Boolean,
 			default: true
 		},

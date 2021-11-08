@@ -2,7 +2,7 @@
 	<view class="form">
 		<view class="form_title_row">
 			<text>上门取件信息</text>
-			<text>您无须承担任何费用</text>
+			<text class="card_right_text">*无需承担任何费用</text>
 		</view>
 		<view class="form_row">
 			<label class="form_row_title">上门地址</label>
@@ -28,18 +28,26 @@
 		</view>
 		<view class="form_row2">
 			<text class="form_row2_text">回收重量</text>
-			<view class="form_row2_numberbox">
-				<s-number-box :min="8" :value="weightVlaue" @change="weightChange" @minimum="minimum"></s-number-box>
-				<text>公斤</text>
+			<view class="form_row2_select">
+				
+				<s-select-item v-for="(item, index) in weightObj.list"
+					:key="index"
+					:obj="item"
+					:width="item.width"
+					:select="weightObj.select === item.index ? true : false"
+					@select="weightChange"/>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import sNumberBox from '@/components/pages/s-number-box'
+	import sSelectItem from '../s-select-item'
 
 	export default {
+		components: {
+			sSelectItem
+		},
 		props: {
 			// 回收重量
 			weight: {
@@ -72,12 +80,31 @@
 				default: () => ({})
 			}
 		},
-		components: {
-			sNumberBox
-		},
 		data() {
 			return {
-				weightVlaue: 5,
+				weightObj: {
+					select: 0,
+					list: [
+						{
+							index: 1,
+							label: '8kg 约20件',
+							width: 275,
+							value: 8
+						},
+						{
+							index: 2,
+							label: '16kg 约40件',
+							width: 275,
+							value: 16
+						},
+						{
+							index: 3,
+							label: '16kg以上 约40件以上',
+							width: 572,
+							value: 17
+						}
+					]
+				},
 				dateList: [],
 				dateSelectShow: false,
 				dateLabel: '',
@@ -87,7 +114,17 @@
 			}
 		},
 		created() {
-			this.weightVlaue = this.weight
+			switch(this.weight) {
+				case 8:
+					this.weightObj.select = 1
+					break
+				case 16: 
+					this.weightObj.select = 2
+					break
+				default:
+					this.weightObj.select = 3
+					break
+			}
 			this.dateLabel = this.date === '' ? '请选择上门取件时间' : this.date
 			this.addressLabel = this.address
 			this.contactsLabel = this.contacts
@@ -174,13 +211,9 @@
 			},
 			// 回收重量改变
 			weightChange(val) {
-				this.weightVlaue = val
-				this.$emit("update:weight", this.weightVlaue)
+				this.weightObj.select = val.index
+				this.$emit("update:weight", val.value)
 			},
-			// 低于5KG弹窗
-			minimum() {
-				this.$tip.error(this.minMsg)
-			}
 		}
 	}
 </script>
@@ -206,7 +239,7 @@
 				font-family: PingFangSC-Semibold;
 				font-size: 36rpx;
 				font-weight: bold;
-				color: $s_font_color;
+				color: #06180C;
 				letter-spacing: 0;
 				line-height: 54rpx;
 
@@ -221,15 +254,15 @@
 				}
 			}
 
-			&>text:last-child {
-				font-family: PingFangSC-Semibold;
-				font-size: 28rpx;
-				font-weight: bold;
-				color: #7F8581;
-				letter-spacing: 0;
-				text-align: right;
-				line-height: 42rpx;
-			}
+			// &>text:last-child {
+			// 	font-family: PingFangSC-Semibold;
+			// 	font-size: 28rpx;
+			// 	font-weight: bold;
+			// 	color: #7F8581;
+			// 	letter-spacing: 0;
+			// 	text-align: right;
+			// 	line-height: 42rpx;
+			// }
 		}
 
 		&_row {
@@ -258,12 +291,9 @@
 					font-family: PingFangSC-Semibold;
 					font-size: 28rpx;
 					font-weight: bold;
-					color: $s_font_color;
+					color: #06180C;
 					letter-spacing: 0;
 					line-height: 42rpx;
-					// overflow: hidden;
-					// white-space: nowrap;
-					// text-overflow: ellipsis;
 				}
 				
 				&_placeholder {
@@ -298,8 +328,9 @@
 		&_row2 {
 			margin-top: 64rpx;
 			display: flex;
-			align-items: center;
-			justify-content: space-between;
+			flex-direction: column;
+			// align-items: center;
+			// justify-content: space-between;
 
 			&_text {
 				margin-left: -32rpx;
@@ -308,7 +339,7 @@
 				font-family: PingFangSC-Semibold;
 				font-size: 36rpx;
 				font-weight: bold;
-				color: $s_font_color;
+				color: #06180C;;
 				letter-spacing: 0;
 				line-height: 54rpx;
 
@@ -322,19 +353,14 @@
 					background: #FA9E19;
 				}
 			}
-
-			&_numberbox {
+			
+			&_select {
+				margin-top: 20rpx;
 				display: flex;
+				justify-content: space-around;
 				align-items: center;
-
-				&>text {
-					margin-left: 16rpx;
-					font-family: PingFangSC-Regular;
-					font-size: 28rpx;
-					color: #B0B7B3;
-					letter-spacing: 0;
-					line-height: 42rpx;
-				}
+				flex-wrap: wrap;
+				
 			}
 		}
 	}

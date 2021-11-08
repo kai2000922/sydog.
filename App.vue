@@ -1,17 +1,14 @@
 <script>
 	export default {
 		onLaunch: function() {
-			// console.log('App Launch')
+			console.log('App Launch')
 		},
 		onShow: function() {
-			// console.log('App Show')
+			console.log('App Show')
 		},
 		onHide: function() {
-			// console.log('App Hide')
-		},
-		userAcount: 'kai2000922',
-		BaseUrl: 'http://106.13.18.124/recycle',
-		ChooseOrder: {}
+			console.log('App Hide')
+		}
 	}
 </script>
 

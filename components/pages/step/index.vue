@@ -1,5 +1,8 @@
 <template>
 	<view class="step" :style="stepStyle">
+		<view class="step_logo">
+			<image src="@/static/logo.png"/>
+		</view>
 		<u-row :gutter="itemGutter">
 			<u-col v-for="(item,index) in dataList" :key="index" :span="item.span">
 				<view style="display: flex; justify-content: center;">
@@ -30,8 +33,8 @@
 				default: '0'
 			},
 			stepStyle: {
-				type: String,
-				default: ''
+				type: Object,
+				default: () => ({})
 			}
 		},
 	}
@@ -42,6 +45,15 @@
 	$s_color_green: #44aa67;
 	
 	.step {
+		
+		&_logo {
+			margin-bottom: 13rpx;
+			
+			&>image {
+				width: 220rpx;
+				height: 56rpx;
+			}
+		}
 		
 		&_schedule {
 			display: flex;

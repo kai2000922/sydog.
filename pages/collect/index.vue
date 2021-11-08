@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="top-background"/>
-		<step step-style="padding: 63rpx 0;" :dataList="stepList" />
+		<step :dataList="stepList" />
 		
 		<s-panel>
 			<view class="ok">
@@ -29,18 +29,6 @@
 				</view>
 			</view>
 		</s-panel>
-		
-		<s-panel>
-			<view class="title_row">
-				<text class="title">兑换好礼专区</text>
-				<text class="extra">称重后即可兑换</text>
-			</view>
-			<s-goods item-type="2" 
-				:goods-list="goodsList" 
-				:item-style="{paddingTop: '56rpx'}" 
-				@itemClick="toGoodPage"/>
-			<u-loadmore margin-top="20" :status="goodsStatus" />
-		</s-panel>
 	</view>
 </template>
 
@@ -48,14 +36,12 @@
 	import step from '@/components/pages/step'
 	import sPanel from '@/components/pages/s-panel'
 	import sButton from '@/components/pages/s-button'
-	import sGoods from '@/components/pages/s-goods'
 	
 	export default {
 		components: {
 			step,
 			sPanel,
 			sButton,
-			sGoods
 		},
 		data() {
 			return {
@@ -78,55 +64,19 @@
 						index: '03',
 						span: '4',
 						choice: false,
-						title: '换好礼',
-						subTitle: '付邮领取'
+						title: '完成',
+						subTitle: '回收完成'
 					}
-				],
-				goodsRequest: {
-					pageSize: 10,
-					pageNum: 0,
-					over: false
-				},
-				goodsList: [],
-				goodsStatus: 'loading'
+				]
 			}
 		},
 		onLoad(option) {
+			uni.setNavigationBarTitle({title: ''})
+			uni.setBackgroundColor({backgroundColor: '#fafffc'})
+			uni.setNavigationBarColor({backgroundColor: '#44aa67'})
 			this.from = option.from
 		},
-		created() {
-			this.getGoodsList()
-		},
-		onReachBottom() {
-			if(!this.goodsRequest.over) {
-				this.getGoodsList()
-			}
-		},
 		methods: {
-			// 获取商品列表
-			getGoodsList() {
-				this.goodsStatus = 'loading'
-				this.goodsRequest.pageNum++
-				this.$http.post('/recycle/goods/list', this.goodsRequest).then(res => {
-					let rows = res.data.rows
-					if(rows.length < this.goodsRequest.pageSize) {
-						this.goodsRequest.over = true
-					}
-					if(rows.length > 0) {
-						this.goodsList = this.goodsList.concat(rows)
-					}
-				}).finally(() => {
-					console.log(this.goodsList);
-					this.goodsStatus = 'nomore'
-				})
-			},
-			
-			toGoodPage(goods){
-				uni.navigateTo({
-					url:'/pages/goods/goods?goodID=' + goods.goodID + '&buy=2'
-				})
-			},
-			
 			toRecycleOrders() {
 				if(this.from === 'recycle_order') {
 					uni.navigateBack({
@@ -134,7 +84,7 @@
 					});
 				} else {
 					uni.navigateTo({
-						url:'/pages/recycle_orders/recycle_orders'
+						url:'/pages/recycle_orders/index'
 					})
 				}
 			}
@@ -174,7 +124,7 @@
 			font-family: PingFangSC-Semibold;
 			font-size: 36rpx;
 			font-weight: bold;
-			color: $s_font_color;
+			color: #06180C;
 			letter-spacing: 0;
 			line-height: 54rpx;
 		}
@@ -221,7 +171,7 @@
 				font-family: PingFangSC-Semibold;
 				font-size: 36rpx;
 				font-weight: bold;
-				color: $s_font_color;
+				color: #06180C;
 				letter-spacing: 0;
 				line-height: 54rpx;
 				

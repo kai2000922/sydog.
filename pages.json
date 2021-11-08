@@ -3,76 +3,31 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarBackgroundColor": "#44aa67",
-				"backgroundColor": "#fafafa"
+				// "navigationBarTitleText": "uni-app"
 			}
 		},
 		{
 			"path": "pages/collect/index",
 			"style": {
-				"navigationBarBackgroundColor": "#44aa67",
-				"backgroundColor": "#fafafa"
+				// "navigationBarBackgroundColor": "#44aa67",
+				// "backgroundColor": "#fafafa"
 			}
 		},
 		{
-		    "path" : "pages/recycle_orders/recycle_orders",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": false
+		    "path": "pages/recycle_orders/index",
+		    "style": {
+		        // "navigationBarTitleText": "",
+		        // "enablePullDownRefresh": false
 		    }
 		    
-		},
-		{
-            "path" : "pages/goods/goods",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        },
-		{
-			"path" : "pages/payment/index",
-			"style" :                                                                                    
-			{
-			    "navigationBarTitleText": "",
-			    "enablePullDownRefresh": false
-			}
-		},
-		{
-			"path" : "pages/end/index",
-			"style" :                                                                                    
-			{
-			    "navigationBarTitleText": "",
-			    "enablePullDownRefresh": false
-			}
-		},
-		{
-			"path" : "pages/order_details/index",
-			"style" :                                                                                    
-			{
-			    "navigationBarTitleText": "",
-			    "enablePullDownRefresh": false
-			}
 		}
-        
-    ],
-	"condition": { //模式配置，仅开发期间生效
-	    "current": 0, //当前激活的模式（list 的索引项）
-	    "list": [
-	        {
-	            "name": "test",
-	            "path": "pages/recycle_orders/recycle_orders"
-	        }
-	    ]
-	},
+	],
 	"globalStyle": {
-		// "navigationBarTextStyle": "black",
+		"allowsBounceVertical": "NO"
+		// "navigationBarTextStyle": "black"
 		// "navigationBarTitleText": "uni-app",
-		"allowsBounceVertical": "NO",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		// "navigationBarBackgroundColor": "#F8F8F8",
+		// "backgroundColor": "#F8F8F8"
 	},
 	"easycom": {
 	  "autoscan": true,
