@@ -5,8 +5,13 @@ function week(day) {
 
 function  getDate(time) {
 	let today = new Date()
-	let date = new Date(time)
+	// let date = new Date(time)
 	
+	var arr = time.split(/[- :]/)
+	let date = new Date(arr[0], arr[1]-1, arr[2], arr[3], arr[4], arr[5]);
+	
+	console.log(date)
+		
 	return {
 		isToday: date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate() ? true : false,
 		month: date.getMonth() + 1,

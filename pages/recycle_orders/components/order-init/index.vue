@@ -177,6 +177,7 @@
 				this.data.phone = this.order.phone
 				this.data.createTime = this.order.createTime
 				this.data.orderNum = this.order.orderNum
+				// console.log(this.data.expectTime.startHour)
 			},
 			click() {
 				app.ChooseOrder = this.$props.order

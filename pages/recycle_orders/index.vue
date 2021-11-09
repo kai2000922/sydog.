@@ -152,12 +152,16 @@
 				this.$http.post('/recycle/recycle/list', {
 					user: this.$store.getters.userid
 				}).then(res => {
+					console.log("22")
+					console.log(res.data)
 					this.$tip.loaded()
 					this.orders = res.data.rows
 				}).catch(err => {
+					console.log("333" + err)
 					this.$tip.loaded()
 					this.$tip.toast('查询订单失败，请稍后再试！')
 				})
+				console.log("111" + this.orders)
 			},
 
 			/*
