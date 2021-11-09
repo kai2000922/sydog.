@@ -1,16 +1,16 @@
 <template>
 	<esc-swiper :autoplay="autoplay" 
-			:circular="imgList.length >= 3 ? true : false" 
+			:circular="circular" 
 			:current.sync="current"
 			:size="bannerImage.length" 
-			:plus="plus" 
-			:width="width" 
+			:plus="plus"
+			:width="width"
 			:height="height"
 			:itemWidth="itemWidth" 
 			:space="space">
 		<esc-swiper-item v-for="(item, index) in bannerImage" :index="index" :key="index">
 			<view class="swiper-item">
-				<image :src="item.image" class="item-image" />
+				<u-image width="100%" height="100%" :src="item.image" />
 			</view>
 		</esc-swiper-item>
 	</esc-swiper>
@@ -18,7 +18,7 @@
 
 <script>
 	import {getSwiperList} from '@/components/sn-swiper/esc-swiper/helper.js';
-	import {BASE_URL} from '../../../../utils/request.js'
+	import {BASE_URL} from '@/utils/request.js'
 	
 	export default {
 		created() {
@@ -33,7 +33,7 @@
 				itemWidth: 650,
 				space: 24,
 				current: 0,
-				plus: 2,
+				plus: 0,
 				imgList: [
 					{
 						image: 'https://picsum.photos/750/300?blur=1'
@@ -56,6 +56,9 @@
 					for(let i = 0 ;i < res.data.data.length; i++){
 						this.imgList.push({image: BASE_URL + res.data.data[i].filePath})
 					}
+					this.plus = this.imgList.length >= 3 ? 2 : 0
+					this.circular = this.imgList.length >= 3 ? true : false
+					this.autoplay = this.imgList.length >= 3 ? true : false
 				}).catch(err => {
 					console.log(err)
 				})

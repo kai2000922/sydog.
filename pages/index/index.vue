@@ -117,7 +117,7 @@
 			})
 		},
 		created() {
-			// if(this.$store.gette)
+			//if(this.$store.gette)
 			api.getUserId()
 		},
 		methods: {

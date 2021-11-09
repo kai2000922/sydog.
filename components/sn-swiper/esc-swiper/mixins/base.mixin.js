@@ -138,7 +138,7 @@ export default {
 				) {
 					if (!this.bounce) return
 					// 添加阻尼滑动
-					const _left = this._left || this.wxsData.left
+					const _left = this._left
 					this.left = _left + (deltaX * (1 - Math.abs(deltaX) * 3 / (this.width * 5)))
 					this._set3DScale(deltaX)
 					return
