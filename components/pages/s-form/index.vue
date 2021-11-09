@@ -190,7 +190,7 @@
 			getDayTime(date, val) {
 				let i = 9
 				let list = []
-				if(val === 0) {
+				if(val === 0 && date.getHours() > i) {
 					list.push({
 						label: '当日两小时',
 						value: date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
