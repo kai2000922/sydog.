@@ -22,7 +22,7 @@
 	
 	export default {
 		created() {
-			// this.loadImg()
+			this.loadImg()
 		},
 		data() {
 			return {
