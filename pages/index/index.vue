@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="top-background" />
 		<step :step-style="{marginBottom: '40rpx'}" :dataList="stepList" />
-		<s-swiper />
+		<s-swiper :imgs="imgs"/>
 
 		<s-flow />
 		<view style="position: relative; overflow: hidden;">
@@ -25,7 +25,6 @@
 				</movable-area>
 			</view>
 		</view>
-
 
 		<s-problem />
 	</view>
@@ -89,7 +88,8 @@
 					area: '',
 					orderStatus: '待上门',
 				},
-				addressInfo: {}
+				addressInfo: {},
+				imgs: []
 			}
 		},
 		onLoad() {
@@ -139,7 +139,8 @@
 			
 			toRecycleOrders() {
 				uni.navigateTo({ url: '/pages/recycle_orders/index' })
-			}
+			},
+			
 		}
 	}
 </script>

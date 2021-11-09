@@ -17,11 +17,13 @@
 </template>
 
 <script>
-	import {
-		getSwiperList
-	} from '@/components/sn-swiper/esc-swiper/helper.js';
-
+	import {getSwiperList} from '@/components/sn-swiper/esc-swiper/helper.js';
+	import {BASE_URL} from '../../../../utils/request.js'
+	
 	export default {
+		created() {
+			// this.loadImg()
+		},
 		data() {
 			return {
 				autoplay: true,
@@ -32,26 +34,33 @@
 				space: 24,
 				current: 0,
 				plus: 2,
-				imgList: [{
+				imgList: [
+					{
 						image: 'https://picsum.photos/750/300?blur=1'
-					},
-					{
-						image: 'https://picsum.photos/seed/picsum/750/300'
-					},
-					{
-						image: 'https://picsum.photos/750/300'
 					}
 				]
 			}
 		},
 		computed: {
 			bannerImage() {
+				console.log(this.imgList)
 				return getSwiperList(this.imgList, {
 					circular: this.circular,
 					plus: this.plus
 				});
 			}
 		},
+		methods: {
+			loadImg(){
+				this.$http.get('recycle/goods/getBanner').then(res => {
+					for(let i = 0 ;i < res.data.data.length; i++){
+						this.imgList[i] = {image: BASE_URL + res.data.data[i].filePath};
+					}
+				}).catch(err => {
+					console.log(err)
+				})
+			}
+		}
 	}
 </script>
 

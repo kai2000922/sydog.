@@ -2,7 +2,7 @@ import Request from '@/utils/luch-request/index.js'
 
 // const BASE_URL = 'http://49.235.238.110'
 const BASE_URL = 'https://hkkkkk.cn:8080'
-// const BASE_URL = 'http://192.168.0.101'
+// const BASE_URL = 'https://192.168.0.101:8080'
 
 const http = new Request()
 http.setConfig((config) => {

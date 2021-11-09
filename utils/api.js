@@ -6,7 +6,7 @@ const api = {
 	
 	getUserId() {
 		return new Promise((resolve, reject) => {
-			tip.loading('获取用户信息中')
+			// tip.loading('获取用户信息中')
 			my.getAuthCode({
 			  success: (res) => {
 			    if (res.authCode) {
