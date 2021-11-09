@@ -12,9 +12,7 @@ export default {
 			isScrolling: false,
 			customDuration: 0,
 			left: 0,
-			mCurrent: this.current,
-			initLeft: 0,
-			mCircular: this.circular
+			mCurrent: this.current
 		};
 	},
 	created() {},
@@ -87,7 +85,6 @@ export default {
 			// #ifndef APP-NVUE
 			style.left = this.left + 'rpx'
 			style.transition = 'left ' + this.manualDuration + 'ms ' + this.timingFunction
-			if(!this.mCircular && this.left != 0 && this.initLeft === 0) this.initLeft = this.left
 			// #endif
 			return getStyleStr(style);
 		},
@@ -262,9 +259,9 @@ export default {
 			if (this.circular == true) {
 				const s1 = (this.width - this.itemWidth - this.space * 2) / 2;
 				let left = (this.plus + this.mCurrent) * (this.space + this.itemWidth) - s1;
-				this.left = -left + this.initLeft;
+				this.left = -left;
 			} else {
-				this.left = -(this.itemWidth + this.space) * this.mCurrent + this.initLeft
+				this.left = -(this.itemWidth + this.space) * this.mCurrent
 			}
 			// #ifdef APP-VUE || MP-WEIXIN || H5
 			this.wxsData = {

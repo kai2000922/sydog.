@@ -57,14 +57,11 @@
 		},
 		methods: {
 			loadImg(){
-				this.imgList = []
 				this.$http.get('recycle/goods/getBanner').then(res => {
+					this.imgList = []
 					for(let i = 0 ;i < res.data.data.length; i++){
 						this.imgList.push({image: BASE_URL + res.data.data[i].filePath})
 					}
-					this.plus = this.imgList.length >= 3 ? 2 : 0
-					this.circular = this.imgList.length >= 3 ? true : false
-					this.autoplay = this.imgList.length >= 3 ? true : false
 				}).catch(err => {
 					console.log(err)
 				})
