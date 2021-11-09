@@ -4,7 +4,7 @@
 		<step :step-style="{marginBottom: '40rpx'}" :dataList="stepList" />
 		
 		<!-- 轮播图 -->
-		<s-swiper :imgs="imgs"/>
+		<s-swiper/>
 		
 		<!-- 流程 -->
 		<s-flow />
@@ -101,8 +101,7 @@
 					area: '',
 					orderStatus: '待上门',
 				},
-				addressInfo: {},
-				imgs: []
+				addressInfo: {}
 			}
 		},
 		onLoad() {

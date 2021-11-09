@@ -33,10 +33,16 @@
 				itemWidth: 650,
 				space: 24,
 				current: 0,
-				plus: 0,
+				plus: 2,
 				imgList: [
 					{
 						image: 'https://picsum.photos/750/300?blur=1'
+					},
+					{
+						image: 'https://picsum.photos/seed/picsum/750/300'
+					},
+					{
+						image: 'https://picsum.photos/750/300'
 					}
 				]
 			}
