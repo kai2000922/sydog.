@@ -11,7 +11,7 @@
 						<text>{{ item.title }}</text>
 					</view>
 				</template>
-		        <text class="collapse_text">{{ item.text }}</text>
+		        <view class="collapse_text">{{ item.text }}</view>
 		    </uni-collapse-item>
 		</uni-collapse>
 		<view class="bottom">
@@ -89,6 +89,7 @@
 			}
 			
 			&_text {
+				padding-bottom: 50rpx;
 				font-family: PingFangSC-Regular;
 				font-size: 28rpx;
 				color: #30BB63;

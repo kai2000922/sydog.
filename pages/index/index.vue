@@ -6,7 +6,7 @@
 
 		<s-flow />
 		<view style="position: relative; overflow: hidden;">
-			<s-panel>
+			<s-panel :custom-style="{marginTop: '0', marginBottom: '10rpx'}">
 				<view style="padding-left: 32rpx;">
 					<s-form :addressObj.sync="addressInfo" :date.sync="orderInfo.expectTime"
 						:weight.sync="orderInfo.expectWeight" />
@@ -104,6 +104,7 @@
 			})
 		},
 		created() {
+			// if(this.$store.gette)
 			api.getUserId()
 		},
 		methods: {

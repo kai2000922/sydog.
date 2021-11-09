@@ -285,7 +285,7 @@
 				font-family: PingFangSC-Semibold;
 				font-size: 24rpx;
 				font-weight: bold;
-				color: #7F8581;
+				color: #06180C;
 				letter-spacing: 0;
 				line-height: 36rpx;
 			}

@@ -10,19 +10,26 @@
 			<text>上门取件时间：</text>
 		</view>
 		<view class="order_row3" :class="cancel ? 'color_cancel' : 'color_normal'">
-			<view class="order_row3_row1">
-				<text>{{ data.expectTime.isToday ? '今日' : data.expectTime.month + '月' + data.expectTime.day + '日 ' + data.expectTime.week}}</text>
-				<text v-if="cancel">（订单已取消）</text>
+			<view>
+				<text v-if="data.expectTime.isToday" :class="cancel ? 'color_cancel' : 'color_green'">今日</text>
+				<text v-if="!data.expectTime.isToday" :class="cancel ? 'color_cancel' : 'color_normal'">{{ data.expectTime.month + '月' + data.expectTime.day + '日 ' }}</text>
+				<text v-if="!data.expectTime.isToday" :class="cancel ? 'color_cancel' : 'color_green'">{{ data.expectTime.week }}</text>
+				
+				<text v-if="!cancel && torf(order.courier)" class="color_green" style="margin-left: 18rpx;">正在上门中...</text>
+				<text v-if="cancel" class="color_cancel">（订单已取消）</text>
 			</view>
 			<view class="order_row3_row2">
 				<text>{{ data.expectTime.startHour + ':00 ~ ' + data.expectTime.endHour + ':00 上门取件' }}</text>
 				<s-button
-					v-if="!cancel"
+					v-if="!cancel && !torf(order.courier)"
 					width="160"
 					height="56"
 					text="修改时间"
 					fontSize="28"
+					background="#ffffff"
+					color="#06180C"
 					:custom-style="{border: '1px solid #707070', marginLeft: '46rpx'}"
+					:bold="false"
 					@click="click"/>
 			</view>
 		</view>
@@ -33,10 +40,10 @@
 				<image src="@/static/quxiao.png" style="width: 100%; height: 100%;"/>
 			</view>
 		</view>
-		<view class="order_row4" :class="cancel ? 'color_cancel' : 'color_normal'">
+		<view class="order_row4">
 			<view v-if="!cancel">
-				<text v-if="order.Courier == null">取件当天，会展示出取件员的信息哦~</text>
-				<text v-else>{{ order.Courier }}</text>
+				<text v-if="!torf(order.courier)" class="color_cancel">取件当天，会展示出取件员的信息哦~</text>
+				<text v-else class="color_normal">{{ order.courier }}</text>
 			</view>
 			<!-- <text v-if="!cancel">取件当天，会展示出取件员的信息哦~</text> -->
 			<!-- <view>
@@ -49,13 +56,15 @@
 				height="56"
 				text="拨打"
 				fontSize="28"
+				background="#ffffff"
+				color="#06180C"
 				:custom-style="{border: '1px solid #707070', marginLeft: '46rpx'}"
 				@click="call"/> -->
-			<text v-else>已取消取件</text>
+			<text v-else class="color_cancel">已取消取件</text>
 		</view>
 		<dot-line :height="20" 
 				:itemNumber="25" 
-				:customStyle="{marginRight: '-30rpx', marginLeft: '-46rpx', marginTop: '46rpx'}"
+				:customStyle="{marginRight: '-30rpx', marginLeft: '-46rpx', marginTop: '46rpx', opacity: '0.7'}"
 				:lineStyle="{background: cancel ? '#B0B7B3' : '#43A668'}"/>
 		<view class="order_row2">
 			<image src="@/static/dingdan.png"></image>
@@ -71,12 +80,15 @@
 			</view>
 			<view class="order_row5_btn" >
 				<s-button
-					v-if="!cancel"
+					v-if="!cancel && !torf(order.courier)"
 					width="160"
 					height="56"
 					text="修改地址"
 					fontSize="28"
+					background="#ffffff"
+					color="#06180C"
 					:custom-style="{border: '1px solid #707070'}"
+					:bold="false"
 					@click="click"/>
 			</view>
 		</view>
@@ -90,7 +102,17 @@
 				<text>{{data.orderNum}}</text>
 				<text style="margin-left: 16rpx;" @click="copy">复制</text>
 				<view class="order_row6_relative_btn" >
-					<button @click="showModal('delete')" v-if="cancel">删除订单</button>
+					<s-button
+						v-if="cancel"
+						width="160"
+						height="56"
+						text="删除订单"
+						fontSize="28"
+						background="#ffffff"
+						color="#06180C"
+						:custom-style="{border: '1px solid #707070'}"
+						:bold="false"
+						@click="showModal('delete')"/>
 				</view>
 			</view>
 		</view>
@@ -195,6 +217,13 @@
 			},
 			toCollect() {
 				uni.navigateTo({ url:'/pages/collect/index?from=recycle_order' })
+			},
+			torf(str) {
+				if(str === undefined || str === '' || str === null) {
+					return false
+				} else {
+					return true
+				}
 			}
 		}
 	}
@@ -208,6 +237,11 @@
 	.color_cancel {
 		color: #B0B7B3;
 	}
+	
+	.color_green {
+		color: #43A668
+	}
+	
 	.order {
 		display: flex;
 		flex-direction: column;
@@ -248,8 +282,8 @@
 			&_tips1 {
 				font-family: PingFangSC-Semibold;
 				font-size: 28rpx;
-				font-weight: bolder;
-				color: #43A668;
+				// font-weight: bolder;
+				color: #B0B7B3;
 				letter-spacing: 0;
 				text-align: right;
 				line-height: 42rpx;
@@ -258,7 +292,7 @@
 			&_tips2 {
 				font-family: PingFangSC-Semibold;
 				font-size: 28rpx;
-				font-weight: bold;
+				// font-weight: bold;
 				color: #B0B7B3;
 				letter-spacing: 0;
 				text-align: right;
@@ -282,7 +316,7 @@
 				margin-left: 16rpx;
 				font-family: PingFangSC-Regular;
 				font-size: 28rpx;
-				color: #06180C;
+				color: #7F8581;
 				letter-spacing: 0;
 				line-height: 40rpx;
 			}
@@ -370,20 +404,6 @@
 				&_btn {
 					position: absolute;
 					right: 0;
-					
-					&>button {
-						width: 160rpx;
-						height: 56rpx;
-						border: 1rpx solid #707070;
-						border-radius: 28rpx;
-						font-weight: bold;
-						font-family: PingFangSC-Semibold;
-						font-size: 28rpx;
-						color: #06180C;
-						letter-spacing: 0;
-						text-align: center;
-						line-height: 54rpx;
-					}
 				}
 			}
 		}

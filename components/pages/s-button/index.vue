@@ -1,17 +1,17 @@
 <template>
 	<view>
 		<button class="s_button" 
-				:style="[{
-					height: height + 'rpx', 
-					width: width + 'rpx', 
-					background: background, 
-					borderRadius: height / 2,
-					color: color,
-					fontSize: fontSize + 'rpx',
-					fontWeight: bold ? 'bold' : 'normal'
-				}, customStyle]" 
-				@click="click"
-				v-text="text"/>
+			:style="[{
+				height: height + 'rpx', 
+				width: width + 'rpx', 
+				background: background, 
+				borderRadius: height / 2,
+				color: color,
+				fontSize: fontSize + 'rpx',
+				fontWeight: bold ? 'bold' : 'normal'
+			}, customStyle]" 
+			@click="click"
+			v-text="text"/>
 	</view>
 </template>
 
@@ -57,12 +57,12 @@
 		letter-spacing: 0;
 		// font-weight: normal;
 		
-		&:hover {
-			background: none;
-		}
+		// &:hover {
+		// 	background: none;
+		// }
 		
-		&:checked {
-			background: none;
-		}
+		// &:checked {
+		// 	background: none;
+		// }
 	}
 </style>

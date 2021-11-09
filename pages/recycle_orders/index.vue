@@ -7,7 +7,6 @@
 			<u-empty v-if="isNull" text="订单为空" mode="order" />
 			<view v-for="(item, index) in orders">
 				<view v-if="item.orderStatus == '待上门'">
-					<!-- <order-success :order = "item" @btnClick="toExchange"/> -->
 					<order-init @click="showUpdate(item)" @updateOrder="updateOrderStatus(item.recycleID, -2)"
 						:order="item" />
 				</view>
@@ -21,7 +20,7 @@
 		</scroll-view>
 		<!-- 修改订单弹窗 -->
 		<u-popup v-model="alterPopup" 
-			height="80%"
+			height="85%"
 			mode="bottom" 
 			close-icon="close-circle" 
 			:closeable="true"
@@ -41,6 +40,14 @@
 				</view>
 			</view>
 		</u-popup>
+		<view class="abs_view">
+			<view class="abs_view_btn" @click="toHome">
+				<image src="@/static/order_home.png"></image>
+			</view>
+			<view class="abs_view_btn" @click="toKefu">
+				<image src="@/static/order_kf.png"></image>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -196,6 +203,17 @@
 				let weightInfo = this.updateInfo.expectWeight
 
 				return timeInfo + "," + weightInfo + "," + addressInfo
+			},
+			
+			// 首页
+			toHome() {
+				uni.navigateBack({ delta: getCurrentPages().length });
+				//uni.reLaunch({ url: '/pages/index/index' })
+			},
+			
+			// 客服
+			toKefu() {
+				
 			}
 		}
 	}
@@ -203,6 +221,7 @@
 
 <style lang="scss" scoped>
 	.page {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		height: 100vh;
@@ -212,6 +231,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			background: #ffffff;
 
 			&>text {
 				font-family: PingFangSC-Semibold;
@@ -249,6 +269,34 @@
 
 		&_form {
 			padding: 56rpx 92rpx 48rpx 92rpx;
+		}
+	}
+	
+	.abs_view {
+		position: absolute;
+		bottom: 160rpx;
+		right: 30rpx;
+		
+		&>view:first-child {
+			margin-top: 0rpx;
+		}
+		
+		&_btn {
+			margin-top: 20rpx;
+			width: 100rpx;
+			height: 100rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #FFFFFF;
+			box-shadow: 0 9rpx 26rpx 0 rgba(24,67,40,0.15);
+			border-radius: 40rpx;
+			
+			&>image {
+				width: 100rpx;
+				height: 100rpx;
+				vertical-align: middle;
+			}
 		}
 	}
 </style>
