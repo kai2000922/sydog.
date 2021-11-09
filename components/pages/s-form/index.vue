@@ -161,8 +161,6 @@
 				let weeks = new Array("周日", "周一", "周二", "周三", "周四", "周五", "周六");
 				let day = date.getDate()
 				let week = date.getDay()
-				
-				let HourFlag = (date.getHours() > 16)
 				for (var i = 0; i < 7; i++) {
 					if (day > days) {
 						day = 1;
@@ -171,11 +169,7 @@
 					if (week > 6) {
 						week = 0;	
 					}
-					
-					if(HourFlag) {
-						HourFlag = false
-						day++
-						week++
+					if(date.getHours() > 19) {
 						continue
 					}
 					this.dateList.push({
@@ -183,8 +177,8 @@
 						value: year + '-' + month + '-' + day,
 						children: this.getDayTime(date, i)
 					})
-					day++
-					week++
+					day++;
+					week++;
 				}
 			},
 			

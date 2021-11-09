@@ -2,14 +2,25 @@
 	<view class="content">
 		<view class="top-background" />
 		<step :step-style="{marginBottom: '40rpx'}" :dataList="stepList" />
+		
+		<!-- 轮播图 -->
 		<s-swiper :imgs="imgs"/>
-
+		
+		<!-- 流程 -->
 		<s-flow />
-		<view style="position: relative; overflow: hidden;">
+
+		<!-- 我的订单 -->
+		<view class="sticky">
+			<image @click="toRecycleOrders" src="@/static/wdddicon.png" />
+		</view>
+
+
+
+		<view style="margin-top: -88rpx;">
 			<s-panel :custom-style="{marginTop: '0', marginBottom: '10rpx'}">
 				<view style="padding-left: 32rpx;">
 					<s-form :addressObj.sync="addressInfo" :date.sync="orderInfo.expectTime"
-						:weight.sync="orderInfo.expectWeight" />
+						:weight.sync="orderInfo.expectWeight"/>
 				</view>
 				<view style="display: flex; align-items: center; justify-content: center; margin-top: 48rpx;">
 					<s-button background="#43A668" width="570" height="120" color="#FFFFFF" @click="sendData"
@@ -17,16 +28,18 @@
 				</view>
 			</s-panel>
 			<!-- 首页-我的订单图标 -->
-			<view class="movable_box">
+<!-- 			<view class="movable_box">
 				<movable-area>
 					<movable-view direction="vertical">
 						<image @click="toRecycleOrders" src="@/static/wdddicon.png" />
 					</movable-view>
 				</movable-area>
-			</view>
+			</view> -->
 		</view>
 
+		<!-- 问题 -->
 		<s-problem />
+
 	</view>
 </template>
 
@@ -140,7 +153,7 @@
 			toRecycleOrders() {
 				uni.navigateTo({ url: '/pages/recycle_orders/index' })
 			},
-			
+
 		}
 	}
 </script>
@@ -160,31 +173,49 @@
 		z-index: -1;
 	}
 	
-	.movable_box {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		right: 0rpx;
-		width: 30rpx;
-		
-		&>movable-area {
+	.sticky {
+		position: sticky;
+		margin-left: 624rpx;
+		top: 35%;
+		display: flex;
+		justify-content: flex-end;
+		height: 88rpx;
+		width: 126rpx;
+		border-top-left-radius: 53rpx;
+		border-bottom-left-radius: 53rpx;
+		z-index: 999;
+		overflow: hidden;
+
+		&>image {
 			height: 100%;
 			width: 100%;
-			
-			&>movable-view {
-				height: 88rpx;
-				border-top-left-radius: 53rpx;
-				border-bottom-left-radius: 53rpx;
-				width: 126rpx;
-				margin-left: -96rpx;
-				overflow: hidden;
-				
-				&>image {
-					width: 100%;
-					height: 100%;
-				}
-			}
 		}
-		
 	}
+
+	// .movable_box {
+	// 	position: absolute;
+	// 	top: 0;
+	// 	bottom: 0;
+	// 	right: 0rpx;
+	// 	width: 30rpx;
+		
+	// 	&>movable-area {
+	// 		height: 100%;
+	// 		width: 100%;
+
+	// 		&>movable-view {
+	// 			height: 88rpx;
+	// 			border-top-left-radius: 53rpx;
+	// 			border-bottom-left-radius: 53rpx;
+	// 			width: 126rpx;
+	// 			margin-left: -96rpx;
+	// 			overflow: hidden;
+
+	// 			&>image {
+	// 				width: 100%;
+	// 				height: 100%;
+	// 			}
+	// 		}
+	// 	}
+	// }
 </style>

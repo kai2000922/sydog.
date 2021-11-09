@@ -1,6 +1,6 @@
 <template>
 	<esc-swiper :autoplay="autoplay" 
-			:circular="circular" 
+			:circular="imgList.length >= 3 ? true : false" 
 			:current.sync="current"
 			:size="bannerImage.length" 
 			:plus="plus" 
@@ -43,7 +43,6 @@
 		},
 		computed: {
 			bannerImage() {
-				console.log(this.imgList)
 				return getSwiperList(this.imgList, {
 					circular: this.circular,
 					plus: this.plus
@@ -52,9 +51,10 @@
 		},
 		methods: {
 			loadImg(){
+				this.imgList = []
 				this.$http.get('recycle/goods/getBanner').then(res => {
 					for(let i = 0 ;i < res.data.data.length; i++){
-						this.imgList[i] = {image: BASE_URL + res.data.data[i].filePath};
+						this.imgList.push({image: BASE_URL + res.data.data[i].filePath})
 					}
 				}).catch(err => {
 					console.log(err)
