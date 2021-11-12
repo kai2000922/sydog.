@@ -1,4 +1,5 @@
 import Request from '@/utils/luch-request/index.js'
+import tip from './tip.js'
 
 // const BASE_URL = 'http://49.235.238.110'
 const BASE_URL = 'https://hkkkkk.cn:8080'
@@ -26,12 +27,20 @@ http.validateStatus = (statusCode) => {
 }
 
 http.interceptors.response.use((response) => {
+	if(tip.isLoading) {
+		console.log('loaded');
+		tip.loaded()
+	}
 	/* 对响应成功做点什么 可使用async await 做异步操作*/
-	if (response.data.code !== 0) { // 服务端返回的状态码不等于200，则reject()
+	if (response.data.code !== 0) { // 服务端返回的状态码不等于0，则reject()
+		tip.error(response.data.msg)
 		return Promise.reject(response) // return Promise.reject 可使promise状态进入catch
 	}
 	return response
 }, (response) => {
+	if(tip.isLoading) {
+		tip.loaded()
+	}
 	/*  对响应错误做点什么 （statusCode !== 200）*/
 	console.log(response)
 	return Promise.reject(response)

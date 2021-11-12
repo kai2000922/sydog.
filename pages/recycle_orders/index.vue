@@ -133,12 +133,8 @@
 					this.$http.post('/recycle/recycle/remove', {
 						ids: item.recycleID
 					}).then(res => {
-						this.$tip.loaded()
 						this.$tip.success('删除成功')
 						this.getRecycleOrders()
-					}).catch(err => {
-						this.$tip.loaded()
-						this.$tip.error('删除失败')
 					})
 				} else {
 					this.$tip.toast('订单不存在')
@@ -152,16 +148,8 @@
 				this.$http.post('/recycle/recycle/list', {
 					user: this.$store.getters.userid
 				}).then(res => {
-					console.log("22")
-					console.log(res.data)
-					this.$tip.loaded()
 					this.orders = res.data.rows
-				}).catch(err => {
-					console.log("333" + err)
-					this.$tip.loaded()
-					this.$tip.toast('查询订单失败，请稍后再试！')
 				})
-				console.log("111" + this.orders)
 			},
 
 			/*
@@ -180,12 +168,8 @@
 					param: this.getAddressString(),
 					orderID: recycleID
 				}).then(res => {
-					this.$tip.loaded()
 					this.$tip.success('修改成功！')
 					this.getRecycleOrders()
-				}).catch(err => {
-					this.$tip.loaded()
-					this.$tip.toast('修改失败！' + res.data.msg)
 				}).finally(() => {
 					this.alterPopup = false
 				})
@@ -212,7 +196,6 @@
 			// 首页
 			toHome() {
 				uni.navigateBack({ delta: getCurrentPages().length });
-				//uni.reLaunch({ url: '/pages/index/index' })
 			},
 			
 			// 客服

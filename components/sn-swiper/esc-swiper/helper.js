@@ -11,7 +11,6 @@ export function getSwiperList(list, options = {
 	circular: true,
 	plus: 2
 }) {
-	console.log(options);
 	if (!options.circular) {
 		return list
 	}

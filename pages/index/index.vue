@@ -105,18 +105,11 @@
 			}
 		},
 		onLoad() {
-			uni.setNavigationBarTitle({
-				title: ''
-			})
-			uni.setBackgroundColor({
-				backgroundColor: '#fafffc'
-			})
-			uni.setNavigationBarColor({
-				backgroundColor: '#44aa67'
-			})
+			uni.setNavigationBarTitle({ title: '' })
+			uni.setBackgroundColor({ backgroundColor: '#fafffc' })
+			uni.setNavigationBarColor({ backgroundColor: '#44aa67' })
 		},
 		created() {
-			//if(this.$store.gette)
 			api.getUserId()
 		},
 		methods: {
@@ -136,16 +129,11 @@
 				this.orderInfo.area = this.addressInfo.area
 				this.orderInfo.address = this.addressInfo.prov + this.addressInfo.city + this.addressInfo.area + this
 					.addressInfo.street + this.addressInfo.address
-				console.log(this.orderInfo);
 				this.$tip.loading('请求中')
 				this.$http.post('recycle/recycle/add', this.orderInfo).then(res => {
-					this.$tip.loaded()
 					uni.navigateTo({
 						url: '/pages/collect/index?from=index'
 					})
-				}).catch(err => {
-					this.$tip.loaded()
-					this.$tip.toast(err.data.msg)
 				})
 			},
 			

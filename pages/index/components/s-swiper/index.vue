@@ -62,8 +62,6 @@
 					for(let i = 0 ;i < res.data.data.length; i++){
 						this.imgList.push({image: BASE_URL + res.data.data[i].filePath})
 					}
-				}).catch(err => {
-					console.log(err)
 				})
 			}
 		}

@@ -20,6 +20,14 @@
 		        // "enablePullDownRefresh": false
 		    }
 		    
+		},
+		{
+		    "path": "pages/test/index",
+		    "style": {
+		        // "navigationBarTitleText": "",
+		        // "enablePullDownRefresh": false
+		    }
+		    
 		}
 	],
 	"globalStyle": {
