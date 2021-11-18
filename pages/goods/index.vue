@@ -7,7 +7,7 @@
 				<!-- <goods-spec :label="label.main" @click="show = true" /> -->
 				
 				<view class="flex_colum">
-					<image style="width: 100%;" :lazy-load="true" v-for="(img, index) in descImgs" :src="img" mode="widthFix"/>
+					<image style="width: 100%;" :lazy-load="true" v-for="(img, index) in descImgs" :key="index" :src="img" mode="widthFix"/>
 					<!-- <u-image width="100%" v-for="(img, index) in descImgs" :src="img" mode="widthFix"/> -->
 				</view>
 			</scroll-view>

@@ -16,7 +16,7 @@
 			<image @click="toRecycleOrders" src="@/static/wdddicon.png" />
 		</view>
 
-		<view style="margin-top: -88rpx;">
+		<view class="form">
 			<s-panel :custom-style="{marginTop: '0', marginBottom: '10rpx'}">
 				<view style="padding-left: 32rpx;">
 					<s-form :addressObj.sync="addressInfo" :date.sync="orderInfo.expectTime"
@@ -203,6 +203,10 @@
 			height: 100%;
 			width: 100%;
 		}
+	}
+	
+	.form {
+		margin-top: -88rpx;
 	}
 
 	// .movable_box {

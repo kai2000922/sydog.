@@ -125,7 +125,6 @@
 			align-items: center;
 			font-family: PingFangSC-Regular;
 			font-size: 28rpx;
-			font-weight: bold;
 			color: #06180C;
 			letter-spacing: 0;
 			line-height: 42rpx;

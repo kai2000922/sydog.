@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="page">
 		<view class="title">
 			<view style="height: 100%;" class="flex_row flex_ai_center flex_jc_center">
 				<text class="font_28 font_bold line_42 color_black">订单详情</text>
@@ -50,6 +50,15 @@
 			background="rgba(0, 0 ,0 , 0)"
 			color="#06180C"
 			@click="back"/>
+			
+		<view class="abs_view">
+			<view class="abs_view_btn" @click="toHome">
+				<image src="@/static/order_home.png"></image>
+			</view>
+			<view class="abs_view_btn">
+				<contact-button tnt-inst-id="n8c_Hb8w" scene="SCE01205269" color="#30BB63" size="50" icon="https://hkkkkk.cn:8080/profile/upload/2021/11/09/2a1f5a55-11a1-4d27-bcaa-f15416cfa50a.png"/>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -205,6 +214,10 @@
 </script>
 
 <style lang="scss" scoped>
+	.page {
+		position: relative;
+		min-height: 100vh;
+	}
 	// .info_color: {
 	// 	color: #7F8581;
 	// }
@@ -241,6 +254,34 @@
 			width: 40rpx;
 			height: 40rpx;
 			vertical-align: middle;
+		}
+	}
+	
+	.abs_view {
+		position: absolute;
+		bottom: 80rpx;
+		right: 30rpx;
+		
+		&>view:first-child {
+			margin-top: 0rpx;
+		}
+		
+		&_btn {
+			margin-top: 20rpx;
+			width: 100rpx;
+			height: 100rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #FFFFFF;
+			box-shadow: 0 9rpx 26rpx 0 rgba(24,67,40,0.15);
+			border-radius: 40rpx;
+			
+			&>image {
+				width: 100rpx;
+				height: 100rpx;
+				vertical-align: middle;
+			}
 		}
 	}
 </style>

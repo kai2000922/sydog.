@@ -19,7 +19,7 @@
 				<text  class="font_24 line_36 color_black">{{goodsType}}</text>
 			</view>
 			<view style="margin-top: 30rpx;">
-				<s-tag width="92" height="36" text="付邮领" color="#F7970D" fontColor="#06180C" />
+				<s-tag width="92" height="36" text="付邮领" color="#43A668" fontColor="#43A668" />
 			</view>
 			<view style="flex: 1;" class="font_28 line_42 color_black flex_row flex_ai_end flex_jc_end">
 				<text>{{ '运费：¥' + expressPrice }}</text>
