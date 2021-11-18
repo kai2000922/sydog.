@@ -1,6 +1,6 @@
 <template>
 	<s-panel>
-		<order-briefly :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="item.zfPrice" :refund-text="text.img"/>
+		<order-briefly :goodsID="goods.goodID" :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="item.zfPrice" :refund-text="text.img"/>
 		<!-- 订单状态 -->
 		<view class="express flex_row flex_ai_center" @click="toDetails">
 			<image src="@/static/che.png"></image>
@@ -10,8 +10,8 @@
 		<!-- 按钮行 -->
 		<view style="margin-top: 40rpx; justify-content: space-around;" class="flex_row">
 			<!-- <contact-button tnt-inst-id="企业编码" scene="聊天窗编码" size="咨询按钮大小" color="咨询按钮颜色" icon="咨询按钮图片url" /> -->
-			<s-button background="#ffffff" color="#06180C" width="184" height="64" text="联系客服" fontSize="28"
-				:custom-style="{border: '1px solid #707070'}"/>
+			<s-button background="#ffffff" color="#06180C" width="184" height="64"  fontSize="28"
+				:custom-style="{border: '0px solid #707070'}"/>
 			<s-button v-if="!waitPay" background="#ffffff" color="#06180C" width="184" height="64" :text="text.refund" fontSize="28" 
 				:custom-style="{border: '1px solid #707070'}" @click="tkClik" />
 			<s-button v-if="!waitPay" background="#ffffff" color="#06180C" width="184" height="64" text="查看物流" fontSize="28"

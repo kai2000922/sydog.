@@ -1,7 +1,7 @@
 <template>
 	<view class="flex_row">
 		<view class="orderImg">
-			<u-image width="100%" height="100%" :src="img"/>
+			<u-image width="100%" height="100%" :src="img" @click="toGoods"/>
 			<view v-if="refundText != ''" class="refund flex_colum flex_ai_center flex_jc_center">
 				<image src="@/static/tuikuan.png" />
 				<text class="font_24 line_36">{{ refundText }}</text>
@@ -9,7 +9,7 @@
 		</view>
 		<view style="flex: 1; margin-left: 16rpx;" class="flex_colum">
 			<view class="flex_row flex_jc_between flex_ai_center">
-				<text class="font_28 line_42 font_bold color_black">{{ goodsName }}</text>
+				<text class="font_28 line_42 font_bold color_black" @click="toGoods">{{ goodsName }}</text>
 				<view class="font_28 line_42">
 					<text class="color_grey hx">{{ '¥' + hxPrice }}</text>
 					<text style="margin-left: 8rpx;" class="color_black">¥0</text>
@@ -68,6 +68,12 @@
 			refundText: {
 				type: String,
 				default: ''
+			},
+			goodsID: Number
+		},
+		methods:{
+			toGoods(){
+				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + this.goodsID + '&from=shopping' })
 			}
 		}
 	}

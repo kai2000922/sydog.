@@ -1,16 +1,16 @@
 <template>
 	<esc-swiper :autoplay="autoplay" 
-			:circular="circular" 
+			:circular="imgList.length >= 3 ? true : false" 
 			:current.sync="current"
 			:size="bannerImage.length" 
-			:plus="plus"
-			:width="width"
+			:plus="plus" 
+			:width="width" 
 			:height="height"
 			:itemWidth="itemWidth" 
 			:space="space">
 		<esc-swiper-item v-for="(item, index) in bannerImage" :index="index" :key="index">
-			<view class="swiper-item">
-				<u-image width="100%" height="100%" :src="item.image" />
+			<view class="swiper-item"  @click="toGoods(item)">
+				<image :src="item.image" class="item-image" />
 			</view>
 		</esc-swiper-item>
 	</esc-swiper>
@@ -18,7 +18,7 @@
 
 <script>
 	import {getSwiperList} from '@/components/sn-swiper/esc-swiper/helper.js';
-	import {BASE_URL} from '@/utils/request.js'
+	import {BASE_URL} from '../../../../utils/request.js'
 	
 	export default {
 		created() {
@@ -37,12 +37,6 @@
 				imgList: [
 					{
 						image: 'https://picsum.photos/750/300?blur=1'
-					},
-					{
-						image: 'https://picsum.photos/seed/picsum/750/300'
-					},
-					{
-						image: 'https://picsum.photos/750/300'
 					}
 				]
 			}
@@ -57,12 +51,19 @@
 		},
 		methods: {
 			loadImg(){
+				this.imgList = []
 				this.$http.get('recycle/goods/getBanner').then(res => {
-					this.imgList = []
 					for(let i = 0 ;i < res.data.data.length; i++){
 						this.imgList.push({image: BASE_URL + res.data.data[i].filePath})
 					}
+				}).catch(err => {
+					console.log(err)
 				})
+			},
+			toGoods(item){
+				if (item.image.indexOf("23244704-44f3-4aef-8569-6bd107c9b8a0") != -1){
+					uni.navigateTo({ url: '/pages/goods/index?goodsID=' + '13' + '&from=shopping' })
+				}
 			}
 		}
 	}

@@ -202,6 +202,7 @@
 			getRecycleList() {
 				this.$tip.loading()
 				this.recycleList = []
+				console.log(this.$store.getters.userid)
 				this.$http.post('/recycle/recycle/list', {user: this.$store.getters.userid}).then(res => {
 					this.recycleList = res.data.rows.reverse()
 				})
@@ -288,7 +289,7 @@
 			getOrderList() {
 				this.$tip.loading()
 				this.orderList = []
-				this.$http.post('/recycle/orders/list',{ user: this.$store.getters.userid }).then(res => {
+				this.$http.post('/recycle/orders/list',{ userId: this.$store.getters.userid }).then(res => {
 					this.orderList = res.data.rows.reverse()
 				})
 			},
