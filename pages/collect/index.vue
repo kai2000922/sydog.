@@ -8,7 +8,7 @@
 				<image class="ok_img" src="@/static/ok.png"></image>
 				<text class="ok_title">预约旧衣回收成功</text>
 				<text class="ok_tips">快递员将按您要求的时间上门</text>
-				<s-button width="600" height="120" text="查看订单"
+				<s-button width="600" height="120" text="查看订单" background="#ffffff"
 					:custom-style="{border: '1px solid #43A668', marginTop: '40rpx', marginBottom: '10rpx'}"
 					color="#43A668" @click="toRecycleOrders" />
 			</view>
@@ -27,9 +27,14 @@
 		</s-panel>
 
 		<s-panel>
-			<view class="flex_row flex_ai_center">
-				<s-dot size="16" />
-				<text style="margin-left: 16rpx;" class="font_36 line_54 font_bold color_black">兑换好礼专区</text>
+			<view class="flex_row flex_ai_center flex_jc_between">
+				<view class="flex_row flex_ai_center">
+					<s-dot size="16" />
+					<text style="margin-left: 16rpx;" class="font_36 line_54 font_bold color_black">兑换好礼专区</text>
+				</view>
+				<view>
+					<text class="font_28 line_42 color_green">称重后即可兑换</text>
+				</view>
 			</view>
 			<view class="flex_row flex_jc_between flex_warp">
 				<goods-item v-for="(item, index) in goodsList" :key="index" :item="item"

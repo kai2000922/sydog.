@@ -146,11 +146,11 @@
 				}
 				this.orderNumQuery.title = this.goods.goodsName
 				if(this.orderQuery.ordersID != undefined) {
-					// this.orderNumQuery.price = this.orderQuery.zfPrice
-					this.orderNumQuery.price = 0.01
+					this.orderNumQuery.price = this.orderQuery.zfPrice
+					// this.orderNumQuery.price = 0.01
 				} else {
-					// this.orderNumQuery.price = this.goods.zfPrice
-					this.orderNumQuery.price = 0.01
+					this.orderNumQuery.price = this.goods.zfPrice
+					// this.orderNumQuery.price = 0.01
 				}
 				this.orderNumQuery.userID = this.$store.getters.userid
 				this.$tip.loading()
