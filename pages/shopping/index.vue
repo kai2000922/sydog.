@@ -143,6 +143,8 @@
 	}
 
 	.title {
+		position: sticky;
+		top: 0rpx;
 		padding: 30rpx 0;
 		font-family: PingFangSC-Semibold;
 		font-size: 28rpx;
@@ -150,6 +152,8 @@
 		color: #FFFFFF;
 		letter-spacing: 0;
 		line-height: 42rpx;
+		background: #44aa67;
+		z-index: 999;
 	}
 
 	.swiper {

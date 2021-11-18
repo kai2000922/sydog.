@@ -1,7 +1,9 @@
 <template>
 	<view>
-		<view class="title flex_row flex_ai_center flex_jc_center">
-			<text class="font_28 font_bold line_42 color_black">订单详情</text>
+		<view class="title">
+			<view style="height: 100%;" class="flex_row flex_ai_center flex_jc_center">
+				<text class="font_28 font_bold line_42 color_black">订单详情</text>
+			</view>
 		</view>
 		<s-panel>
 			<order-briefly :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="item.zfPrice" :refund-text="text.img"/>
@@ -33,9 +35,12 @@
 				<s-button background="#ffffff" color="#06180C" width="184" height="64" text="联系客服" fontSize="28"
 					:custom-style="{border: '1px solid #707070'}"/>
 				<s-button background="#ffffff" color="#06180C" width="184" height="64" :text="text.refund" fontSize="28"
-					:custom-style="{border: '1px solid #707070', marginLeft: '24rpx'}" @click="tkClick" />
+					:custom-style="{border: '1px solid #707070', marginLeft: '24rpx'}" @click="refund" />
 			</view>
 		</s-panel>
+		
+		<!-- 退款弹窗 -->
+		<refund :refund-show.sync="refundPopup" :ok-show.sync="refundOkPopup" :tkObj="tkObj"  @tk="tk"/>
 		
 		<s-button
 			width="600"
@@ -51,6 +56,7 @@
 <script>
 	import sPanel from '@/components/pages/s-panel'
 	import sButton from '@/components/pages/s-button'
+	import refund from '@/components/pages/refund'
 	
 	import orderBriefly from '@/components/pages/order-briefly'
 
@@ -60,7 +66,8 @@
 		components: {
 			sPanel,
 			sButton,
-			orderBriefly
+			orderBriefly,
+			refund
 		},
 		data() {
 			return {
@@ -72,10 +79,26 @@
 					logistics: '',
 					refund: '',
 				},
+				// 需要退款的订单
+				tkObj: {
+					// 图片
+					img: '',
+					// 商品名
+					goodsName: '商品',
+					// 规格
+					goodsType: '规格',
+					// 画线价格
+					hxPrice: 30,
+					// 运费
+					expressPrice: 10,
+					// 支付价格
+					zfPrice: 10
+				},
 				// 退款弹出层
 				refundPopup: false,
 				// 退款成功弹出层
 				refundOkPopup: false,
+				tkQuery: undefined,
 			}
 		},
 		onLoad(option) {
@@ -134,12 +157,34 @@
 				uni.navigateBack({ delta: 1 })
 			},
 			
-			// 退款按钮点击
-			tkClick() {
+			// 退款弹窗
+			refund() {
 				if(this.order.ordersStatus === '退款中' || this.order.ordersStatus === '已退款') {
 					return
 				}
 				if(this.order.ordersStatus === '未发货' || this.order.ordersStatus === '揽件中') {
+					let tkObj = {
+						img: api.getImgUrl(this.goods.images),
+						goodsName: this.goods.goodsName,
+						goodsType: this.goods.goodsType,
+						hxPrice: this.goods.hxPrice,
+						expressPrice: this.goods.expressPrice,
+						zfPrice: this.order.zfPrice,
+					}
+					let tkQuery = {
+						ordersID: this.order.ordersID,
+						ordersNum: this.order.ordersNum,
+						goodsId: this.order.goodsId,
+						ordersStatus: '退款中',
+						tradeNo: this.order.tradeNo,
+						userAddress: this.order.userAddress,
+						userId: this.order.userId,
+						userName: this.order.userName,
+						userPhone: this.order.userPhone,
+						zfPrice: this.order.zfPrice
+					}
+					this.tkObj = tkObj
+					this.tkQuery = tkQuery
 					this.refundPopup = true
 				} else {
 					this.$tip.toast('已发货，请联系客服退款')
@@ -148,9 +193,13 @@
 			
 			// 退款
 			tk() {
-				this.refundPopup = false
-				this.refundOkPopup = true
-			}
+				this.$tip.loading('退款中...')
+				this.$http.post('/recycle/orders/refund', this.tkQuery).then(res => {
+					this.refundPopup = false
+					this.refundOkPopup = true
+					this.getOrderList()
+				})
+			},
 		}
 	}
 </script>
@@ -161,9 +210,12 @@
 	// }
 	
 	.title {
+		position: sticky;
+		top: 0rpx;
 		width: 750rpx;
 		height: 114rpx;
 		background: #FFFFFF;
+		z-index: 999;
 	}
 	
 	.express {

@@ -17,7 +17,7 @@
 		<normal v-if="type !== 'success'" :type="type" :expectTime="expectTime" :courier="item.courier" @timeClick="formChange"/>
 
 		<dot-line :height="20" :itemNumber="25"
-			:customStyle="{marginRight: '-30rpx', marginLeft: '-46rpx', marginTop: '46rpx', opacity: '0.7'}"
+			:customStyle="{marginRight: '-30rpx', marginLeft: '-30rpx', marginTop: '46rpx', opacity: '0.7'}"
 			:lineStyle="{background: type === 'cancel' ? '#B0B7B3' : '#43A668'}" />
 		
 		<view class="flex_colum font_24 line_36" :class="type === 'cancel' ? 'color_c' : 'color_n'">
