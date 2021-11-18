@@ -3,7 +3,7 @@ import tip from './tip.js'
 
 // const BASE_URL = 'http://49.235.238.110'
 const BASE_URL = 'https://hkkkkk.cn:8080'
-// const BASE_URL = 'https://192.168.0.101:8080'
+// const BASE_URL = 'https://192.168.8.60:8080'
 
 const http = new Request()
 http.setConfig((config) => {
@@ -28,7 +28,6 @@ http.validateStatus = (statusCode) => {
 
 http.interceptors.response.use((response) => {
 	if(tip.isLoading) {
-		console.log('loaded');
 		tip.loaded()
 	}
 	/* 对响应成功做点什么 可使用async await 做异步操作*/

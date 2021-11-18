@@ -6,15 +6,17 @@
 		<!-- 轮播图 -->
 		<s-swiper/>
 		
+		<s-goods-swiper />
+		
 		<!-- 流程 -->
 		<s-flow />
+		
+		
 
 		<!-- 我的订单 -->
 		<view class="sticky">
 			<image @click="toRecycleOrders" src="@/static/wdddicon.png" />
 		</view>
-
-
 
 		<view style="margin-top: -88rpx;">
 			<s-panel :custom-style="{marginTop: '0', marginBottom: '10rpx'}">
@@ -46,6 +48,7 @@
 <script>
 	import step from '@/components/pages/step'
 	import sSwiper from './components/s-swiper'
+	import sGoodsSwiper from './components/s-goods-swiper'
 	import sFlow from './components/s-flow'
 	import sPanel from '@/components/pages/s-panel'
 	import sForm from '@/components/pages/s-form'
@@ -58,6 +61,7 @@
 		components: {
 			step,
 			sSwiper,
+			sGoodsSwiper,
 			sFlow,
 			sPanel,
 			sForm,

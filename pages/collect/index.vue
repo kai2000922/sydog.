@@ -1,23 +1,19 @@
 <template>
 	<view class="container">
-		<view class="top-background"/>
+		<view class="top-background" />
 		<step :dataList="stepList" />
-		
+
 		<s-panel>
 			<view class="ok">
 				<image class="ok_img" src="@/static/ok.png"></image>
 				<text class="ok_title">预约旧衣回收成功</text>
 				<text class="ok_tips">快递员将按您要求的时间上门</text>
-				<s-button
-					width="600"
-					height="120"
-					text="查看订单"
+				<s-button width="600" height="120" text="查看订单"
 					:custom-style="{border: '1px solid #43A668', marginTop: '40rpx', marginBottom: '10rpx'}"
-					color="#43A668"
-					@click="toRecycleOrders"/>
+					color="#43A668" @click="toRecycleOrders" />
 			</view>
 		</s-panel>
-		
+
 		<s-panel>
 			<view class="weigh">
 				<view class="weigh_title_row">
@@ -29,6 +25,19 @@
 				</view>
 			</view>
 		</s-panel>
+
+		<s-panel>
+			<view class="flex_row flex_ai_center">
+				<s-dot size="16" />
+				<text style="margin-left: 16rpx;" class="font_36 line_54 font_bold color_black">兑换好礼专区</text>
+			</view>
+			<view class="flex_row flex_jc_between flex_warp">
+				<goods-item v-for="(item, index) in goodsList" :key="index" :item="item"
+					:custom-style="index >= 2 ? {marginTop: '56rpx'} : {marginTop: '30rpx'}" @goodsClick="toGoods" />
+			</view>
+			<u-loadmore margin-top="20" :status="goodsStatus" :load-text="goodsLoadText"
+				@loadmore="goodsListErrorHandle" />
+		</s-panel>
 	</view>
 </template>
 
@@ -36,12 +45,16 @@
 	import step from '@/components/pages/step'
 	import sPanel from '@/components/pages/s-panel'
 	import sButton from '@/components/pages/s-button'
-	
+	import sDot from '@/components/pages/s-dot'
+	import goodsItem from './components/goods-item'
+
 	export default {
 		components: {
 			step,
 			sPanel,
 			sButton,
+			sDot,
+			goodsItem
 		},
 		data() {
 			return {
@@ -67,7 +80,19 @@
 						title: '完成',
 						subTitle: '回收完成'
 					}
-				]
+				],
+				goodsRequest: {
+					pageSize: 10,
+					pageNum: 0,
+					over: false
+				},
+				goodsList: [],
+				goodsStatus: 'loading',
+				goodsLoadText: {
+					loadmore: '重新加载',
+					loading: '正在加载...',
+					nomore: '没有更多了'
+				},
 			}
 		},
 		onLoad(option) {
@@ -75,17 +100,43 @@
 			uni.setBackgroundColor({backgroundColor: '#fafffc'})
 			uni.setNavigationBarColor({backgroundColor: '#44aa67'})
 			this.from = option.from
+			this.getGoodsList()
+		},
+		onReachBottom() {
+			if (!this.goodsRequest.over) {
+				this.getGoodsList()
+			}
 		},
 		methods: {
+			// 获取商品列表
+			getGoodsList() {
+				this.goodsStatus = 'loading'
+				this.goodsRequest.pageNum++
+				this.$http.post('/recycle/goods/list', this.goodsRequest).then(res => {
+					let rows = res.data.rows
+					if (rows.length < this.goodsRequest.pageSize) {
+						this.goodsRequest.over = true
+					}
+					if (rows.length > 0) {
+						this.goodsList = this.goodsList.concat(rows)
+					}
+				}).catch(err => {
+					this.goodsStatus = 'loadmore'
+				}).finally(() => {
+					this.goodsStatus = 'nomore'
+				})
+			},
+			
+			// 跳转到商品详情页
+			toGoods(goodsID) {
+				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + goodsID + '&from=collect' })
+			},
+			
 			toRecycleOrders() {
-				if(this.from === 'recycle_order') {
-					uni.navigateBack({
-					    delta: 1
-					});
+				if (this.from === 'recycle_order') {
+					uni.navigateBack({ delta: 1 });
 				} else {
-					uni.navigateTo({
-						url:'/pages/recycle_orders/index'
-					})
+					uni.navigateTo({ url: '/pages/recycle_orders/index' })
 				}
 			}
 		}
@@ -96,7 +147,7 @@
 	.container {
 		position: relative;
 	}
-	
+
 	.top-background {
 		position: absolute;
 		left: 0;
@@ -106,19 +157,19 @@
 		background: #44aa67;
 		z-index: -1;
 	}
-	
+
 	.ok {
 		padding-top: 30rpx;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-			
+
 		&_img {
 			width: 116rpx;
 			height: 116rpx;
 		}
-		
+
 		&_title {
 			margin-top: 24rpx;
 			font-family: PingFangSC-Semibold;
@@ -128,7 +179,7 @@
 			letter-spacing: 0;
 			line-height: 54rpx;
 		}
-		
+
 		&_tips {
 			margin-top: 8rpx;
 			font-family: PingFangSC-Regular;
@@ -137,7 +188,7 @@
 			letter-spacing: 0;
 			line-height: 36rpx;
 		}
-		
+
 		&_btn {
 			margin-top: 40rpx;
 			margin-bottom: 10rpx;
@@ -154,16 +205,16 @@
 			line-height: 118rpx;
 		}
 	}
-	
+
 	.weigh {
 		display: flex;
 		flex-direction: column;
-		
+
 		&_title_row {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			
+
 			&_title {
 				flex: 1;
 				display: flex;
@@ -174,7 +225,7 @@
 				color: #06180C;
 				letter-spacing: 0;
 				line-height: 54rpx;
-				
+
 				&::before {
 					content: '';
 					display: block;
@@ -185,7 +236,7 @@
 					background: #FA9E19;
 				}
 			}
-			
+
 			&_weigh {
 				font-family: PingFangSC-Semibold;
 				font-size: 36rpx;
@@ -195,7 +246,7 @@
 				line-height: 54rpx;
 			}
 		}
-		
+
 		&_tips {
 			margin-top: 8rpx;
 			padding-left: 32rpx;
@@ -206,12 +257,12 @@
 			line-height: 36rpx;
 		}
 	}
-	
+
 	.title_row {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		
+
 		.title {
 			flex: 1;
 			display: flex;
@@ -221,7 +272,7 @@
 			font-weight: bold;
 			color: #06180C;
 			letter-spacing: 0;
-			
+
 			&::before {
 				content: '';
 				display: block;
@@ -232,7 +283,7 @@
 				background: #FA9E19;
 			}
 		}
-		
+
 		.extra {
 			font-family: PingFangSC-Regular;
 			font-size: 28rpx;
@@ -241,6 +292,4 @@
 			letter-spacing: 0;
 		}
 	}
-	
-	
 </style>

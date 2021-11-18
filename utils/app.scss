@@ -5,3 +5,90 @@
 	letter-spacing: 0;
 	text-align: right;
 }
+
+.mt_20 {
+	margin-top: 20rpx;
+}
+
+.text_ellipsis {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.line_36 {
+	line-height: 36rpx;
+}
+
+.line_42 {
+	line-height: 42rpx;
+}
+
+.line_54 {
+	line-height: 54rpx;
+}
+
+.font_24 {
+	font-family: PingFangSC-Regular;
+	font-size: 24rpx;
+}
+
+.font_28 {
+	font-family: PingFangSC-Regular;
+	font-size: 28rpx;
+}
+
+.font_36 {
+	font-family: PingFangSC-Regular;
+	font-size: 36rpx;
+}
+
+.font_bold {
+	font-weight: bold;
+}
+
+.color_black {
+	color: #06180C;
+}
+
+.color_grey {
+	color: #B0B7B3;
+}
+
+.color_green {
+		color: #43A668
+}
+
+.flex_warp {
+	flex-wrap: wrap;
+}
+
+.flex_ai_center {
+	align-items: center;
+}
+
+.flex_ai_end {
+	align-items: flex-end;
+}
+
+.flex_jc_end {
+	justify-content: flex-end;
+}
+
+.flex_jc_between {
+	justify-content: space-between;
+}
+
+.flex_jc_center {
+	justify-content: center;
+}
+
+.flex_row {
+	display: flex;
+	flex-direction: row;
+}
+
+.flex_colum {
+	display: flex;
+	flex-direction: column;
+}

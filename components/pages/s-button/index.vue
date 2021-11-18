@@ -10,6 +10,7 @@
 				fontSize: fontSize + 'rpx',
 				fontWeight: bold ? 'bold' : 'normal'
 			}, customStyle]" 
+			:open-type="openType"
 			@click="click"
 			v-text="text"/>
 	</view>
@@ -36,6 +37,10 @@
 				default: () => ({
 					boxShadow: '0 2rpx 16rpx 0 rgba(67, 166, 104, 0.56)'
 				})
+			},
+			openType: {
+				type: String,
+				default: ''
 			}
 		},
 		methods: {

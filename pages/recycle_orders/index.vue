@@ -1,50 +1,52 @@
 <template>
-	<view class="page">
-		<view class="page_title">
-			<text>旧衣回收订单</text>
-		</view>
-		<scroll-view style="flex: 1;" enableBackToTop="true" scroll-y>
-			<u-empty v-if="isNull" text="订单为空" mode="order" />
-			<view v-for="(item, index) in orders">
-				<view v-if="item.orderStatus == '待上门'">
-					<order-init @click="showUpdate(item)" @updateOrder="updateOrderStatus(item.recycleID, -2)"
-						:order="item" />
-				</view>
-				<view v-else-if="item.orderStatus == '邮寄中'">
-					<order-success :order="item" />
-				</view>
-				<view v-else-if="item.orderStatus == '已取消'">
-					<order-init @deleteOrder="deleteOrder(item)" :order="item" :cancels="true" />
-				</view>
-			</view>
-		</scroll-view>
+	<view class="page flex_colum">
+		<liuyuno-tabs :config="{height: '110rpx', lineHeight: '110rpx', underLineBottom: '26rpx'}"
+			:tabData="tabs.list" :activeIndex="tabs.index" @tabClick="onswiperchange" />
+		<swiper class="page_swiper" :current="tabs.index" @change="onswiperchange">
+			<swiper-item class="page_swiper_item">
+				<scroll-view class="page_swiper_item_view" style="flex: 1;" enableBackToTop="true" scroll-y>
+					<u-empty v-if="isNull.recycle" text="订单为空" mode="order" />
+					<view v-for="(item, index) in recycleList">
+						<recyle :item="item" @formChange="showUpdate" @update="updateRecycle(item.recycleID, -2)" @delete="deleteRecycle(item)" @sto="toEnd(item.actualWeight)"/>
+					</view>
+				</scroll-view>
+			</swiper-item>
+			<swiper-item class="page_swiper_item">
+				<scroll-view class="page_swiper_item_view" style="flex: 1;" enableBackToTop="true" scroll-y>
+					<u-empty v-if="isNull.order" text="订单为空" mode="order"/>
+					<order 
+						v-for="(item, index) in orderList" 
+						:key="index" 
+						:item="item"
+						@zfClick="toPayment"
+						@tkClick="refund"/>
+				</scroll-view>
+			</swiper-item>
+		</swiper>
+		
 		<!-- 修改订单弹窗 -->
-		<u-popup v-model="alterPopup" 
-			height="85%"
-			mode="bottom" 
-			close-icon="close-circle" 
-			:closeable="true"
-			close-icon-color="#B0B7B3">
+		<u-popup v-model="alterPopup" height="85%" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3">
 			<view class="alter">
 				<view class="alter_title">
 					<text>修改订单信息</text>
 				</view>
 				<view class="alter_form">
-					<s-form :addressObj.sync="updateInfo.expectAddress" :date.sync="updateInfo.expectTime"
-						:weight.sync="updateInfo.expectWeight" :address="updateInfo.expectAddressLabel"
-						:contacts="updateInfo.contacts" />
+					<s-form :addressObj.sync="updateInfo.expectAddress" :date.sync="updateInfo.expectTime" :weight.sync="updateInfo.expectWeight" :address="updateInfo.expectAddressLabel" :contacts="updateInfo.contacts" />
 				</view>
 				<view style="display: flex; align-items: center; justify-content: center; margin-bottom: 48rpx;">
-					<s-button background="#43A668" width="690" height="120" color="#FFFFFF" :custom-style="{}"
-						text="确认修改" @click="updateOrderStatus(updateInfo.recycleID, -1)" />
+					<s-button background="#43A668" width="690" height="120" color="#FFFFFF" :custom-style="{}" text="确认修改" @click="updateRecycle(updateInfo.recycleID, -1)" />
 				</view>
 			</view>
 		</u-popup>
+		
+		<!-- 退款弹窗 -->
+		<refund :refund-show.sync="refundPopup" :ok-show.sync="refundOkPopup" :tkObj="tkObj"  @tk="tk"/>
+		
 		<view class="abs_view">
 			<view class="abs_view_btn" @click="toHome">
 				<image src="@/static/order_home.png"></image>
 			</view>
-			<view class="abs_view_btn" @click="toKefu">
+			<view class="abs_view_btn">
 				<contact-button tnt-inst-id="n8c_Hb8w" scene="SCE01205269" color="#30BB63" size="50" icon="https://hkkkkk.cn:8080/profile/upload/2021/11/09/2a1f5a55-11a1-4d27-bcaa-f15416cfa50a.png"/>
 			</view>
 		</view>
@@ -55,9 +57,10 @@
 	import dotLine from '@/components/pages/s-dot-line'
 	import sPanel from '@/components/pages/s-panel'
 	import sButton from '@/components/pages/s-button'
-	import orderInit from './components/order-init'
 	import sForm from '@/components/pages/s-form'
-	import orderSuccess from './components/order-success'
+	import recyle from './components/recycle'
+	import order from './components/order'
+	import refund from '@/components/pages/refund'
 
 	import api from '@/utils/api.js'
 
@@ -67,15 +70,29 @@
 			sPanel,
 			sButton,
 			sForm,
-			orderInit,
-			orderSuccess,
+			recyle,
+			order,
+			refund
 		},
 		data() {
 			return {
+				// tabs
+				tabs: {
+					index: 0,
+					list: [
+						'旧衣回收订单',
+						'商城订单'
+					]
+				},
 				// 回收订单数据
-				orders: [],
+				recycleList: [],
+				// 商品订单
+				orderList: [],
 				// 数据为空
-				isNull: true,
+				isNull: {
+					recycle: true,
+					order: true
+				},
 				// 修改弹出层
 				alterPopup: false,
 				// 修改表单
@@ -87,6 +104,26 @@
 					expectAddressLabel: '',
 					expectAddress: {}
 				},
+				// 退款弹出层
+				refundPopup: false,
+				// 退款成功弹出层
+				refundOkPopup: false,
+				// 需要退款的订单
+				tkObj: {
+					// 图片
+					img: '',
+					// 商品名
+					goodsName: '商品',
+					// 规格
+					goodsType: '规格',
+					// 画线价格
+					hxPrice: 30,
+					// 运费
+					expressPrice: 10,
+					// 支付价格
+					zfPrice: 10
+				},
+				tkQuery: undefined,
 			}
 		},
 		onLoad() {
@@ -95,27 +132,49 @@
 			uni.setNavigationBarColor({backgroundColor: '#FFFFFF'})
 		},
 		onShow() {
-			if (this.$store.getters.userid === '') {
+			if(this.$store.getters.userid === '') {
 				api.getUserId().then(() => {
-					this.getRecycleOrders()
+					this.getRecycleList()
+					this.getOrderList()
 				})
 			} else {
-				this.getRecycleOrders()
+				this.getRecycleList()
+				this.getOrderList()
 			}
 		},
 		watch: {
-			orders: {
+			recycleList: {
 				handler(newValue, oldValue) {
-					if (this.orders.length === 0) {
-						this.isNull = true
+					if (this.recycleList.length === 0) {
+						this.isNull.recycle = true
 					} else {
-						this.isNull = false
+						this.isNull.recycle = false
+					}
+				},
+				deep: true
+			},
+			orderList: {
+				handler(newValue, oldValue) {
+					if(this.orderList.length === 0) {
+						this.isNull.order = true
+					} else {
+						this.isNull.order = false
 					}
 				},
 				deep: true
 			}
 		},
 		methods: {
+			// 标题页改变
+			onswiperchange(e) {
+				if (Object.prototype.toString.call(e) === '[object Object]') {
+					let index = e.target.current || e.detail.current;
+					this.tabs.index = index;
+				} else {
+					this.tabs.index = e;
+				}
+			},
+			
 			// 修改弹窗弹出
 			showUpdate(item) {
 				this.updateInfo.recycleID = item.recycleID
@@ -127,14 +186,12 @@
 			},
 
 			// 删除回收订单
-			deleteOrder(item) {
+			deleteRecycle(item) {
 				this.$tip.loading('删除中')
 				if (item.recycleID !== '') {
-					this.$http.post('/recycle/recycle/remove', {
-						ids: item.recycleID
-					}).then(res => {
+					this.$http.post('/recycle/recycle/remove', {ids: item.recycleID}).then(res => {
 						this.$tip.success('删除成功')
-						this.getRecycleOrders()
+						this.getRecycleList()
 					})
 				} else {
 					this.$tip.toast('订单不存在')
@@ -142,14 +199,48 @@
 			},
 
 			//获取回收订单
-			getRecycleOrders() {
+			getRecycleList() {
 				this.$tip.loading()
-				this.orders = []
-				this.$http.post('/recycle/recycle/list', {
-					user: this.$store.getters.userid
-				}).then(res => {
-					this.orders = res.data.rows
+				this.recycleList = []
+				this.$http.post('/recycle/recycle/list', {user: this.$store.getters.userid}).then(res => {
+					this.recycleList = res.data.rows.reverse()
 				})
+				// this.recycleList = [
+				// 	{
+				// 		searchValue: null, 
+				// 		createBy: null,
+				// 		createTime: "2021-11-17 19:46:15",
+				// 		updateBy: null,
+				// 		updateTime: null,
+				// 		remark: null,
+				// 		params: {},
+				// 		recycleID: 199,
+				// 		user: "2088422584081420",
+				// 		name: "Alpha",
+				// 		prov: "浙江省",
+				// 		city: "杭州市",
+				// 		area: "西湖区",
+				// 		address: "浙江省杭州市西湖区西溪路阿里巴巴西溪园区 不放自提柜 送到家 送到家 送到家 送到家",
+				// 		phone: "158***5632",
+				// 		expectWeight: 17,
+				// 		actualWeight: 18,
+				// 		isNow: 1,
+				// 		expectTime: "2021-11-17 09:00:00",
+				// 		receiveAddId: 5,
+				// 		expressNum: null,
+				// 		expressPrice: null,
+				// 		expressVlo: null,
+				// 		expressStatus: null,
+				// 		expressUpdateTime: null,
+				// 		courier: '圆通 张三 13258632456',
+				// 		channelNum: "FYSD1637149574510",
+				// 		channelSource: null,
+				// 		orderStatus: "邮寄中",
+				// 		cacelReason: "等待发送订单",
+				// 		billingTime: null,
+				// 		orderNum: "1637149574510",
+				// 	}
+				// ]
 			},
 
 			/*
@@ -161,7 +252,7 @@
 				3. 修改地址 重新获取后拼接成的字符串，由
 				省份 城市 地区 详细地址 姓名 联系电话 6部分组成，中间用英文";"分割。
 			*/
-			updateOrderStatus(recycleID, status) {
+			updateRecycle(recycleID, status) {
 				this.$tip.loading('修改中')
 				this.$http.post('/recycle/recycle/editOrder', {
 					orderStatus: status,
@@ -169,7 +260,7 @@
 					orderID: recycleID
 				}).then(res => {
 					this.$tip.success('修改成功！')
-					this.getRecycleOrders()
+					this.getRecycleList()
 				}).finally(() => {
 					this.alterPopup = false
 				})
@@ -193,14 +284,46 @@
 				return timeInfo + "," + weightInfo + "," + addressInfo
 			},
 			
+			// 获取商品订单列表
+			getOrderList() {
+				this.$tip.loading()
+				this.orderList = []
+				this.$http.post('/recycle/orders/list',{ user: this.$store.getters.userid }).then(res => {
+					this.orderList = res.data.rows.reverse()
+				})
+			},
+			
+			// 前往支付页面
+			toPayment(waitPayOrder) {
+				this.$store.commit('SET_WAITPAYORDER', waitPayOrder)
+				uni.navigateTo({ url: '/pages/payment/index?from=order' });
+			},
+			
+			// 退款弹窗
+			refund(tkObj, tkQuery) {
+				this.tkObj = tkObj
+				this.tkQuery = tkQuery
+				this.refundPopup = true
+			},
+			
+			// 退款
+			tk() {
+				this.$tip.loading('退款中...')
+				this.$http.post('/recycle/orders/refund', this.tkQuery).then(res => {
+					this.refundPopup = false
+					this.refundOkPopup = true
+					this.getOrderList()
+				})
+			},
+			
 			// 首页
 			toHome() {
 				uni.navigateBack({ delta: getCurrentPages().length });
 			},
 			
-			// 客服
-			toKefu() {
-				
+			// 
+			toEnd(actualWeight) {
+				uni.navigateTo({ url: '/pages/end/index?from=order&actualWeight=' + actualWeight});
 			}
 		}
 	}
@@ -209,33 +332,23 @@
 <style lang="scss" scoped>
 	.page {
 		position: relative;
-		display: flex;
-		flex-direction: column;
 		height: 100vh;
-
-		&_title {
-			height: 112rpx;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background: #ffffff;
-
-			&>text {
-				font-family: PingFangSC-Semibold;
-				font-size: 28rpx;
-				font-weight: bold;
-				color: #06180C;
-				letter-spacing: 0;
-				line-height: 42rpx;
-
-				&::after {
-					content: '';
-					margin: 4rpx auto 0 auto;
-					display: block;
-					width: 80rpx;
-					height: 6rpx;
-					background-image: linear-gradient(270deg, #F7970D 0%, #FFD678 100%);
-					border-radius: 3rpx;
+		
+		&_swiper {
+			flex: 1;
+		
+			&_item {
+				height: 100%;
+				flex: 1;
+				flex-direction: column;
+		
+				&_view {
+					position: absolute;
+					left: 0;
+					top: 0;
+					right: 0;
+					bottom: 0;
+					flex-direction: column;
 				}
 			}
 		}

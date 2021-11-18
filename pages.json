@@ -28,6 +28,46 @@
 		        // "enablePullDownRefresh": false
 		    }
 		    
+		},
+		{
+		    "path": "pages/shopping/index",
+		    "style": {
+		        // "navigationBarTitleText": "",
+		        // "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path": "pages/goods/index",
+		    "style": {
+		        // "navigationBarTitleText": "",
+		        // "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path": "pages/end/index",
+		    "style": {
+		        // "navigationBarTitleText": "",
+		        // "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path": "pages/payment/index",
+		    "style": {
+		        // "navigationBarTitleText": "",
+		        // "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path": "pages/order_details/index",
+		    "style": {
+		        // "navigationBarTitleText": "",
+		        // "enablePullDownRefresh": false
+		    }
+		    
 		}
 	],
 	"globalStyle": {
