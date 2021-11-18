@@ -6,7 +6,7 @@
 		<!-- 轮播图 -->
 		<s-swiper/>
 		
-		<s-goods-swiper />
+		<s-goods-swiper :list="storeList"/>
 		
 		<!-- 流程 -->
 		<s-flow />
@@ -92,6 +92,7 @@
 						subTitle: '回收完成'
 					}
 				],
+				// 订单表单
 				orderInfo: {
 					user: '',
 					phone: '',
@@ -105,7 +106,10 @@
 					area: '',
 					orderStatus: '待上门',
 				},
-				addressInfo: {}
+				// 地址信息
+				addressInfo: {},
+				// 商品展示列表
+				storeList: []
 			}
 		},
 		onLoad() {
@@ -115,6 +119,7 @@
 		},
 		created() {
 			api.getUserId()
+			this.getStoreList()
 		},
 		methods: {
 			sendData() {
@@ -137,6 +142,19 @@
 				this.$http.post('recycle/recycle/add', this.orderInfo).then(res => {
 					uni.navigateTo({
 						url: '/pages/collect/index?from=index'
+					})
+				})
+			},
+			
+			// 首页商品展示
+			getStoreList() {
+				this.storeList = []
+				this.$http.get('/recycle/goods/getStoreList').then(res => {
+					res.data.data.forEach(img => {
+						if(img.charAt(img.length - 1) === ';') {
+							img = img.substr(0, img.length - 1)
+						}
+						this.storeList.push(api.getImgUrl(img))
 					})
 				})
 			},

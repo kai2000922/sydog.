@@ -2,11 +2,11 @@
 	<view class="box">
 		<view class="goods_box">
 			<scroll-view scroll-x="true" class="scroll_x">
-				<view class="goods" v-for="(item, index) in array" :key="index">
+				<view class="goods" v-for="(img, index) in list" :key="index">
 					<image class="shangpinkuang" src="@/static/index/shangpinkuang.png" />
 					<view class="item">
 						<image class="mianfeijiaobiao" src="@/static/index/mianfeijiaobiao.png"/>
-						<u-image width="100%" height="100%" :src="item.image" />
+						<u-image width="100%" height="100%" :src="img" />
 					</view>
 				</view>
 			</scroll-view>
@@ -32,24 +32,12 @@
 		data() {
 			return {
 				array: [
-					{
-						image: 'https://picsum.photos/217/144?blur=1'
-					},
-					{
-						image: 'https://picsum.photos/seed/picsum/217/144'
-					},
-					{
-						image: 'https://picsum.photos/217/144'
-					},
-					{
-						image: 'https://picsum.photos/217/144?blur=1'
-					},
-					{
-						image: 'https://picsum.photos/seed/picsum/217/144'
-					},
-					{
-						image: 'https://picsum.photos/217/144'
-					}
+					'https://picsum.photos/217/144?blur=1',
+					'https://picsum.photos/seed/picsum/217/144',
+					'https://picsum.photos/217/144',
+					'https://picsum.photos/217/144?blur=1',
+					'https://picsum.photos/seed/picsum/217/144',
+					'https://picsum.photos/217/144'
 				]
 			}
 		},
@@ -108,6 +96,7 @@
 					height: 144rpx;
 					z-index: -100;
 					border-radius: 30rpx;
+					background: #f3f4f6;
 					overflow: hidden;
 					
 					.mianfeijiaobiao {
@@ -123,7 +112,6 @@
 		}
 		
 		.right {
-			background: #2B85E4;
 			
 			&>image {
 				position: absolute;

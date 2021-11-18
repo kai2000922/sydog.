@@ -5,6 +5,11 @@
 				<goods-head :img="sapi.getImgUrl(goods.images)" :hx-price="goods.hxPrice" />
 				<goods-info :express-price="goods.expressPrice" :goods-name="goods.goodsName" />
 				<!-- <goods-spec :label="label.main" @click="show = true" /> -->
+				
+				<view class="flex_colum">
+					<image style="width: 100%;" :lazy-load="true" v-for="(img, index) in descImgs" :src="img" mode="widthFix"/>
+					<!-- <u-image width="100%" v-for="(img, index) in descImgs" :src="img" mode="widthFix"/> -->
+				</view>
 			</scroll-view>
 		</view>
 		
@@ -96,12 +101,21 @@
 		},
 		data() {
 			return {
+				// 商品id
 				goodsID: undefined,
+				// 上一页
 				from: '',
+				// 商品
 				goods: {},
+				// 用户
 				user: undefined,
+				// 详情图
+				descImgs: [],
+				// 
 				sapi: api,
+				// 弹窗
 				show: false,
+				// 选项
 				value: {
 					size: undefined,
 					color: undefined
@@ -160,16 +174,21 @@
 			this.goodsID = options.goodsID;
 			this.from = options.from
 			this.getGoods()
-			this.getUser()
+			// this.getUser()
 		},
 		methods: {
 			// 获取商品信息
 			getGoods() {
 				this.$tip.loading('加载中')
-				this.$http.post('/recycle/goods/listByID', {
-					goodsID: this.goodsID
-				}).then(res => {
-					this.goods = res.data.data
+				this.$http.post('/recycle/goods/listByID', { goodsID: this.goodsID }).then(res => {
+					let goods = res.data.data
+					this.goods = goods
+					this.descImgs = []
+					goods.descImages.split(';').forEach(img => {
+						if(img !== '') {
+							this.descImgs.push(api.getImgUrl(img))
+						}
+					})
 				})
 			},
 			
@@ -201,7 +220,6 @@
 				str += this.label.size + '	'
 				str += this.label.color
 				this.label.main = str
-				console.log(this.label.main);
 			},
 			
 			// 首页
@@ -215,9 +233,9 @@
 				if(this.goods === {}) {
 					return
 				}
-				if(!this.recycledJudge()) {
-					return
-				}
+				// if(!this.recycledJudge()) {
+				// 	return
+				// }
 				uni.navigateTo({url: '/pages/payment/index?from=goods&goodsId=' + this.goods.goodID});
 			},
 			
