@@ -3,7 +3,7 @@ import tip from './tip.js'
 
 // const BASE_URL = 'http://49.235.238.110'
 const BASE_URL = 'https://hkkkkk.cn:8080'
-// const BASE_URL = 'https://192.168.8.60:8080'
+// const BASE_URL = 'https://192.168.0.101:8080'
 
 const http = new Request()
 http.setConfig((config) => {

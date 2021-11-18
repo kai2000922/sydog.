@@ -6,13 +6,11 @@
 		<!-- 轮播图 -->
 		<s-swiper/>
 		
-		<s-goods-swiper :list="storeList"/>
+		<s-goods-swiper :list="storeList" @goodsClick="toGoods"/>
 		
 		<!-- 流程 -->
 		<s-flow />
 		
-		
-
 		<!-- 我的订单 -->
 		<view class="sticky">
 			<image @click="toRecycleOrders" src="@/static/wdddicon.png" />
@@ -109,7 +107,8 @@
 				// 地址信息
 				addressInfo: {},
 				// 商品展示列表
-				storeList: []
+				storeList: [],
+				idList: []
 			}
 		},
 		onLoad() {
@@ -150,11 +149,13 @@
 			getStoreList() {
 				this.storeList = []
 				this.$http.get('/recycle/goods/getStoreList').then(res => {
-					res.data.data.forEach(img => {
-						if(img.charAt(img.length - 1) === ';') {
-							img = img.substr(0, img.length - 1)
+					res.data.data.forEach(obj => {
+						obj = JSON.parse(obj)
+						if(obj.img.charAt(obj.img.length - 1) === ';') {
+							obj.img = obj.img.substr(0, obj.img.length - 1)
 						}
-						this.storeList.push(api.getImgUrl(img))
+						this.storeList.push(api.getImgUrl(obj.img))
+						this.idList.push(obj.id)
 					})
 				})
 			},
@@ -162,7 +163,10 @@
 			toRecycleOrders() {
 				uni.navigateTo({ url: '/pages/recycle_orders/index' })
 			},
-
+			
+			toGoods(index){
+				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + this.idList[index] + '&from=shopping' })
+			}
 		}
 	}
 </script>

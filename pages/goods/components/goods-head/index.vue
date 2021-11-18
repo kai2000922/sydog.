@@ -6,11 +6,9 @@
 		<view class="goodsInfo flex_colum">
 			<view class="describe flex_row flex_jc_between flex_ai_center">
 				<text>环保回收专享价</text>
-				<text>回收公斤数门槛</text>
 			</view>
 			<view class="flex_row flex_jc_between flex_ai_center" style="margin-top: 20rpx;">
 				<cost present-price="0" :original-price="hxPrice" />
-				<text class="constraint">8公斤及以上</text>
 			</view>
 		</view>
 	</view>

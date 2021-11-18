@@ -189,7 +189,7 @@
 			deleteRecycle(item) {
 				this.$tip.loading('删除中')
 				if (item.recycleID !== '') {
-					this.$http.post('/recycle/recycle/remove', {ids: item.recycleID}).then(res => {
+					this.$http.post('/recycle/recycle/removeOrder', {ids: item.recycleID}).then(res => {
 						this.$tip.success('删除成功')
 						this.getRecycleList()
 					})

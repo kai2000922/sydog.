@@ -2,7 +2,7 @@
 	<view class="box">
 		<view class="goods_box">
 			<scroll-view scroll-x="true" class="scroll_x">
-				<view class="goods" v-for="(img, index) in list" :key="index">
+				<view class="goods" v-for="(img, index) in list" :key="index" @click="toGoods(index)">
 					<image class="shangpinkuang" src="@/static/index/shangpinkuang.png" />
 					<view class="item">
 						<image class="mianfeijiaobiao" src="@/static/index/mianfeijiaobiao.png"/>
@@ -44,6 +44,9 @@
 		methods: {
 			toShopping() {
 				uni.navigateTo({ url: '/pages/shopping/index' })
+			},
+			toGoods(index){
+				this.$emit('goodsClick', index)
 			}
 		}
 	}

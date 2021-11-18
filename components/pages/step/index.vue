@@ -3,7 +3,7 @@
 		<view class="step_logo">
 			<image src="@/static/logo.png"/>
 		</view>
-		<u-row :gutter="itemGutter">
+		<!-- <u-row :gutter="itemGutter">
 			<u-col v-for="(item,index) in dataList" :key="index" :span="item.span">
 				<view style="display: flex; justify-content: center;">
 					<view class="step_schedule">
@@ -16,7 +16,7 @@
 				</view>
 				
 			</u-col>
-		</u-row>
+		</u-row> -->
 	</view>
 </template>
 
