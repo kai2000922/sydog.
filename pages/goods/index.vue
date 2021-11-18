@@ -9,7 +9,7 @@
 		</view>
 		
 		<view class="bottom">
-			<s-button v-if="from === 'shopping'"
+			<s-button v-if="false"
 				background="#43A668" 
 				width="690" 
 				height="120" 
@@ -17,14 +17,14 @@
 				:custom-style="{}"
 				text="去环保回收，即可兑换"
 				@click="toIndex"/>
-			<s-button v-if="from === 'collect'"
+			<s-button v-if="false"
 				background='#BFBFBF'
 				width="690" 
 				height="120" 
 				color="#FFFFFF" 
 				:custom-style="{}"
 				text="称重后即可兑换"/>
-			<s-button v-if="from === 'end'"
+			<s-button v-if="true"
 				background="#43A668" 
 				width="690" 
 				height="120" 

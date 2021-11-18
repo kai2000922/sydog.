@@ -14,7 +14,7 @@
 						<view class="flex_row flex_ai_center" style="padding: 56rpx 0 36rpx 0;">
 							<s-dot size="16"></s-dot>
 							<text class="font_28 font_bold color_black"
-								style="margin-left: 8rpx;">总回收重量≥8kg可兑换以下好礼</text>
+								style="margin-left: 8rpx;">付邮费即可兑换以下好礼</text>
 						</view>
 						<view class="flex_row flex_jc_between flex_warp">
 							<goods-item v-for="(item, index) in goods" :key="index" :item="item"
@@ -48,7 +48,7 @@
 				// tab
 				tabs: {
 					index: 0,
-					list: ['兑换好礼专区']
+					list: ['付邮领专区']
 				},
 				heights: [],
 				goods: [],
