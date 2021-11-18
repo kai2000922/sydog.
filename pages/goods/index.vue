@@ -4,7 +4,7 @@
 			<scroll-view class="scroll" enableBackToTop="true" scroll-y>
 				<goods-head :img="sapi.getImgUrl(goods.images)" :hx-price="goods.hxPrice" />
 				<goods-info :express-price="goods.expressPrice" :goods-name="goods.goodsName" />
-				<goods-spec :label="label.main" @click="show = true" />
+				<!-- <goods-spec :label="label.main" @click="show = true" /> -->
 			</scroll-view>
 		</view>
 		
