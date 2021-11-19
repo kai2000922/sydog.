@@ -1,6 +1,6 @@
 <template>
 	<esc-swiper :autoplay="autoplay" 
-			:circular="imgList.length >= 3 ? true : false" 
+			:circular="circular" 
 			:current.sync="current"
 			:size="bannerImage.length" 
 			:plus="plus" 
@@ -18,7 +18,7 @@
 
 <script>
 	import {getSwiperList} from '@/components/sn-swiper/esc-swiper/helper.js';
-	import {BASE_URL} from '../../../../utils/request.js'
+	import {BASE_URL} from '@/utils/request.js'
 	
 	export default {
 		created() {
