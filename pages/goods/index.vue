@@ -174,6 +174,7 @@
 			this.goodsID = options.goodsID;
 			this.from = options.from
 			this.getGoods()
+			this.sendChannel(options.channelName)
 			// this.getUser()
 		},
 		methods: {
@@ -187,6 +188,7 @@
 					goods.descImages.split(';').forEach(img => {
 						if(img !== '') {
 							this.descImgs.push(api.getImgUrl(img))
+							console.log(api.getImgUrl(img))
 						}
 					})
 				})
@@ -250,6 +252,15 @@
 					return false
 				}
 				return true
+			},
+			
+			//发送渠道信息
+			sendChannel(channelName){
+				if (channelName != null)
+					this.$http.post('recycle/channel/add', {'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
+					.catch(err => {
+							tip.confirm('渠道信息添加失败', true).then(() => {})
+					})
 			}
 		}
 	}

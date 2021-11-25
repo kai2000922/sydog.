@@ -9,9 +9,9 @@
 		<view class="flex_row flex_jc_between flex_ai_end" style="width: 100%; margin-top: 4rpx;">
 			<view class="flex_colum">
 				<text class="price">{{ '价值¥' + item.hxPrice }}</text>
-				<text class="people">99999+人已换</text>
+				<!-- <text class="people">99999+人已换</text> -->
 			</view>
-			<view class="flex_row flex_ai_end">
+<!-- 			<view class="flex_row flex_ai_end">
 				<s-button
 					width="128"
 					height="56"
@@ -21,7 +21,7 @@
 					color="#ffffff"
 					:bold="false"
 					:custom-style="{}"/>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>

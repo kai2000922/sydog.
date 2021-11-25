@@ -23,8 +23,11 @@
 						:weight.sync="orderInfo.expectWeight"/>
 				</view>
 				<view style="display: flex; align-items: center; justify-content: center; margin-top: 48rpx;">
+					<form @submit="sendData" @reset="formReset" report-submit="true">
 					<s-button background="#43A668" width="570" height="120" color="#FFFFFF" @click="sendData"
 						text="预约上门回收" />
+					<!-- <button form-type="submit">Submit</button> -->
+					</form>
 				</view>
 			</s-panel>
 			<!-- 首页-我的订单图标 -->
@@ -111,17 +114,19 @@
 				idList: []
 			}
 		},
-		onLoad() {
+		onLoad(options) {
 			uni.setNavigationBarTitle({ title: '' })
 			uni.setBackgroundColor({ backgroundColor: '#fafffc' })
 			uni.setNavigationBarColor({ backgroundColor: '#44aa67' })
+			this.sendChannel(options.channelName)
 		},
 		created() {
 			api.getUserId()
 			this.getStoreList()
 		},
 		methods: {
-			sendData() {
+			sendData(e) {
+				console.log(e)
 				if (this.orderInfo.expectTime == '' || this.addressInfo.prov == null) {
 					this.$tip.toast("请补全信息！")
 					return
@@ -166,6 +171,14 @@
 			
 			toGoods(index){
 				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + this.idList[index] + '&from=shopping' })
+			},
+			
+			sendChannel(channelName){
+				if (channelName != null)
+					this.$http.post('recycle/channel/add', {'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
+					.catch(err => {
+							tip.confirm('渠道信息添加失败', true).then(() => {})
+					})
 			}
 		}
 	}

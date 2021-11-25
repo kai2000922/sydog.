@@ -65,7 +65,7 @@
 				},
 			}
 		},
-		onLoad() {
+		onLoad(options) {
 			uni.setNavigationBarTitle({
 				title: ''
 			})
@@ -75,6 +75,7 @@
 			uni.setNavigationBarColor({
 				backgroundColor: '#44aa67'
 			})
+			this.sendChannel(options.channelName)
 		},
 		created() {
 			this.getGoodsList()
@@ -122,6 +123,15 @@
 			// 跳转到商品详情页
 			toGoods(goodsID) {
 				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + goodsID + '&from=shopping' })
+			},
+			
+			//发送渠道信息
+			sendChannel(channelName){
+				if (channelName != null)
+					this.$http.post('recycle/channel/add', {'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
+					.catch(err => {
+							tip.confirm('渠道信息添加失败', true).then(() => {})
+					})
 			}
 		}
 	}

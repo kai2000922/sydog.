@@ -8,7 +8,7 @@
 
 		<view class="flex_row flex_jc_between flex_ai_center" style="width: 100%; margin-top: 4rpx;">
 			<text class="price">{{ '价值¥' + item.hxPrice }}</text>
-			<text class="people">3654+人已换</text>
+			<!-- <text class="people">3654+人已换</text> -->
 		</view>
 	</view>
 </template>
