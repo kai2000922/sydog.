@@ -1,12 +1,12 @@
 <template>
 	<view class="box">
 		<view class="goods_box">
-			<scroll-view scroll-x="true" class="scroll_x">
-				<view class="goods" v-for="(img, index) in list" :key="index" @click="toGoods(index)">
+			<scroll-view scroll-x="true" class="scroll_x" :scroll-left="left" scroll-with-animation>
+				<view :id="index" class="goods" v-for="(item, index) in list" :key="index" @click="toGoods(item.id)">
 					<image class="shangpinkuang" src="@/static/index/shangpinkuang.png" />
 					<view class="item">
 						<image class="mianfeijiaobiao" src="@/static/index/mianfeijiaobiao.png"/>
-						<u-image width="100%" height="100%" :src="img" />
+						<u-image width="100%" height="100%" :src="item.img" />
 					</view>
 				</view>
 			</scroll-view>
@@ -38,15 +38,44 @@
 					'https://picsum.photos/217/144?blur=1',
 					'https://picsum.photos/seed/picsum/217/144',
 					'https://picsum.photos/217/144'
-				]
+				],
+				left: 0,
 			}
+		},
+		watch: {
+			// list: {
+			// 	handler(newValue, oldValue) {
+			// 		if(this.list.length > 1) {
+			// 			this.left = 156
+			// 		}
+			// 	}
+			// },
+			// left(val) {
+			// 	this.$nextTick(()=>{
+			// 		this.left += 156
+			// 	})
+			// }
 		},
 		methods: {
 			toShopping() {
 				uni.navigateTo({ url: '/pages/shopping/index' })
 			},
+			
 			toGoods(index){
 				this.$emit('goodsClick', index)
+			},
+			
+			nextChange() {
+				if(this.next + 1 < this.list.length) {
+					// setTimeout(() => {
+					// 	this.next++
+					// }, 500)
+					this.$nextTick(() => {
+						setTimeout(() => {
+							this.next++
+						}, 500)
+					})
+				}
 			}
 		}
 	}

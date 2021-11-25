@@ -32,8 +32,8 @@
 			</view>
 			<!-- 按钮行 -->
 			<view style="margin: 40rpx 0 10rpx 0;" class="flex_row flex_jc_end flex_ai_center">
-				<s-button background="#ffffff" color="#06180C" width="184" height="64" text="联系客服" fontSize="28"
-					:custom-style="{border: '1px solid #707070'}"/>
+				<!-- <s-button background="#ffffff" color="#06180C" width="184" height="64" text="联系客服" fontSize="28"
+					:custom-style="{border: '1px solid #707070'}"/> -->
 				<s-button background="#ffffff" color="#06180C" width="184" height="64" :text="text.refund" fontSize="28"
 					:custom-style="{border: '1px solid #707070', marginLeft: '24rpx'}" @click="refund" />
 			</view>
