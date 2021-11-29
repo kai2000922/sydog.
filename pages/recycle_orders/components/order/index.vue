@@ -1,10 +1,13 @@
 <template>
 	<s-panel>
-		<order-briefly :goodsID="goods.goodID" :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="item.zfPrice" :refund-text="text.img"/>
+		<order-briefly :goodsID="goods.goodID" :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="goods.zfPrice" :refund-text="text.img"/>
 		<!-- 订单状态 -->
 		<view class="express flex_row flex_ai_center" @click="toDetails">
 			<image src="@/static/che.png"></image>
-			<text class="font_28 line_42 color_black text_ellipsis">{{ text.logistics }}</text>
+			<text class="font_28 line_42 color_black text_ellipsis">{{ text.logistics }}  </text>
+			<view v-if="item.expressNum != null">
+				<text class="font_28 line_42 color_black text_ellipsis">运单号码： {{ item.expressNum }}</text>
+			</view>
 		</view>
 		
 		<!-- 按钮行 -->
@@ -14,7 +17,7 @@
 				:custom-style="{border: '0px solid #707070'}"/>
 			<s-button v-if="!waitPay" background="#ffffff" color="#06180C" width="184" height="64" :text="text.refund" fontSize="28" 
 				:custom-style="{border: '1px solid #707070'}" @click="tkClik" />
-			<s-button v-if="!waitPay" background="#ffffff" color="#06180C" width="184" height="64" text="查看物流" fontSize="28"
+	  		<s-button v-if="!waitPay" background="#ffffff" color="#06180C" width="184" height="64" text="查看物流" fontSize="28"
 				:custom-style="{border: '1px solid #707070'}" @click="toDetails" />
 			<s-button v-if="waitPay" background="#ffffff" color="#06180C" width="184" height="64" text="待付款" fontSize="28"
 				:custom-style="{border: '1px solid #707070'}" @click="zfClick" />

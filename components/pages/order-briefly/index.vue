@@ -71,6 +71,8 @@
 			},
 			goodsID: Number
 		},
+		onLoad() {
+		},
 		methods:{
 			toGoods(){
 				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + this.goodsID + '&from=shopping' })

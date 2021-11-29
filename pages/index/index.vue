@@ -126,7 +126,18 @@
 		},
 		methods: {
 			sendData(e) {
-				console.log(e)
+				// 示例
+				my.getAuthCode({
+				  // 订单服务授权：order_service。如需同时获取用户多项授权，可在 scopes 中传入多个 scope 值。
+				  scopes: ['order_service'],
+				  success: (res) => {
+				    console.log(res)
+				  },
+				  fail: (res) => {
+					  console.log(res)
+				    // 订单服务授权失败，根据自己的业务场景来进行错误处理
+				  },
+				});
 				if (this.orderInfo.expectTime == '' || this.addressInfo.prov == null) {
 					this.$tip.toast("请补全信息！")
 					return
@@ -148,6 +159,7 @@
 						url: '/pages/collect/index?from=index'
 					})
 				})
+				
 			},
 			
 			// 首页商品展示

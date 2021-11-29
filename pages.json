@@ -83,5 +83,6 @@
 	    "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue",
 		"^esc-(.*)": "@/components/sn-swiper/esc-$1/index.vue"
 	  }
-	}
+	},
+	"useDynamicPlugins": true
 }
