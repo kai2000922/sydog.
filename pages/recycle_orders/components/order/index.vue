@@ -2,11 +2,13 @@
 	<s-panel>
 		<order-briefly :goodsID="goods.goodID" :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="goods.zfPrice" :refund-text="text.img"/>
 		<!-- 订单状态 -->
-		<view class="express flex_row flex_ai_center" @click="toDetails">
-			<image src="@/static/che.png"></image>
-			<text class="font_28 line_42 color_black text_ellipsis">{{ text.logistics }}  </text>
-			<view v-if="item.expressNum != null">
-				<text class="font_28 line_42 color_black text_ellipsis">运单号码： {{ item.expressNum }}</text>
+		<view class="express flex_row flex_jc_between" @click="toDetails">
+			<view class="che">
+				<image src="@/static/che.png"/>
+			</view>
+			<view style="flex: 1;" class="flex_colum">
+				<text class="font_28 line_64 color_black text_ellipsis">{{ text.logistics }}</text>
+				<text v-if="item.expressNum" class="font_28 line_64 color_black text_ellipsis" selectable>运单号码：{{ item.expressNum }}</text>
 			</view>
 		</view>
 		
@@ -168,18 +170,28 @@
 </script>
 
 <style lang="scss" scoped>
+	
+	.line_64 {
+		line-height: 64rpx;
+	}
+	
 	.express {
 		box-sizing: border-box;
 		margin-top: 40rpx;
 		padding: 16rpx;
 		background: #F8F8F8;
 		border-radius: 20rpx;
-			
-		&>image {
+		
+		.che {
 			margin-right: 24rpx;
 			height: 64rpx;
 			width: 64rpx;
-			vertical-align: middle;
+			
+			&>image {
+				width: 100%;
+				height: 100%;
+				vertical-align: middle;
+			}
 		}
 	}
 </style>

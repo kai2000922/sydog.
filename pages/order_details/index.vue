@@ -8,9 +8,14 @@
 		<s-panel>
 			<order-briefly :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="item.zfPrice" :refund-text="text.img"/>
 			<!-- 订单状态 -->
-			<view class="express flex_row flex_ai_center" @click="toDetails">
-				<image src="@/static/che.png"></image>
-				<text class="font_28 line_42 color_black text_ellipsis">{{ text.logistics }}</text>
+			<view class="express flex_row flex_jc_between">
+				<view class="che">
+					<image src="@/static/che.png"/>
+				</view>
+				<view style="flex: 1;" class="flex_colum">
+					<text class="font_28 line_64 color_black text_ellipsis">{{ text.logistics }}</text>
+					<text v-if="order.expressNum" class="font_28 line_64 color_black text_ellipsis" selectable>运单号码：{{ order.expressNum }}</text>
+				</view>
 			</view>
 			<!-- 订单信息 -->
 			<view class="info">
@@ -222,6 +227,10 @@
 	// 	color: #7F8581;
 	// }
 	
+	.line_64 {
+		line-height: 64rpx;
+	}
+	
 	.title {
 		position: sticky;
 		top: 0rpx;
@@ -238,11 +247,16 @@
 		background: #F8F8F8;
 		border-radius: 20rpx;
 			
-		&>image {
+		.che {
 			margin-right: 24rpx;
 			height: 64rpx;
 			width: 64rpx;
-			vertical-align: middle;
+					
+			&>image {
+				width: 100%;
+				height: 100%;
+				vertical-align: middle;
+			}
 		}
 	}
 	
