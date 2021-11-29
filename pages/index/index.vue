@@ -110,8 +110,7 @@
 				// 地址信息
 				addressInfo: {},
 				// 商品展示列表
-				storeList: [],
-				idList: []
+				storeList: []
 			}
 		},
 		onLoad(options) {
@@ -169,10 +168,9 @@
 					res.data.data.forEach(obj => {
 						obj = JSON.parse(obj)
 						if(obj.img.charAt(obj.img.length - 1) === ';') {
-							obj.img = obj.img.substr(0, obj.img.length - 1)
+							obj.img = api.getImgUrl(obj.img.substr(0, obj.img.length - 1))
 						}
-						this.storeList.push(api.getImgUrl(obj.img))
-						this.idList.push(obj.id)
+						this.storeList.push(obj)
 					})
 				})
 			},
@@ -181,16 +179,14 @@
 				uni.navigateTo({ url: '/pages/recycle_orders/index' })
 			},
 			
-			toGoods(index){
-				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + this.idList[index] + '&from=shopping' })
+			toGoods(goodsId){
+				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + goodsId + '&from=shopping' })
 			},
 			
 			sendChannel(channelName){
 				if (channelName != null)
 					this.$http.post('recycle/channel/add', {'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
-					.catch(err => {
-							tip.confirm('渠道信息添加失败', true).then(() => {})
-					})
+					.catch(err => { tip.confirm('渠道信息添加失败', true).then(() => {}) })
 			}
 		}
 	}
