@@ -36,7 +36,9 @@
 				plus: 2,
 				imgList: [
 					{
-						image: 'https://picsum.photos/750/300?blur=1'
+						image: 'https://picsum.photos/750/300?blur=1',
+						toPages: '',
+						goodsID: 0
 					}
 				]
 			}
@@ -54,16 +56,20 @@
 				this.imgList = []
 				this.$http.get('recycle/goods/getBanner').then(res => {
 					for(let i = 0 ;i < res.data.data.length; i++){
-						this.imgList.push({image: BASE_URL + res.data.data[i].filePath})
+						this.imgList.push({image: BASE_URL + res.data.data[i].filePath, toPages: res.data.data[i].toPages, goodsId: res.data.data[i].goodsId})
 					}
 				}).catch(err => {
 					console.log(err)
 				})
 			},
 			toGoods(item){
-				if (item.image.indexOf("23244704-44f3-4aef-8569-6bd107c9b8a0") != -1){
-					uni.navigateTo({ url: '/pages/goods/index?goodsID=' + '13' + '&from=shopping' })
+				console.log(item)
+				console.log(item.goodsId)
+				if (item.toPages != null){
+					console.log('/' + item.toPages + '?goodsID=' + item.goodsId + '&from=shopping')
+					uni.navigateTo({ url: '/' + item.toPages + '?goodsID=' + item.goodsId + '&from=shopping' })
 				}
+
 			}
 		}
 	}

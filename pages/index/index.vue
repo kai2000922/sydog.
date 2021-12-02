@@ -24,9 +24,8 @@
 				</view>
 				<view style="display: flex; align-items: center; justify-content: center; margin-top: 48rpx;">
 					<form @submit="sendData" @reset="formReset" report-submit="true">
-					<s-button background="#43A668" width="570" height="120" color="#FFFFFF" @click="sendData"
+					<s-button background="#43A668" width="570" height="120" color="#FFFFFF" 
 						text="预约上门回收" />
-					<!-- <button form-type="submit">Submit</button> -->
 					</form>
 				</view>
 			</s-panel>
@@ -105,6 +104,7 @@
 					expectWeight: 8,
 					address: '',
 					area: '',
+					authCode: '',
 					orderStatus: '待上门',
 				},
 				// 地址信息
@@ -125,12 +125,13 @@
 		},
 		methods: {
 			sendData(e) {
+				console.log(e)
 				// 示例
 				my.getAuthCode({
 				  // 订单服务授权：order_service。如需同时获取用户多项授权，可在 scopes 中传入多个 scope 值。
 				  scopes: ['order_service'],
 				  success: (res) => {
-				    console.log(res)
+					console.log(res)
 				  },
 				  fail: (res) => {
 					  console.log(res)
@@ -150,6 +151,7 @@
 				this.orderInfo.prov = this.addressInfo.prov
 				this.orderInfo.city = this.addressInfo.city
 				this.orderInfo.area = this.addressInfo.area
+				this.orderInfo.authCode = e.detail.formId
 				this.orderInfo.address = this.addressInfo.prov + this.addressInfo.city + this.addressInfo.area + this
 					.addressInfo.street + this.addressInfo.address
 				this.$tip.loading('请求中')

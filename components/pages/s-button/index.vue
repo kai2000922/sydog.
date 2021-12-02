@@ -12,7 +12,9 @@
 			}, customStyle]" 
 			:open-type="openType"
 			@click="click"
-			v-text="text"/>
+			v-text="text"
+			form-type="submit"
+			/>
 	</view>
 </template>
 
