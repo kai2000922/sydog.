@@ -115,6 +115,11 @@
 			}
 			this.goodsId = option.goodsId
 			this.getGoods()
+			// 获取用户信息，如果没有获取到则返回上一届面
+			api.getUserId()
+			if(!this.$store.getters.userid) {
+				uni.navigateBack({ delta: 1 });
+			}
 		},
 		methods: {
 			// 获取商品信息
