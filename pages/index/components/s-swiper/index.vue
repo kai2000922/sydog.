@@ -63,13 +63,10 @@
 				})
 			},
 			toGoods(item){
-				console.log(item)
-				console.log(item.goodsId)
-				if (item.toPages != null){
+				if (item.toPages != '-1'){
 					console.log('/' + item.toPages + '?goodsID=' + item.goodsId + '&from=shopping')
 					uni.navigateTo({ url: '/' + item.toPages + '?goodsID=' + item.goodsId + '&from=shopping' })
 				}
-
 			}
 		}
 	}

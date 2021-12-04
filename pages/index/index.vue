@@ -113,6 +113,9 @@
 				storeList: []
 			}
 		},
+		onShareAppMessage () {
+		    return api.getShareObject()
+		},
 		onLoad(options) {
 			uni.setNavigationBarTitle({ title: '' })
 			uni.setBackgroundColor({ backgroundColor: '#fafffc' })

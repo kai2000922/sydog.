@@ -74,6 +74,9 @@
 			order,
 			refund
 		},
+		onShareAppMessage () {
+		    return api.getShareObject()
+		},
 		data() {
 			return {
 				// tabs

@@ -80,6 +80,9 @@
 		created() {
 			this.getGoodsList()
 		},
+		onShareAppMessage () {
+		    return api.getShareObject()
+		},
 		onReachBottom() {
 			if (!this.goodsRequest.over) {
 				this.getGoodsList()

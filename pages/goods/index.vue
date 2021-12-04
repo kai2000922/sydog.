@@ -99,6 +99,9 @@
 			color,
 			sButton
 		},
+		onShareAppMessage () {
+		    return api.getShareObject()
+		},
 		data() {
 			return {
 				// 商品id

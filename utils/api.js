@@ -28,6 +28,16 @@ const api = {
 	
 	getImgUrl(url) {
 		return BASE_URL + url
+	},
+	
+	getShareObject(){
+		return {
+			title: '旧衣回收换好礼' ,
+			desc: '0运费，最快2小时免费上门' ,
+			path: 'page/component/view/view',
+			imageUrl: 'https://hkkkkk.cn:8080/profile/upload/share.jpg',
+			bgImgUrl: 'https://hkkkkk.cn:8080/profile/upload/share.jpg'
+		}
 	}
 }
 
