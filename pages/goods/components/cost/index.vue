@@ -2,7 +2,7 @@
 	<view class="cost" :style="{color: fontColor}">
 		<text class="cost_sign">¥</text>
 		<text class="cost_now" v-text="presentPrice"/>
-		<text :style="{color: originalPriceColor}" class="cost_original" v-text="'原价' + originalPrice"/>
+		<text v-if="originalPriceShow" :style="{color: originalPriceColor}" class="cost_original" v-text="'原价' + originalPrice"/>
 	</view>
 </template>
 
@@ -22,13 +22,19 @@
 			// 字体颜色
 			fontColor: {
 				type:String,
-				default: '#ffffff'
+				default: '#06180C'
 			},
 			// 原价字体颜色
 			originalPriceColor: {
 				type:String,
-				default: '#ffffff'
+				default: '#B0B7B3'
+			},
+			// 原价显示
+			originalPriceShow: {
+				type: Boolean,
+				default: false
 			}
+			
 		}
 	}
 </script>
@@ -51,8 +57,9 @@
 		
 		&_original {
 			margin-left: 8rpx;
-			font-size: 20rpx;
+			font-size: 24rpx;
 			line-height: 30rpx;
+			text-decoration: line-through;
 		}
 	}
 </style>

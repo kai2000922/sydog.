@@ -1,13 +1,11 @@
 <template>
 	<view class="time flex_colum" :class="type === 'cancel' ? 'color_grey' : 'color_black'">
 		<view>
-			<text v-if="expectTime.isToday" class="font_36 font_bold line_54" :class="type === 'cancel' ? 'color_grey' : 'color_green'">今日</text>
-
-			<text v-if="!expectTime.isToday" class="font_36 font_bold line_54">{{ expectTime.month + '月' + expectTime.day + '日 ' }}</text>
-			<text v-if="!expectTime.isToday" class="font_36 font_bold line_54" :class="type === 'cancel' ? 'color_grey' : 'color_green'">{{ expectTime.week }}</text>
-
-			<text v-if="type === 'cancel'" class="font_36 font_bold line_54">（订单已取消）</text>
-			<text v-if="type === 'pickup'" class="font_36 font_bold line_54 ml_18 color_green">正在上门中…</text>
+			<view class="flex_row flex_ai_end">
+				<text v-if="type != 'pickup' || courierError" class="font_36 font_bold line_54" :class="type === 'cancel' ? 'color_grey' : 'color_green'">{{ type === 'cancel' ? '订单已取消' : expectTime.distance < 0 ? '等待上门' : expectTime.distance === 0 ? '今日上门' : expectTime.distance + '天后上门' }}</text>
+				<text v-if="type != 'pickup' || courierError" class="font_28 line_42 ml_10" :class="type === 'cancel' ? 'color_grey' : 'color_black'">{{ expectTime.month + '月' + expectTime.day + '日 ' }}</text>
+				<text v-if="type === 'pickup' && !courierError" class="color_green ft_32 ln_48 font_bold">快递小哥正在赶来…</text>
+			</view>
 		</view>
 		<view class="flex_row flex_ai_center flex_jc_between">
 			<text class="font_36 font_bold line_54">{{ expectTime.startHour + ':00 ~ ' + expectTime.endHour + ':00 上门取件' }}</text>
@@ -25,7 +23,8 @@
 		},
 		props: {
 			type: String,
-			expectTime: Object
+			expectTime: Object,
+			courierError: Boolean
 		},
 		methods: {
 			click() {

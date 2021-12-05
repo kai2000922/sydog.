@@ -1,48 +1,25 @@
 <template>
 	<view class="container">
 		<view class="top-background" />
-		<step :dataList="stepList" />
+		<step/>
 
 		<s-panel>
 			<view class="ok">
 				<image class="ok_img" src="@/static/ok.png"></image>
 				<text class="ok_title">预约旧衣回收成功</text>
 				<text class="ok_tips">快递员将按您要求的时间上门</text>
-				<s-button width="600" height="120" text="查看订单" background="#ffffff"
-					:custom-style="{border: '1px solid #43A668', marginTop: '40rpx', marginBottom: '10rpx'}"
-					color="#43A668" @click="toRecycleOrders" />
 			</view>
+			<view class="coupons mt_20 flex_row flex_ai_center flex_jc_center">
+				<image :src="img" mode="widthFix" @click="getCoupons"/>
+			</view>
+			<s-button v-if="haveCoupons" width="600" height="120" text="去兑换好礼 GO" background="#43A668"
+				:custom-style="{margin: '40rpx auto 0 auto'}"
+				color="#FFFFFF" @click="toShopping" />
 		</s-panel>
-
-		<s-panel>
-			<view class="weigh">
-				<view class="weigh_title_row">
-					<text class="weigh_title_row_title">旧衣称重公斤数</text>
-					<text class="weigh_title_row_weigh">暂未称重</text>
-				</view>
-				<view class="weigh_tips">
-					<text>上门取件后，12小时内可显示称重公斤数哦！</text>
-				</view>
-			</view>
-		</s-panel>
-
-		<s-panel>
-			<view class="flex_row flex_ai_center flex_jc_between">
-				<view class="flex_row flex_ai_center">
-					<s-dot size="16" />
-					<text style="margin-left: 16rpx;" class="font_36 line_54 font_bold color_black">兑换好礼专区</text>
-				</view>
-				<view>
-					<text class="font_28 line_42 color_green">称重后即可兑换</text>
-				</view>
-			</view>
-			<view class="flex_row flex_jc_between flex_warp">
-				<goods-item v-for="(item, index) in goodsList" :key="index" :item="item"
-					:custom-style="index >= 2 ? {marginTop: '56rpx'} : {marginTop: '30rpx'}" @goodsClick="toGoods" />
-			</view>
-			<u-loadmore margin-top="20" :status="goodsStatus" :load-text="goodsLoadText"
-				@loadmore="goodsListErrorHandle" />
-		</s-panel>
+		
+		<s-button width="600" height="120" text="查看订单"
+			:custom-style="{border: '1px solid #B0B7B3', margin: '40rpx auto 0 auto', background: 'rgba(0, 0, 0, 0)'}"
+			color="#7F8581" @click="toRecycleOrders" />
 	</view>
 </template>
 
@@ -51,98 +28,48 @@
 	import sPanel from '@/components/pages/s-panel'
 	import sButton from '@/components/pages/s-button'
 	import sDot from '@/components/pages/s-dot'
-	import goodsItem from './components/goods-item'
 
 	export default {
 		components: {
 			step,
 			sPanel,
 			sButton,
-			sDot,
-			goodsItem
+			sDot
 		},
 		data() {
 			return {
-				from: '',
-				stepList: [{
-						index: '01',
-						span: '4',
-						choice: false,
-						title: '预约回收',
-						subTitle: '提交信息'
-					},
-					{
-						index: '02',
-						span: '4',
-						choice: true,
-						title: '上门取衣',
-						subTitle: '免费上门0运费'
-					},
-					{
-						index: '03',
-						span: '4',
-						choice: false,
-						title: '完成',
-						subTitle: '回收完成'
-					}
-				],
-				goodsRequest: {
-					pageSize: 10,
-					pageNum: 0,
-					over: false
-				},
-				goodsList: [],
-				goodsStatus: 'loading',
-				goodsLoadText: {
-					loadmore: '重新加载',
-					loading: '正在加载...',
-					nomore: '没有更多了'
-				},
+				img: '/static/collect/coupons.gif',
+				haveCoupons: false
 			}
 		},
 		onLoad(option) {
 			uni.setNavigationBarTitle({title: ''})
 			uni.setBackgroundColor({backgroundColor: '#fafffc'})
 			uni.setNavigationBarColor({backgroundColor: '#44aa67'})
-			this.from = option.from
-			this.getGoodsList()
-		},
-		onReachBottom() {
-			if (!this.goodsRequest.over) {
-				this.getGoodsList()
-			}
 		},
 		methods: {
-			// 获取商品列表
-			getGoodsList() {
-				this.goodsStatus = 'loading'
-				this.goodsRequest.pageNum++
-				this.$http.post('/recycle/goods/list', this.goodsRequest).then(res => {
-					let rows = res.data.rows
-					if (rows.length < this.goodsRequest.pageSize) {
-						this.goodsRequest.over = true
-					}
-					if (rows.length > 0) {
-						this.goodsList = this.goodsList.concat(rows)
-					}
-				}).catch(err => {
-					this.goodsStatus = 'loadmore'
-				}).finally(() => {
-					this.goodsStatus = 'nomore'
-				})
-			},
-			
-			// 跳转到商品详情页
-			toGoods(goodsID) {
-				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + goodsID + '&from=collect' })
-			},
-			
+
+			// 订单页
 			toRecycleOrders() {
-				if (this.from === 'recycle_order') {
-					uni.navigateBack({ delta: 1 });
-				} else {
-					uni.navigateTo({ url: '/pages/recycle_orders/index' })
+				uni.switchTab({ url: '/pages/recycle_orders/index' })
+			},
+			
+			getCoupons() {
+				if(this.haveCoupons) {
+					this.$tip.toast('请勿重复领取~')
+					return
 				}
+				this.$tip.loading('领取中...')
+				setTimeout(()=> {
+					this.$tip.loaded()
+					this.$tip.toast('领取成功~')
+					this.haveCoupons = true
+					this.img = '/static/collect/coupons-grey.jpg'
+				}, Math.round(Math.random() * 300 + 300))
+			},
+			
+			toShopping() {
+				uni.switchTab({ url: '/pages/shopping/index' })
 			}
 		}
 	}
@@ -152,15 +79,14 @@
 	.container {
 		position: relative;
 	}
-
-	.top-background {
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 750rpx;
-		height: 300rpx;
-		background: #44aa67;
-		z-index: -1;
+	
+	.coupons {
+		height: 180rpx;
+		
+		&>image {
+			width: 630rpx;;
+			height: 100%;
+		}
 	}
 
 	.ok {
@@ -192,109 +118,6 @@
 			color: #B0B7B3;
 			letter-spacing: 0;
 			line-height: 36rpx;
-		}
-
-		&_btn {
-			margin-top: 40rpx;
-			margin-bottom: 10rpx;
-			width: 600rpx;
-			height: 120rpx;
-			border: 1rpx solid #43A668;
-			border-radius: 60rpx;
-			font-family: PingFangSC-Semibold;
-			font-size: 36rpx;
-			font-weight: bold;
-			color: #43A668;
-			letter-spacing: 0;
-			text-align: center;
-			line-height: 118rpx;
-		}
-	}
-
-	.weigh {
-		display: flex;
-		flex-direction: column;
-
-		&_title_row {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-
-			&_title {
-				flex: 1;
-				display: flex;
-				align-items: center;
-				font-family: PingFangSC-Semibold;
-				font-size: 36rpx;
-				font-weight: bold;
-				color: #06180C;
-				letter-spacing: 0;
-				line-height: 54rpx;
-
-				&::before {
-					content: '';
-					display: block;
-					margin-right: 16rpx;
-					width: 16rpx;
-					height: 16rpx;
-					border-radius: 8rpx;
-					background: #FA9E19;
-				}
-			}
-
-			&_weigh {
-				font-family: PingFangSC-Semibold;
-				font-size: 36rpx;
-				font-weight: bold;
-				color: #43A668;
-				letter-spacing: 0;
-				line-height: 54rpx;
-			}
-		}
-
-		&_tips {
-			margin-top: 8rpx;
-			padding-left: 32rpx;
-			font-family: PingFangSC-Regular;
-			font-size: 24rpx;
-			color: #B0B7B3;
-			letter-spacing: 0;
-			line-height: 36rpx;
-		}
-	}
-
-	.title_row {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-
-		.title {
-			flex: 1;
-			display: flex;
-			align-items: center;
-			font-family: PingFangSC-Semibold;
-			font-size: 36rpx;
-			font-weight: bold;
-			color: #06180C;
-			letter-spacing: 0;
-
-			&::before {
-				content: '';
-				display: block;
-				margin-right: 16rpx;
-				width: 16rpx;
-				height: 16rpx;
-				border-radius: 8rpx;
-				background: #FA9E19;
-			}
-		}
-
-		.extra {
-			font-family: PingFangSC-Regular;
-			font-size: 28rpx;
-			font-weight: bold;
-			color: #43A668;
-			letter-spacing: 0;
 		}
 	}
 </style>

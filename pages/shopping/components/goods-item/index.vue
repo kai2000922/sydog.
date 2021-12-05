@@ -7,7 +7,7 @@
 		<view class="title">{{ item.goodsName }}</view>
 
 		<view class="flex_row flex_jc_between flex_ai_center" style="width: 100%; margin-top: 4rpx;">
-			<text class="price">{{ '价值¥' + item.hxPrice }}</text>
+			<text class="price">{{ (item.channel === '1'  ? '价值：¥' : '小鸽价：¥') + item.hxPrice }}</text>
 			<!-- <text class="people">3654+人已换</text> -->
 		</view>
 	</view>

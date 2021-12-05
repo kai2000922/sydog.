@@ -1,12 +1,14 @@
 <template>
 	<s-panel>
 		<view class="flex_colum">
-			<view class="flex_row flex_jc_between flex_ai_center">
-				<freight :freight="expressPrice" />
-				<text class="font_24 color_grey line_36">65598人已换</text>
+			<!-- 商品名称 -->
+			<text class="font_36 color_black line_54 font_bold">{{ goodsName }}</text>
+			<!-- 价格 -->
+			<view style="margin: 30rpx 0;">
+				<cost :original-price="originalPrice" :present-price="presentPrice" :original-price-show="originalPriceShow"></cost>
 			</view>
-			<view style="margin-top: 24rpx;">
-				<text class="font_36 color_black line_54 font_bold">{{goodsName}}</text>
+			<view>
+				<freight :freight="expressPrice" :tag-show="tagShow"/>
 			</view>
 		</view>
 	</s-panel>
@@ -15,15 +17,21 @@
 <script>
 	import sPanel from '@/components/pages/s-panel'
 	import freight from '../freight'
+	import cost from '../cost'
 
 	export default {
 		components: {
 			sPanel,
-			freight
+			freight,
+			cost
 		},
 		props: {
 			expressPrice: [String, Number],
-			goodsName: String
+			originalPrice: [String, Number],
+			presentPrice: [String, Number],
+			goodsName: String,
+			tagShow: Boolean,
+			originalPriceShow: Boolean
 		}
 	}
 </script>

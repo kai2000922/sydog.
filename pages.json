@@ -3,6 +3,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
+				"enablePullDownRefresh": true
 				// "navigationBarTitleText": "uni-app"
 			}
 		},
@@ -19,7 +20,7 @@
 		        // "navigationBarTitleText": "",
 		        // "enablePullDownRefresh": false
 		    }
-		    
+
 		},
 		{
 		    "path": "pages/test/index",
@@ -27,7 +28,7 @@
 		        // "navigationBarTitleText": "",
 		        // "enablePullDownRefresh": false
 		    }
-		    
+
 		},
 		{
 		    "path": "pages/shopping/index",
@@ -35,7 +36,7 @@
 		        // "navigationBarTitleText": "",
 		        // "enablePullDownRefresh": false
 		    }
-		    
+
 		},
 		{
 		    "path": "pages/goods/index",
@@ -43,7 +44,7 @@
 		        // "navigationBarTitleText": "",
 		        // "enablePullDownRefresh": false
 		    }
-		    
+
 		},
 		{
 		    "path": "pages/end/index",
@@ -51,7 +52,7 @@
 		        // "navigationBarTitleText": "",
 		        // "enablePullDownRefresh": false
 		    }
-		    
+
 		},
 		{
 		    "path": "pages/payment/index",
@@ -59,7 +60,7 @@
 		        // "navigationBarTitleText": "",
 		        // "enablePullDownRefresh": false
 		    }
-		    
+
 		},
 		{
 		    "path": "pages/order_details/index",
@@ -67,9 +68,36 @@
 		        // "navigationBarTitleText": "",
 		        // "enablePullDownRefresh": false
 		    }
-		    
+
 		}
 	],
+	"tabBar": {
+	    "color": "#7F8581",
+	    "selectedColor": "#06180C",
+	    "borderStyle": "black",
+	    "backgroundColor": "#ffffff",
+		"height":"56px",
+	    "list": [
+			{
+				"pagePath": "pages/shopping/index",
+				"iconPath": "static/tabBar/shopping-grey.png",
+				"selectedIconPath": "static/tabBar/shopping-green.png",
+				"text": "商城"
+			},
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/tabBar/home-grey.png",
+				"selectedIconPath": "static/tabBar/home-green.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/recycle_orders/index",
+				"iconPath": "static/tabBar/order-grey.png",
+				"selectedIconPath": "static/tabBar/order-green.png",
+				"text": "订单"
+			}
+		]
+	},
 	"globalStyle": {
 		"allowsBounceVertical": "NO"
 		// "navigationBarTextStyle": "black"

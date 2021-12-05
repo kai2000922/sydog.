@@ -1,35 +1,42 @@
 import { http, BASE_URL } from './request.js'
 import store from '@/store'
-import tip from'@/utils/tip.js'
+import tip from '@/utils/tip.js'
 
 const api = {
-	
-	getUserId() {
-		return new Promise((resolve, reject) => {
-			tip.loading('获取用户信息中')
-			my.getAuthCode({
-			  success: (res) => {
-			    if (res.authCode) {
-				  http.post('/ali/auth',{authCode: res.authCode}).then(res => {
-					  store.commit('SET_USERID', res.data.msg);
-					  resolve(res)
-				  }).catch(err => {
-					  tip.confirm('获取用户信息失败，是否重试', true).then(() => {
-						  this.getUserId()
-					  }).catch(() => {
-						  reject()
-					  })
-				  })
-			    }
-			  }
-			})
-		})
+
+	async login() {
+		if(store.getters.userid) {
+			return true
+		}
+		let flag = await this.loginReq()
+		while (!flag) {
+			try {
+				await tip.confirm('获取用户信息失败，是否重试', true)
+				flag = await this.loginReq()
+			} catch (e) {
+				tip.toast('用户取消授权')
+				return false
+			}
+		}
+		return true;
 	},
-	
+
+	async loginReq() {
+		try {
+			let auth = await my.getAuthCode()
+			tip.loading('获取用户信息中')
+			let user = await http.post('/ali/auth', { authCode: auth.authCode })
+			store.commit('SET_USERID', user.data.msg)
+			return true
+		} catch (e) {
+			return false
+		}
+	},
+
 	getImgUrl(url) {
 		return BASE_URL + url
 	},
-	
+
 	getShareObject(){
 		return {
 			title: '旧衣回收换好礼' ,

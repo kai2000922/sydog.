@@ -42,40 +42,14 @@
 				left: 0,
 			}
 		},
-		watch: {
-			// list: {
-			// 	handler(newValue, oldValue) {
-			// 		if(this.list.length > 1) {
-			// 			this.left = 156
-			// 		}
-			// 	}
-			// },
-			// left(val) {
-			// 	this.$nextTick(()=>{
-			// 		this.left += 156
-			// 	})
-			// }
-		},
 		methods: {
+			// 跳转到商城
 			toShopping() {
-				uni.navigateTo({ url: '/pages/shopping/index' })
+				uni.switchTab({ url: '/pages/shopping/index' })
 			},
-			
+
 			toGoods(index){
 				this.$emit('goodsClick', index)
-			},
-			
-			nextChange() {
-				if(this.next + 1 < this.list.length) {
-					// setTimeout(() => {
-					// 	this.next++
-					// }, 500)
-					this.$nextTick(() => {
-						setTimeout(() => {
-							this.next++
-						}, 500)
-					})
-				}
 			}
 		}
 	}
@@ -86,7 +60,7 @@
 		position: relative;
 		width: 750rpx;
 		height: 225rpx;
-		margin: 40rpx 0 30rpx 0;
+		margin: 40rpx 0 0 0;
 		display: flex;
 		align-items: flex-end;
 
@@ -130,7 +104,7 @@
 					border-radius: 30rpx;
 					background: #f3f4f6;
 					overflow: hidden;
-					
+
 					.mianfeijiaobiao {
 						position: absolute;
 						top: 14rpx;
@@ -142,9 +116,9 @@
 				}
 			}
 		}
-		
+
 		.right {
-			
+
 			&>image {
 				position: absolute;
 				right: 0;

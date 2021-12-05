@@ -7,10 +7,10 @@
 				<text class="font_24 line_36">{{ refundText }}</text>
 			</view>
 		</view>
-		<view style="flex: 1; margin-left: 16rpx;" class="flex_colum">
+		<view style="width: 414rpx; margin-left: 16rpx;" class="flex_colum">
 			<view class="flex_row flex_jc_between flex_ai_center">
-				<text class="font_28 line_42 font_bold color_black" @click="toGoods">{{ goodsName }}</text>
-				<view class="font_28 line_42">
+				<text class="font_28 line_42 font_bold color_black text_ellipsis" @click="toGoods">{{ goodsName }}</text>
+				<view style="margin-left: 20rpx;" class="font_28 line_42">
 					<text class="color_grey hx">{{ '¥' + hxPrice }}</text>
 					<text style="margin-left: 8rpx;" class="color_black">¥0</text>
 				</view>

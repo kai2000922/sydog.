@@ -14,7 +14,7 @@
 		
 		<success v-if="type === 'success'" :actualWeight="item.actualWeight" @sto="sto"/>
 
-		<normal v-if="type !== 'success'" :type="type" :expectTime="expectTime" :courier="item.courier" @timeClick="formChange"/>
+		<normal v-if="type !== 'success'" :type="type" :expectTime="expectTime" :courier="item.courier" :courier-error="courierError" :courier-name="courierName" :courier-phone="courierPhone" @timeClick="formChange"/>
 
 		<dot-line :height="20" :itemNumber="25"
 			:customStyle="{marginRight: '-30rpx', marginLeft: '-30rpx', marginTop: '46rpx', opacity: '0.7'}"
@@ -22,8 +22,8 @@
 		
 		<view class="flex_colum font_24 line_36" :class="type === 'cancel' ? 'color_c' : 'color_n'">
 			<view class="label flex_row flex_ai_center">
-				<image src="@/static/dingdan.png"/>
-				<text class="font_28 label_color line_42">订单信息：</text>
+				<image src="@/static/order/dingdan.png"/>
+				<text class="ml_10 font_28 label_color line_42">订单信息：</text>
 			</view>
 			
 			<view class="flex_row flex_ai_center flex_jc_between">
@@ -66,13 +66,13 @@
 				</view>
 				<s-button
 					v-if="type === 'stay' || type === 'pickup'"
-					background="#ffffff" 
-					width="600"
-					height="120"
-					color="#43A668" 
-					:custom-style="{margin: '40rpx auto 0 auto', border: '1px solid #43A668'}"
-					text=" 能换哪些好礼？"
-					@click="toCollect"/>
+					background="#43A668" 
+					width="600" 
+					height="120" 
+					color="#FFFFFF" 
+					:custom-style="{margin: '30rpx auto 0 auto'}"
+					text="去兑换好礼 GO"
+					@click="toShopping"/>
 			</view>
 		</view>
 		
@@ -90,9 +90,7 @@
 	import dotLine from '@/components/pages/s-dot-line'
 	import sButton from '@/components/pages/s-button'
 
-	import {
-		getDate
-	} from '../utils/dateUtil.js'
+	import { getDate } from '@/utils/dateUtil.js'
 
 	export default {
 		components: {
@@ -108,8 +106,16 @@
 		},
 		data() {
 			return {
+				// 类型
 				type: '',
-				expectTime: {}
+				// 时间
+				expectTime: {},
+				// 快递员异常？
+				courierError: false,
+				// 快递员姓名
+				courierName: '',
+				// 快递员电话
+				courierPhone: '',
 			}
 		},
 		created() {
@@ -120,8 +126,17 @@
 				switch (this.item.orderStatus) {
 					case '待上门':
 						if(this.item.courier != undefined && this.item.courier != '' && this.item.courier != null) {
-							console.log(this.item.courier);
 							this.type = 'pickup'
+							if(this.item.courier.indexOf(' ') === -1) {
+								this.courierError = true
+							}
+							let arr = this.item.courier.split(' ')
+							if(arr[1] && arr[1].length === 11) {
+								this.courierName = arr[0]
+								this.courierPhone = arr[1]
+							} else {
+								this.courierError = true
+							}
 						} else {
 							this.type = 'stay'
 						}
@@ -162,8 +177,8 @@
 			},
 			
 			// 前往商品页
-			toCollect() {
-				uni.navigateTo({ url: '/pages/collect/index?from=recycle_order' })
+			toShopping() {
+				uni.switchTab({url: '/pages/shopping/index'})
 			},
 			
 			// 复制

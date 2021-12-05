@@ -2,7 +2,7 @@
 	<view class="payment">
 		<view class="payment_main">
 			<pickup :address.sync="address"/>
-			<order :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-describe="goods.goodsDescribe" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="goods.zfPrice"/>
+			<order :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-describe="goods.goodsDescribe" :hx-price="goods.hxPrice" :channel="parseInt(goods.channel)" :express-price="goods.expressPrice" :yh-price="goods.yhPrice" :zf-price="goods.zfPrice"/>
 		</view>
 		<view class="payment_bottom">
 			<collection :zfPrice="goods.zfPrice" @zfBtnClick="payBeforeHandler"/>
@@ -82,7 +82,9 @@
 					// 订单状态
 					ordersStatus: undefined
 				},
-				utils: api
+				utils: api,
+				// 用户
+				user: {}
 			}
 		},
 		onLoad(option) {
@@ -114,14 +116,8 @@
 				return
 			}
 			this.goodsId = option.goodsId
+			api.login()
 			this.getGoods()
-			if(!this.$store.getters.userid) {
-				// 获取用户信息，如果没有获取到则返回上一届面
-				api.getUserId()
-				if(!this.$store.getters.userid) {
-					uni.navigateBack({ delta: 1 });
-				}
-			}
 		},
 		methods: {
 			// 获取商品信息
@@ -147,17 +143,37 @@
 			},
 			
 			//调用支付前处理
-			payBeforeHandler() {
+			async payBeforeHandler() {
 				if(!this.addressJudge()) {
 					return
+				}
+				let flag = await api.login()
+				if(!flag) {
+					return
+				}
+				if(parseInt(this.goods.channel) === 1) {
+					this.$tip.loading('获取用户信息中...')
+					try {
+						let temp = await this.$http.post('/recycle/user/list', {userNo: this.$store.getters.userid})
+						let user = temp.data.rows[0]
+						if(!user) {
+							this.$tip.toast('获取用户信息失败~')
+							return
+						}
+						if(user.recycled <= 0) {
+							this.$tip.toast('暂无优惠，请回收衣服后重试~')
+							return
+						}
+					} catch(err) {
+						this.$tip.toast('获取用户信息失败~')
+						return
+					}
 				}
 				this.orderNumQuery.title = this.goods.goodsName
 				if(this.orderQuery.ordersID != undefined) {
 					this.orderNumQuery.price = this.orderQuery.zfPrice
-					// this.orderNumQuery.price = 0.01
 				} else {
 					this.orderNumQuery.price = this.goods.zfPrice
-					// this.orderNumQuery.price = 0.01
 				}
 				this.orderNumQuery.userID = this.$store.getters.userid
 				this.$tip.loading()
@@ -240,9 +256,9 @@
 			toEnd() {
 				if(this.orderQuery.ordersStatus === '待支付') {
 					this.$tip.toast('已生成一笔待支付订单')
-					uni.navigateBack({delta: 1})
+					uni.switchTab({ url: '/pages/recycle_orders/index' })
 				} else {
-					uni.redirectTo({ url:'/pages/end/index?from=pay' })
+					uni.redirectTo({ url:'/pages/end/index' })
 				}
 			}
 		}

@@ -1,7 +1,7 @@
 <template>
 	<view class="freight" :style="customStyle">
-		<s-tag width="92" height="36" text="付邮领"/>
-		<text class="freight_freight" v-text="'需支付运费' + freight + '元'"/>
+		<s-tag v-if="tagShow" width="92" height="36" text="付邮领"/>
+		<text class="freight_freight" :style="{marginLeft: tagShow ? '16rpx' : '0rpx'}" v-text="(tagShow ? '需支付运费' : '运费') + freight + '元'"/>
 	</view>
 </template>
 
@@ -23,6 +23,11 @@
 			customStyle: {
 				type: Object,
 				default: () => {return {}}
+			},
+			// 优惠
+			tagShow: {
+				type: Boolean,
+				default: false
 			}
 		}
 	}
@@ -34,10 +39,9 @@
 		align-items: center;
 	
 		&_freight {
-			margin-left: 8rpx;
 			font-family: PingFangSC-Regular;
 			font-size: 28rpx;
-			color: #43A668;
+			color: #7F8581;
 			letter-spacing: 0;
 			line-height: 42rpx;
 		}

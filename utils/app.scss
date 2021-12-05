@@ -6,8 +6,26 @@
 	text-align: right;
 }
 
+.top-background {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 750rpx;
+		height: 320rpx;
+		background-image: linear-gradient(180deg, #44aa67 50%, #FAFEFC 100%);
+		z-index: -1;
+	}
+
+.mt_30 {
+	margin-top: 30rpx;
+}
+
 .mt_20 {
 	margin-top: 20rpx;
+}
+
+.ml_10 {
+	margin-left: 10rpx;
 }
 
 .text_ellipsis {
@@ -26,6 +44,11 @@
 
 .line_54 {
 	line-height: 54rpx;
+}
+
+.font_18 {
+	font-family: PingFangSC-Regular;
+	font-size: 18rpx;
 }
 
 .font_24 {
@@ -56,7 +79,7 @@
 }
 
 .color_green {
-		color: #43A668
+		color: #43A668;
 }
 
 .flex_warp {

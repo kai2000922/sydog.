@@ -17,7 +17,7 @@
 			<label class="form_row_title">上门时间</label>
 			<view class="form_row_content" @click="dateSelectShow =true">
 				<text :class="dateLabel === '请选择上门取件时间' ? 'form_row_content_placeholder' : 'form_row_content_text'" v-text="dateLabel"/>
-				<u-select v-model="dateSelectShow" 
+				<u-select v-model="dateSelectShow"
 						mode="mutil-column-auto"
 						confirm-color="#06180C"
 						:list="dateList"
@@ -27,13 +27,16 @@
 			<label v-if="dateLabel != '请选择上门取件时间'" class="form_row_contact">快递员将在此日联系您</label>
 		</view>
 		<view class="form_row2">
-			<text class="form_row2_text">回收重量</text>
+			<view class="flex_row flex_jc_between flex_ai_center">
+				<text class="form_row2_text">回收重量</text>
+				<text class="card_right_text">*仅供参考，以实际重量为准</text>
+			</view>
 			<view class="form_row2_select">
-				
+
 				<s-select-item v-for="(item, index) in weightObj.list"
 					:key="index"
 					:obj="item"
-					:width="item.width"
+					:last="item.index === 4 ? true : false"
 					:select="weightObj.select === item.index ? true : false"
 					@select="weightChange"/>
 			</view>
@@ -87,21 +90,29 @@
 					list: [
 						{
 							index: 1,
-							label: '8kg 约20件',
+							weight: '5-10kg',
+							text: '约8-15件',
 							width: 275,
-							value: 8
+							value: 6
 						},
 						{
 							index: 2,
-							label: '16kg 约40件',
+							weight: '10-20kg',
+							text: '约20-40件',
 							width: 275,
-							value: 16
+							value: 11
 						},
 						{
 							index: 3,
-							label: '16kg以上 约40件以上',
-							width: 572,
-							value: 17
+							weight: '20-30kg',
+							text: '约40-60件',
+							value: 21
+						},
+						{
+							index: 4,
+							weight: '30kg',
+							text: '约65件以上',
+							value: 31,
 						}
 					]
 				},
@@ -118,7 +129,7 @@
 				case 8:
 					this.weightObj.select = 1
 					break
-				case 16: 
+				case 16:
 					this.weightObj.select = 2
 					break
 				default:
@@ -132,7 +143,7 @@
 			this.getDateList()
 		},
 		methods: {
-			
+
 			addressChoose(){
 				uni.chooseAddress({
 					success: (res) => {
@@ -152,7 +163,7 @@
 					}
 				})
 			},
-			
+
 			getDateList() {
 				let date = new Date();
 				let year = date.getFullYear();
@@ -168,9 +179,9 @@
 						month++;
 					}
 					if (week > 6) {
-						week = 0;	
+						week = 0;
 					}
-					
+
 					if(HourFlag) {
 						HourFlag = false
 						day++
@@ -183,10 +194,10 @@
 						children: this.getDayTime(date, i)
 					})
 				day++
-				week++				
+				week++
 			}
 			},
-			
+
 			getDayTime(date, val) {
 				let i = 9
 				let list = []
@@ -196,7 +207,7 @@
 						value: date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
 					})
 					i = date.getHours() + 2
-				} else { 
+				} else {
 					i = 9
 				}
 				for ( ; i + 2 <= 19; i += 2) {
@@ -219,7 +230,7 @@
 				let days = date.getDate();
 				return days;
 			},
-			
+
 			// 日期选择
 			dateSelect(e) {
 				this.dateLabel = e[0].label + ' ' + e[1].label
@@ -311,7 +322,7 @@
 					letter-spacing: 0;
 					line-height: 42rpx;
 				}
-				
+
 				&_placeholder {
 					font-family: PingFangSC-Regular;
 					font-size: 28rpx;
@@ -345,8 +356,6 @@
 			margin-top: 64rpx;
 			display: flex;
 			flex-direction: column;
-			// align-items: center;
-			// justify-content: space-between;
 
 			&_text {
 				margin-left: -32rpx;
@@ -369,14 +378,14 @@
 					background: #FA9E19;
 				}
 			}
-			
+
 			&_select {
 				margin-top: 20rpx;
+				margin-left: -32rpx;
 				display: flex;
 				justify-content: space-around;
 				align-items: center;
 				flex-wrap: wrap;
-				
 			}
 		}
 	}

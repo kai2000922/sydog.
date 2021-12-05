@@ -14,14 +14,14 @@
 				<text class="name">商品价格</text>
 				<view class="price">
 					<text class="price_original">{{ '¥' + hxPrice }}</text>
-					<text class="price_now">¥0</text>
+					<text class="price_now">{{ channel === 1 ? '¥0' : '¥' + yhPrice}}</text>
 				</view>
 			</view>
 			<view class="main_item">
 				<text class="name">运费</text>
 				<text>{{ '¥' + expressPrice }}</text>
 			</view>
-			<view class="main_item">
+			<view v-if="channel === 1" class="main_item">
 				<text class="name">享受优惠</text>
 				<s-tag/>
 			</view>
@@ -65,6 +65,14 @@
 			zfPrice: {
 				type: [Number, String],
 				default: 10
+			},
+			yhPrice: {
+				type: [Number, String],
+				default: 30
+			},
+			channel: {
+				type: Number,
+				default: 0
 			}
 		},
 		data() {

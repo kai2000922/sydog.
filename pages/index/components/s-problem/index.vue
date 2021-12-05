@@ -54,13 +54,13 @@
 
 <style lang="scss" scoped>
 	.problem {
-		margin: 30rpx;
+		margin: 40rpx 30rpx 30rpx 30rpx;
 		padding: 30rpx;
 		background: #FFFFFF;
 		box-shadow: 0 1rpx 24px 0 #E8F0EB;
 		border-radius: 40rpx;
 		.title {
-			
+
 			&>image {
 				margin-top: -6rpx;
 				margin-left: -50rpx;
@@ -69,19 +69,19 @@
 				vertical-align: middle;
 			}
 		}
-		
+
 		.collapse {
 			&_title {
 				margin: 30rpx 0;
 				display: flex;
 				align-items: center;
-				
+
 				&>image {
 					width: 30rpx;
 					height: 30rpx;
 					vertical-align: middle;
 				}
-				
+
 				&>text {
 					margin-left: 10rpx;
 					font-family: PingFangSC-Regular;
@@ -91,7 +91,7 @@
 					line-height: 54rpx;
 				}
 			}
-			
+
 			&_text {
 				padding-bottom: 50rpx;
 				font-family: PingFangSC-Regular;
@@ -101,19 +101,19 @@
 				line-height: 42rpx;
 			}
 		}
-		
+
 		.bottom {
 			margin-top: 30rpx;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			
+
 			&>image {
 				width: 50rpx;
 				height: 50rpx;
 				vertical-align: middle;
 			}
-			
+
 			&>text {
 				margin-left: 10rpx;
 				font-family: PingFangSC-Semibold;

@@ -1,15 +1,16 @@
 <template>
 	<view>
-		<button class="s_button" 
+		<button class="s_button"
 			:style="[{
-				height: height + 'rpx', 
-				width: width + 'rpx', 
-				background: background, 
+				height: height + 'rpx',
+				width: width + 'rpx',
+				background: bgImg === '' ? background : '',
+				backgroundImage: bgImg === '' ? '' : bgImg,
 				borderRadius: height / 2,
 				color: color,
 				fontSize: fontSize + 'rpx',
 				fontWeight: bold ? 'bold' : 'normal'
-			}, customStyle]" 
+			}, customStyle]"
 			:open-type="openType"
 			@click="click"
 			v-text="text"
@@ -24,6 +25,10 @@
 			height: [String, Number],
 			width: [String, Number],
 			background: String,
+			bgImg: {
+				type: String,
+				default: ''
+			},
 			color: String,
 			fontSize: {
 				type: [String, Number],
@@ -63,11 +68,11 @@
 		font-family: PingFangSC-Semibold;
 		letter-spacing: 0;
 		// font-weight: normal;
-		
+
 		// &:hover {
 		// 	background: none;
 		// }
-		
+
 		// &:checked {
 		// 	background: none;
 		// }

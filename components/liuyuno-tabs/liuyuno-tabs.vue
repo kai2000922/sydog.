@@ -1,6 +1,6 @@
 <template>
 	<view class="_tab-box"
-		:style="{height: defaultConfig.height, lineHeight: defaultConfig.lineHeight, background: defaultConfig.background, fontSize: defaultConfig.fontSize + 'rpx', color: defaultConfig.color}">
+		:style="[{height: defaultConfig.height, lineHeight: defaultConfig.lineHeight, background: defaultConfig.background, fontSize: defaultConfig.fontSize + 'rpx', color: defaultConfig.color}, customStyle]">
 		<scroll-view id="_scroll" :scroll-x="true" class="scroll-view-h" scroll-with-animation
 			:scroll-left="slider.scrollLeft">
 			<view class="_scroll-content">
@@ -42,6 +42,10 @@
 					return {}
 				}
 			},
+			customStyle: {
+				type: Object,
+				default: () => ({})
+			}
 		},
 		data() {
 			return {
