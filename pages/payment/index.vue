@@ -126,6 +126,10 @@
 				this.$http.post('/recycle/goods/listByID', {
 					goodsID: this.goodsId
 				}).then(res => {
+					let goods = res.data.data
+					if(goods.yhPrice === null) {
+						goods.yhPrice = goods.hxPrice
+					}
 					this.goods = res.data.data
 				})
 			},

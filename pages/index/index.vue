@@ -117,6 +117,9 @@
 			uni.setNavigationBarColor({ backgroundColor: '#44aa67' })
 			this.sendChannel(options.channelName)
 		},
+		onShow() {
+			this.getRecycle()
+		},
 		created() {
 			api.login()
 			this.getStoreList()
@@ -187,6 +190,7 @@
 							.addressInfo.street + this.addressInfo.address
 						this.$tip.loading('请求中')
 						this.$http.post('recycle/recycle/add', this.orderInfo).then(res => {
+							this.getRecycle()
 							uni.navigateTo({ url: '/pages/collect/index?from=index' })
 						})
 					}
@@ -197,7 +201,7 @@
 			async getRecycle() {
 				let flag = await api.login()
 				if(flag) {
-					let dsm = await this.$http.post('/recycle/recycle/list', {user: this.$store.getters.userid})
+					let dsm = await this.$http.post('/recycle/recycle/list', {user: this.$store.getters.userid, orderStatus: '待上门'})
 					this.recycleList = dsm.data.rows
 				}
 			},

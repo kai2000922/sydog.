@@ -6,7 +6,7 @@
 		<!-- swiper必须设置height:100%，因为swiper有默认的高度，只有设置高度100%才可以铺满页面  -->
 		<swiper style="height: 100%;" :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish">
 			<swiper-item>
-				<recycle-swiper-item :tabIndex="0" :currentIndex="swiperCurrent"/>
+				<recycle-swiper-item :tabIndex="0" :currentIndex="swiperCurrent" />
 			</swiper-item>
 			<swiper-item>
 				<order-swiper-item :tabIndex="1" :currentIndex="swiperCurrent"/>

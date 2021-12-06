@@ -15,7 +15,7 @@
 			</scroll-view>
 		</view>
 		
-		<view class="bottom">
+		<view v-if="!notHave" class="bottom">
 			<s-button v-if="channel === 1 && user.recycled > 0"
 				background="#43A668" 
 				width="690" 
@@ -42,6 +42,16 @@
 				:custom-style="{}"
 				text="立即购买"
 				@click="toPaymnet"/>
+		</view>
+		
+		<view v-else class="bottom">
+			<s-button
+				background="#BFBFBF" 
+				width="690" 
+				height="120" 
+				color="#FFFFFF" 
+				:custom-style="{}"
+				text="商品已下架"/>
 		</view>
 	</view>
 </template>
@@ -77,7 +87,9 @@
 				// 
 				sapi: api,
 				// channel
-				channel: 0
+				channel: 0,
+				// 是否下架
+				notHave: false
 			}
 		},
 		onLoad(options) {
@@ -121,6 +133,9 @@
 				this.$tip.loading('加载中')
 				this.$http.post('/recycle/goods/listByID', { goodsID: this.goodsID }).then(res => {
 					let goods = res.data.data
+					if(goods.yhPrice === null) {
+						goods.yhPrice = goods.hxPrice
+					}
 					this.goods = goods
 					this.channel = parseInt(goods.channel)
 					this.descImgs = []
@@ -129,6 +144,10 @@
 							this.descImgs.push(api.getImgUrl(img))
 						}
 					})
+				}).catch(e => {
+					if(e.data.msg === '商品不存在') {
+						this.notHave = true
+					}
 				})
 			},
 			

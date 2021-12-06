@@ -9,7 +9,7 @@
 		</view>
 		<view style="width: 414rpx; margin-left: 16rpx;" class="flex_colum">
 			<view class="flex_row flex_jc_between flex_ai_center">
-				<text class="font_28 line_42 font_bold color_black text_ellipsis" @click="toGoods">{{ goodsName }}</text>
+				<text class="font_28 line_42 font_bold color_black text_ellipsis" @click="toGoods">{{ goodsName || spareGoodsName }}</text>
 				<view style="margin-left: 20rpx;" class="font_28 line_42">
 					<text class="color_grey hx">{{ '¥' + hxPrice }}</text>
 					<text style="margin-left: 8rpx;" class="color_black">¥0</text>
@@ -19,7 +19,7 @@
 				<text  class="font_24 line_36 color_black">{{goodsType}}</text>
 			</view>
 			<view style="margin-top: 30rpx;">
-				<s-tag width="92" height="36" text="付邮领" color="#43A668" fontColor="#43A668" />
+				<s-tag v-if="channel === 1" width="92" height="36" text="付邮领" color="#43A668" fontColor="#43A668" />
 			</view>
 			<view style="flex: 1;" class="font_28 line_42 color_black flex_row flex_ai_end flex_jc_end">
 				<text>{{ '运费：¥' + expressPrice }}</text>
@@ -41,6 +41,11 @@
 			img: String,
 			// 商品名称
 			goodsName: {
+				type: String,
+				default: '商品'
+			},
+			// 备用名称
+			spareGoodsName: {
 				type: String,
 				default: '商品'
 			},
@@ -69,13 +74,19 @@
 				type: String,
 				default: ''
 			},
-			goodsID: Number
+			goodsID: Number,
+			// 类型
+			channel: Number
 		},
 		onLoad() {
 		},
 		methods:{
 			toGoods(){
-				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + this.goodsID + '&from=shopping' })
+				if(!this.goodsID) {
+					this.$tip.toast('商品已下架~')
+					return
+				}
+				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + this.goodsID })
 			}
 		}
 	}

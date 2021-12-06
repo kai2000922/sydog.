@@ -3,6 +3,7 @@ import tip from './tip.js'
 
 // const BASE_URL = 'https://49.235.238.110:8080'
 const BASE_URL = 'https://hkkkkk.cn:8080'
+// const BASE_URL = 'https://127.0.0.1:8080'
 // const BASE_URL = 'https://192.168.0.100:8080'
 
 const http = new Request()
@@ -32,6 +33,10 @@ http.interceptors.response.use((response) => {
 	}
 	/* 对响应成功做点什么 可使用async await 做异步操作*/
 	if (response.data.code !== 0) { // 服务端返回的状态码不等于0，则reject()
+		// 忽略弹窗
+		if(response.config.custom.neglectError) {
+			return Promise.reject(response)
+		}
 		tip.error(response.data.msg)
 		return Promise.reject(response) // return Promise.reject 可使promise状态进入catch
 	}
@@ -41,7 +46,6 @@ http.interceptors.response.use((response) => {
 		tip.loaded()
 	}
 	/*  对响应错误做点什么 （statusCode !== 200）*/
-	console.log(response)
 	return Promise.reject(response)
 })
 

@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<z-paging ref="paging" v-model="dataList" @query="queryList" :fixed="false" :auto="false" empty-view-text="暂时没有订单哦~">
+		<z-paging ref="paging" v-model="dataList" @query="queryList" :fixed="false" :auto="false" empty-view-text="暂时没有订单哦~" @onRefresh="refresh">
 			<!-- 如果希望其他view跟着页面滚动，可以放在z-paging标签内 -->
 			<view v-for="(item, index) in dataList" :key="index">
 				<recyle :item="item" @formChange="showUpdate" @update="updateRecycle(item.recycleID, -2)" @delete="deleteRecycle(item)" @sto="toShopping"/>
@@ -36,6 +36,26 @@
 			sButton,
 			sForm
 		},
+		props: {
+			//当前组件的index，也就是当前组件是swiper中的第几个
+			tabIndex: {
+				type: Number,
+				default: function() {
+					return 0
+				}
+			},
+			//当前swiper切换到第几个index
+			currentIndex: {
+				type: Number,
+				default: function() {
+					return 0
+				}
+			},
+			reLoad: {
+				type: Boolean,
+				default: false
+			}
+		},
 		data() {
 			return {
 				//v-model绑定的这个变量不要在分页请求结束中自己赋值！！！
@@ -51,22 +71,6 @@
 					expectWeight: 0,
 					expectAddressLabel: '',
 					expectAddress: {}
-				},
-			}
-		},
-		props: {
-			//当前组件的index，也就是当前组件是swiper中的第几个
-			tabIndex: {
-				type: Number,
-				default: function() {
-					return 0
-				}
-			},
-			//当前swiper切换到第几个index
-			currentIndex: {
-				type: Number,
-				default: function() {
-					return 0
 				}
 			}
 		},
@@ -86,7 +90,9 @@
 			}
 		},
 		methods: {
-			
+			refresh() {
+				this.$refs.paging.reload()
+			},
 			//获取回收订单
 			queryList(pageNo, pageSize) {
 				api.login().then(flag => {
@@ -151,8 +157,8 @@
 					orderID: recycleID
 				}).then(res => {
 					this.$tip.success('修改成功！')
-					this.$refs.paging.refresh()
 				}).finally(() => {
+					this.$refs.paging.reload()
 					this.alterPopup = false
 				})
 			},

@@ -1,6 +1,6 @@
 <template>
 	<s-panel>
-		<order-briefly :goodsID="goods.goodID" :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="goods.zfPrice" :refund-text="text.img"/>
+		<order-briefly :goodsID="goods.goodID" :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="goods.zfPrice" :refund-text="text.img" :channel='parseInt(goods.channel)'/>
 		<!-- 订单状态 -->
 		<view class="express flex_row flex_jc_between" @click="toDetails">
 			<view class="che">
@@ -8,7 +8,10 @@
 			</view>
 			<view style="flex: 1;" class="flex_colum">
 				<text class="font_28 line_64 color_black text_ellipsis">{{ text.logistics }}</text>
-				<text v-if="item.expressNum" class="font_28 line_64 color_black text_ellipsis" selectable>运单号码：{{ item.expressNum }}</text>
+				<view v-if="item.expressNum">
+					<text class="font_28 line_64 color_black text_ellipsis" selectable>运单号码：{{ item.expressNum }}</text>
+					<text class="ml_18 font_28 line_64 color_black text_ellipsis" @click.stop="copy">复制</text>
+				</view>
 			</view>
 		</view>
 		
@@ -61,7 +64,9 @@
 					img: '',
 					logistics: '',
 					refund: '',
-				}
+				},
+				// 商品下架？
+				notHave: false
 			}
 		},
 		created() {
@@ -70,8 +75,16 @@
 		},
 		methods: {
 			getGoods(id) {
-				this.$http.post('/recycle/goods/listByID', {goodsID: id}).then(res => {
+				this.$http.post('/recycle/goods/listByID', {goodsID: id}, {custom: {neglectError: true},}).then(res => {
 					this.goods = res.data.data
+				}).catch(e => {
+					if(e.data && e.data.msg && e.data.msg === '商品不存在') {
+						this.goods.goodsName = this.item.goodsName
+						this.goods.goodsType = this.item.goodsType
+						this.goods.zfPrice = this.item.zfPrice
+						this.goods.expressPrice = this.item.zfPrice
+						this.notHave = true
+					}
 				})
 			},
 			
@@ -115,8 +128,22 @@
 				}
 			},
 			
+			// 订单号复制
+			copy() {
+				uni.setClipboardData({
+				    data: this.item.expressNum,
+					success: () => {
+						this.$tip.toast('复制成功')
+					}
+				});
+			},
+			
 			// 待支付按钮点击事件
 			zfClick() {
+				if(this.notHave) {
+					this.$tip.toast('商品已下架~')
+					return
+				}
 				this.$emit('zfClick', this.item)
 			},
 			
@@ -170,6 +197,10 @@
 </script>
 
 <style lang="scss" scoped>
+	
+	.ml_18 {
+		margin-left: 18rpx;
+	}
 	
 	.line_64 {
 		line-height: 64rpx;

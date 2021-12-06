@@ -64,8 +64,11 @@
 			},
 			toGoods(item){
 				if (item.toPages != '-1'){
-					console.log('/' + item.toPages + '?goodsID=' + item.goodsId + '&from=shopping')
-					uni.navigateTo({ url: '/' + item.toPages + '?goodsID=' + item.goodsId + '&from=shopping' })
+					if(item.toPages === 'pages/shopping/index') {
+						uni.switchTab({ url: '/pages/shopping/index' })
+					} else {
+						uni.navigateTo({ url: '/' + item.toPages + '?goodsID=' + item.goodsId })
+					}
 				}
 			}
 		}

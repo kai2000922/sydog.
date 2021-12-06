@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<z-paging ref="paging" v-model="dataList" @query="queryList" :fixed="false" :auto="false" empty-view-text="暂时没有订单哦~">
+		<z-paging ref="paging" v-model="dataList" @query="queryList" :fixed="false" :auto="false" empty-view-text="暂时没有订单哦~" @onRefresh="refresh">
 			<!-- 如果希望其他view跟着页面滚动，可以放在z-paging标签内 -->
 			<view v-for="(item, index) in dataList" :key="index">
 				<order :item="item" @zfClick="toPayment" @tkClick="refund"/>
@@ -83,6 +83,9 @@
 			}
 		},
 		methods: {
+			refresh() {
+				this.$refs.paging.reload()
+			},
 			// 获取商品订单列表
 			queryList(pageNo, pageSize) {
 				api.login().then(flag => {

@@ -6,7 +6,7 @@
 			</view>
 		</view>
 		<s-panel>
-			<order-briefly :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="item.zfPrice" :refund-text="text.img"/>
+			<order-briefly :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="item.zfPrice" :refund-text="text.img" :channel='parseInt(goods.channel)'/>
 			<!-- 订单状态 -->
 			<view class="express flex_row flex_jc_between">
 				<view class="che">
@@ -14,7 +14,10 @@
 				</view>
 				<view style="flex: 1;" class="flex_colum">
 					<text class="font_28 line_64 color_black text_ellipsis">{{ text.logistics }}</text>
-					<text v-if="order.expressNum" class="font_28 line_64 color_black text_ellipsis" selectable>运单号码：{{ order.expressNum }}</text>
+					<view v-if="order.expressNum">
+						<text class="font_28 line_64 color_black text_ellipsis" selectable>运单号码：{{ order.expressNum }}</text>
+						<text class="ml_18 font_28 line_64 color_black text_ellipsis" @click="expressNumCopy">复制</text>
+					</view>
 				</view>
 			</view>
 			<!-- 订单信息 -->
@@ -132,10 +135,10 @@
 			// 准备页面数据
 			loadPage() {
 				let status = this.order.ordersStatus
-				console.log(status);
 				switch(status) {
 					case '待支付':
 						this.text.logistics = status
+						this.text.refund = '退款'
 						break
 					case '未发货':
 						this.text.logistics = '您已下单，我们将在48小时内发货'
@@ -160,6 +163,16 @@
 			copy() {
 				uni.setClipboardData({
 					data: this.order.tradeNo,
+					success: () => {
+						this.$tip.toast('复制成功')
+					}
+				});
+			},
+			
+			// 运单号复制
+			expressNumCopy() {
+				uni.setClipboardData({
+				    data: this.order.expressNum,
 					success: () => {
 						this.$tip.toast('复制成功')
 					}

@@ -44,7 +44,7 @@
 		</s-panel>
 		
 		<!-- 修改订单弹窗 -->
-		<u-popup v-model="alterPopup" height="65%" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3">
+		<u-popup v-model="alterPopup" height="75%" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3">
 			<view class="alter">
 				<view class="alter_title">
 					<text>修改订单信息</text>
@@ -100,7 +100,14 @@
 				// 弹窗
 				alterPopup: false,
 				// 修改
-				updateInfo: {}
+				updateInfo: {
+					recycleID: '',
+					contacts: '',
+					expectTime: '',
+					expectWeight: 0,
+					expectAddressLabel: '',
+					expectAddress: {}
+				},
 			}
 		},
 		created() {
@@ -161,9 +168,9 @@
 					orderID: recycleID
 				}).then(res => {
 					this.$tip.success('修改成功！')
-					this.$emit('update')
 				}).finally(() => {
 					this.alterPopup = false
+					this.$emit('update')
 				})
 			},
 			
