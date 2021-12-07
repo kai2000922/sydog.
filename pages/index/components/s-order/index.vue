@@ -171,6 +171,7 @@
 				}).finally(() => {
 					this.alterPopup = false
 					this.$store.commit('SET_RECYCLERELOAD', true)
+					this.$store.commit('SET_DDTAB', 0)
 					this.$emit('update')
 				})
 			},

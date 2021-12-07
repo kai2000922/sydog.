@@ -192,6 +192,7 @@
 						this.$http.post('recycle/recycle/add', this.orderInfo).then(res => {
 							this.getRecycle()
 							this.$store.commit('SET_RECYCLERELOAD', true)
+							this.$store.commit('SET_DDTAB', 0)
 							uni.navigateTo({ url: '/pages/collect/index' })
 						})
 					}

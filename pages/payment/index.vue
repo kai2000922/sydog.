@@ -261,9 +261,11 @@
 				if(this.orderQuery.ordersStatus === '待支付') {
 					this.$tip.toast('已生成一笔待支付订单')
 					this.$store.commit('SET_ORDERRELOAD', true)
+					this.$store.commit('SET_DDTAB', 1)
 					uni.switchTab({ url: '/pages/recycle_orders/index' })
 				} else {
 					this.$store.commit('SET_ORDERRELOAD', true)
+					this.$store.commit('SET_DDTAB', 1)
 					uni.redirectTo({ url:'/pages/end/index' })
 				}
 			}

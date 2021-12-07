@@ -9,6 +9,7 @@ export default new Vuex.Store({
 		waitPayOrder: {},
 		orderReload: false,
 		recycleReload: false,
+		ddTab: -1
 	},
 	mutations: {
 		SET_USERID: (state, userid) => {
@@ -23,11 +24,15 @@ export default new Vuex.Store({
 		SET_RECYCLERELOAD: (state,recycleReload) => {
 			state.recycleReload = recycleReload
 		},
+		SET_DDTAB: (state,ddTab) => {
+			state.ddTab = ddTab
+		},
 	},
 	getters: {
 		userid: state => state.userid,
 		waitPayOrder: state => state.waitPayOrder,
 		recycleReload: state => state.recycleReload,
-		orderReload: state => state.orderReload
+		orderReload: state => state.orderReload,
+		ddTab: state => state.ddTab
 	}
 })

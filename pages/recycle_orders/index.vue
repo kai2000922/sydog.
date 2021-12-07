@@ -85,6 +85,11 @@
 				this.recycleReload = true
 				this.$store.commit('SET_RECYCLERELOAD', false)
 			}
+			if(this.$store.getters.ddTab !== -1) {
+				this.current = this.$store.getters.ddTab
+				this.swiperCurrent = this.current
+				this.$store.commit('SET_DDTAB', -1)
+			}
 		},
 		methods: {
 			// tabs通知swiper切换
