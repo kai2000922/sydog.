@@ -44,7 +44,7 @@
 		</s-panel>
 		
 		<!-- 修改订单弹窗 -->
-		<u-popup v-model="alterPopup" height="75%" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3">
+		<u-popup v-model="alterPopup" height="80%" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3" z-index="999">
 			<view class="alter">
 				<view class="alter_title">
 					<text>修改订单信息</text>
@@ -170,6 +170,7 @@
 					this.$tip.success('修改成功！')
 				}).finally(() => {
 					this.alterPopup = false
+					this.$store.commit('SET_RECYCLERELOAD', true)
 					this.$emit('update')
 				})
 			},

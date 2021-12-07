@@ -45,6 +45,10 @@
 		},
 		computed: {
 			bannerImage() {
+				console.log(getSwiperList(this.imgList, {
+					circular: this.circular,
+					plus: this.plus
+				}));
 				return getSwiperList(this.imgList, {
 					circular: this.circular,
 					plus: this.plus
@@ -65,7 +69,11 @@
 			toGoods(item){
 				if (item.toPages != '-1'){
 					if(item.toPages === 'pages/shopping/index') {
-						uni.switchTab({ url: '/pages/shopping/index' })
+						my.switchTab({ url: '/pages/shopping/index',
+							fail: (e) => {
+								console.error(e)
+								this.$tip.toast(JSON.stringify(e))
+						}})
 					} else {
 						uni.navigateTo({ url: '/' + item.toPages + '?goodsID=' + item.goodsId })
 					}

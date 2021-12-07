@@ -56,6 +56,15 @@
 </script>
 
 <style lang="scss" scoped>
+	
+	/deep/ ::-webkit-scrollbar {
+		display: none;//设置隐藏
+		width: 0 !important;//设置大小
+		height: 0 !important;//设置大小
+		-webkit-appearance: none;
+		background: transparent;
+	}
+	
 	.box {
 		position: relative;
 		width: 750rpx;

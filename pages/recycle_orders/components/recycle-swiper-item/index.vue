@@ -51,10 +51,11 @@
 					return 0
 				}
 			},
-			reLoad: {
+			// reload
+			reload: {
 				type: Boolean,
 				default: false
-			}
+			},
 		},
 		data() {
 			return {
@@ -87,6 +88,15 @@
 					}
 				},
 				immediate: true
+			},
+			reload: {
+				handler(newVal) {
+					console.log(newVal);
+					if(newVal) {
+						this.$refs.paging.reload()
+						this.$emit('update:reload', false)
+					}
+				}
 			}
 		},
 		methods: {

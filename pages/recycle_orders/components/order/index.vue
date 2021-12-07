@@ -1,5 +1,11 @@
 <template>
 	<s-panel>
+		<!-- 标题 -->
+		<view style="margin-bottom: 40rpx;" class="flex_row flex_ai_center">
+			<s-dot :color="titleColor"/>
+			<text style="margin-left: 8rpx;" class="font_24 color_black">{{ title }}</text>
+		</view>
+		
 		<order-briefly :goodsID="goods.goodID" :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="goods.zfPrice" :refund-text="text.img" :channel='parseInt(goods.channel)'/>
 		<!-- 订单状态 -->
 		<view class="express flex_row flex_jc_between" @click="toDetails">
@@ -40,6 +46,7 @@
 	import sPanel from '@/components/pages/s-panel'
 	import sTag from '@/components/pages/s-tag'
 	import sButton from '@/components/pages/s-button'
+	import sDot from '@/components/pages/s-dot'
 	
 	import orderBriefly from '@/components/pages/order-briefly'
 	
@@ -50,13 +57,18 @@
 			sPanel,
 			sTag,
 			sButton,
-			orderBriefly
+			orderBriefly,
+			sDot
 		},
 		props: {
 			item: Object
 		},
 		data() {
 			return {
+				// 小标题
+				title: '',
+				// 小标题颜色
+				titleColor: '',
 				goods: {},
 				utils: api,
 				waitPay: false,
@@ -95,18 +107,30 @@
 					case '待支付':
 						this.waitPay = true
 						this.text.logistics = status
+						this.title = '待支付'
+						this.titleColor = '#FA9E19'
 						break
 					case '未发货':
 						this.waitPay = false
 						this.text.logistics = '您已下单，我们将在48小时内发货'
 						this.text.refund = '退款'
+						this.title = '发货中'
+						this.titleColor = '#FA9E19'
 						break
 					case '揽件中':
 					case '已发货':
+						this.waitPay = false
+						this.text.logistics = status
+						this.text.refund = '退款'
+						this.title = '运输中'
+						this.titleColor = '#FA9E19'
+						break
 					case '已完成':
 						this.waitPay = false
 						this.text.logistics = status
 						this.text.refund = '退款'
+						this.title = '已签收'
+						this.titleColor = '#43A668'
 						break
 					case '退款中':
 					case '已退款':
@@ -114,6 +138,8 @@
 						this.text.img = '已退款'
 						this.text.logistics = '此订单已取消，金额已退回原账户'
 						this.text.refund = '已退款'
+						this.title = '已退款'
+						this.titleColor = '#B0B7B3'
 						break
 				}
 			},

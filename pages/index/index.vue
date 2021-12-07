@@ -14,11 +14,10 @@
 				<view style="width: 750rpx; flex-shrink: 0;">
 					<image style="width: 100%;" src="@/static/index/liucheng.png" mode="widthFix"/>
 				</view>
-				
 			</scroll-view>	
 		</view>
 
-		<view class="monitor-box">
+		<view class="monitor-box" style="z-index: 1;">
 			<s-panel :custom-style="{marginTop: '0rpx', paddingBottom: '0rpx'}">
 				<view style="padding-left: 32rpx;">
 					<s-form :addressObj.sync="addressInfo" :date.sync="orderInfo.expectTime"
@@ -100,6 +99,7 @@
 					address: '',
 					area: '',
 					authCode: '',
+					channelSource: '',
 					orderStatus: '待上门',
 				},
 				// 地址信息
@@ -191,7 +191,8 @@
 						this.$tip.loading('请求中')
 						this.$http.post('recycle/recycle/add', this.orderInfo).then(res => {
 							this.getRecycle()
-							uni.navigateTo({ url: '/pages/collect/index?from=index' })
+							this.$store.commit('SET_RECYCLERELOAD', true)
+							uni.navigateTo({ url: '/pages/collect/index' })
 						})
 					}
 				})
@@ -238,15 +239,26 @@
 			},
 
 			sendChannel(channelName){
-				if (channelName != null)
+				if (channelName != null){
 					this.$http.post('recycle/channel/add', {'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
 					.catch(err => { tip.confirm('渠道信息添加失败', true).then(() => {}) })
+					this.orderInfo.channelSource = channelName
+				}
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	
+	/deep/ ::-webkit-scrollbar {
+		display: none;//设置隐藏
+		width: 0 !important;//设置大小
+		height: 0 !important;//设置大小
+		-webkit-appearance: none;
+		background: transparent;
+	}
+	
 	.content {
 		position: relative;
 	}
@@ -257,6 +269,7 @@
 		width: 100%;
 		display: flex;
 		justify-content: center;
+		z-index: 666;
 	}
 	
 	.scroll_x {

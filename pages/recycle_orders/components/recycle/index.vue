@@ -3,8 +3,8 @@
 		<!-- 标题 -->
 		<view class="flex_row flex_jc_between flex_ai_center">
 			<view class="flex_row flex_ai_center">
-				<s-dot />
-				<text style="margin-left: 8rpx;" class="font_24 color_black">旧衣上门回收</text>
+				<s-dot :color="titleColor"/>
+				<text style="margin-left: 8rpx;" class="font_24 color_black">{{ title }}</text>
 			</view>
 			<view>
 				<text v-if="type === 'stay'|| type === 'cancel'" style="line-height: 42rpx;"
@@ -106,6 +106,10 @@
 		},
 		data() {
 			return {
+				// 小标题
+				title: '',
+				// 小标题颜色
+				titleColor: '',
 				// 类型
 				type: '',
 				// 时间
@@ -137,15 +141,24 @@
 							} else {
 								this.courierError = true
 							}
+							this.title = '上门中'
+							this.titleColor = '#FA9E19'
+							
 						} else {
 							this.type = 'stay'
+							this.title = '等待上门'
+							this.titleColor = '#FA9E19'
 						}
 						break
 					case '邮寄中':
 						this.type = 'success'
+						this.title = '已完成'
+						this.titleColor = '#43A668'
 						break
 					case '已取消':
 						this.type = 'cancel'
+						this.title = '已取消'
+						this.titleColor = '#B0B7B3'
 						break
 				}
 				this.expectTime = getDate(this.item.expectTime)

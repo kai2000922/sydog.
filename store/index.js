@@ -6,7 +6,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	state: {
 		userid: '',
-		waitPayOrder: {}
+		waitPayOrder: {},
+		orderReload: false,
+		recycleReload: false,
 	},
 	mutations: {
 		SET_USERID: (state, userid) => {
@@ -14,10 +16,18 @@ export default new Vuex.Store({
 		},
 		SET_WAITPAYORDER: (state,waitPayOrder) => {
 			state.waitPayOrder = waitPayOrder
-		}
+		},
+		SET_ORDERRELOAD: (state,orderReload) => {
+			state.orderReload = orderReload
+		},
+		SET_RECYCLERELOAD: (state,recycleReload) => {
+			state.recycleReload = recycleReload
+		},
 	},
 	getters: {
 		userid: state => state.userid,
-		waitPayOrder: state => state.waitPayOrder
+		waitPayOrder: state => state.waitPayOrder,
+		recycleReload: state => state.recycleReload,
+		orderReload: state => state.orderReload
 	}
 })

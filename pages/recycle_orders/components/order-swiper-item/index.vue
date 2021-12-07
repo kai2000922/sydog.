@@ -37,7 +37,12 @@
 				default: function() {
 					return 0
 				}
-			}
+			},
+			// reload
+			reload: {
+				type: Boolean,
+				default: false
+			},
 		},
 		data() {
 			return {
@@ -80,6 +85,14 @@
 					}
 				},
 				immediate: true
+			},
+			reload: {
+				handler(newVal) {
+					if(newVal) {
+						this.$refs.paging.reload()
+						this.$emit('update:reload', false)
+					}
+				}
 			}
 		},
 		methods: {

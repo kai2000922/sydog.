@@ -6,10 +6,10 @@
 		<!-- swiper必须设置height:100%，因为swiper有默认的高度，只有设置高度100%才可以铺满页面  -->
 		<swiper style="height: 100%;" :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish">
 			<swiper-item>
-				<recycle-swiper-item :tabIndex="0" :currentIndex="swiperCurrent" />
+				<recycle-swiper-item :tabIndex="0" :currentIndex="swiperCurrent" :reload.sync="recycleReload"/>
 			</swiper-item>
 			<swiper-item>
-				<order-swiper-item :tabIndex="1" :currentIndex="swiperCurrent"/>
+				<order-swiper-item :tabIndex="1" :currentIndex="swiperCurrent" :reload.sync="orderReload"/>
 			</swiper-item>
 		</swiper>
 		
@@ -65,12 +65,26 @@
 					zfPrice: 10
 				},
 				tkQuery: undefined,
+				// 商城订单刷新
+				orderReload: false,
+				// 回收订单刷新
+				recycleReload: false
 			}
 		},
 		onLoad() {
 			uni.setNavigationBarTitle({title: ''})
 			uni.setBackgroundColor({backgroundColor: '#fafffc'})
 			uni.setNavigationBarColor({backgroundColor: '#FFFFFF'})
+		},
+		onShow() {
+			if(this.$store.getters.orderReload) {
+				this.orderReload = true
+				this.$store.commit('SET_ORDERRELOAD', false)
+			}
+			if(this.$store.getters.recycleReload) {
+				this.recycleReload = true
+				this.$store.commit('SET_RECYCLERELOAD', false)
+			}
 		},
 		methods: {
 			// tabs通知swiper切换
