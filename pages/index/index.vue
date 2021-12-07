@@ -4,7 +4,7 @@
 		<step :step-style="{marginBottom: '40rpx'}"/>
 
 		<!-- 轮播图 -->
-		<s-swiper/>
+		<s-swiper :from="0"/>
 
 		<s-goods-swiper :list="storeList" @goodsClick="toGoods"/>
 
