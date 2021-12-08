@@ -174,11 +174,12 @@
 					}
 				}
 				this.orderNumQuery.title = this.goods.goodsName
-				if(this.orderQuery.ordersID != undefined) {
-					this.orderNumQuery.price = this.orderQuery.hxPrice + this.orderQuery.expressPrice
-				} else {
-					this.orderNumQuery.price = this.goods.hxPrice + this.goods.expressPrice
-				}
+				this.orderNumQuery.price = this.goods.hxPrice + this.goods.expressPrice
+				// if(this.orderQuery.ordersID != undefined) {
+				// 	this.orderNumQuery.price = this.orderQuery.hxPrice + this.orderQuery.expressPrice
+				// } else {
+				// 	this.orderNumQuery.price = this.goods.hxPrice + this.goods.expressPrice
+				// }
 				this.orderNumQuery.userID = this.$store.getters.userid
 				this.$tip.loading()
 				this.$http.post('/ali/queryOrderNum', this.orderNumQuery).then(res => {
@@ -190,6 +191,7 @@
 			// 支付
 			pay(orderNumber) {
 				let that = this
+				console.log(orderNumber)
 				uni.requestPayment({
 				    provider: 'alipay',
 				    orderInfo: orderNumber, //微信、支付宝订单数据 【注意微信的订单信息，键值应该全部是小写，不能采用驼峰命名】
