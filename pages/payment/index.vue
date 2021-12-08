@@ -175,9 +175,9 @@
 				}
 				this.orderNumQuery.title = this.goods.goodsName
 				if(this.orderQuery.ordersID != undefined) {
-					this.orderNumQuery.price = this.orderQuery.zfPrice
+					this.orderNumQuery.price = this.orderQuery.hxPrice + this.orderQuery.expressPrice
 				} else {
-					this.orderNumQuery.price = this.goods.zfPrice
+					this.orderNumQuery.price = this.goods.hxPrice + this.goods.expressPrice
 				}
 				this.orderNumQuery.userID = this.$store.getters.userid
 				this.$tip.loading()

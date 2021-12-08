@@ -6,7 +6,9 @@
 		<!-- swiper必须设置height:100%，因为swiper有默认的高度，只有设置高度100%才可以铺满页面  -->
 		<swiper style="height: 100%;" :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish">
 			<swiper-item>
-				<recycle-swiper-item :tabIndex="0" :currentIndex="swiperCurrent" :reload.sync="recycleReload"/>
+				<block v-if="pagesFlag">
+				<recycle-swiper-item :updateOrderInfo="updateOrderInfo" :tabIndex="0" :currentIndex="swiperCurrent" :reload.sync="recycleReload"/>
+				</block>
 			</swiper-item>
 			<swiper-item>
 				<order-swiper-item :tabIndex="1" :currentIndex="swiperCurrent" :reload.sync="orderReload"/>
@@ -69,10 +71,15 @@
 				// 商城订单刷新
 				orderReload: false,
 				// 回收订单刷新
-				recycleReload: false
+				recycleReload: false,
+				updateOrderInfo: {},
+				pagesFlag: false
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			if (option.updateData != null)
+				this.updateOrderInfo = JSON.parse(decodeURIComponent(option.updateData))
+			this.pagesFlag = true
 			uni.setNavigationBarTitle({title: ''})
 			uni.setBackgroundColor({backgroundColor: '#fafffc'})
 			uni.setNavigationBarColor({backgroundColor: '#FFFFFF'})

@@ -56,6 +56,13 @@
 				type: Boolean,
 				default: false
 			},
+			updateOrderInfo: {
+				type: Object,
+				default: {flag:false}
+			}
+		},
+		mounted() {
+			this.showUpdateOnStart(this.updateOrderInfo)
 		},
 		data() {
 			return {
@@ -129,9 +136,22 @@
 			
 			// 修改弹窗弹出
 			showUpdate(item) {
+				console.log(this.updateOrderInfo)
 				this.updateInfo.recycleID = item.recycleID
 				this.updateInfo.contacts = item.name + ' ' + item.phone
 				this.updateInfo.expectAddressLabel = item.address
+				this.updateInfo.expectTime = item.expectTime
+				this.updateInfo.expectWeight = item.expectWeight
+				this.alterPopup = true
+			},
+			
+			showUpdateOnStart(item){
+				console.log(item)
+				if (JSON.stringify(item)=='{}')
+					return
+				this.updateInfo.recycleID = item.recycleID
+				this.updateInfo.contacts = item.contacts
+				this.updateInfo.expectAddressLabel = item.expectAddressLabel
 				this.updateInfo.expectTime = item.expectTime
 				this.updateInfo.expectWeight = item.expectWeight
 				this.alterPopup = true

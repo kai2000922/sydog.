@@ -138,7 +138,10 @@
 				this.updateInfo.expectAddressLabel = this.item.address
 				this.updateInfo.expectTime = this.item.expectTime
 				this.updateInfo.expectWeight = this.item.expectWeight
-				this.alterPopup = true
+				let data = encodeURIComponent(JSON.stringify(this.updateInfo));
+				uni.navigateTo({
+					url:"/pages/recycle_orders/index?updateData=" + data,
+				})
 			},
 			
 			getAddressString() {
