@@ -51,11 +51,7 @@
 
 			// 订单页
 			toRecycleOrders() {
-				my.switchTab({ url: '/pages/recycle_orders/index' ,
-					fail: (e) => {
-						console.error(e)
-						this.$tip.toast(JSON.stringify(e))
-					}})
+				my.switchTab({ url: '/pages/recycle_orders/index' })
 			},
 			
 			getCoupons() {
@@ -73,11 +69,7 @@
 			},
 			
 			toShopping() {
-				my.switchTab({ url: '/pages/shopping/index',
-					fail: (e) => {
-						console.error(e)
-						this.$tip.toast(JSON.stringify(e))
-					}})
+				my.switchTab({ url: '/pages/shopping/index' })
 			}
 		}
 	}

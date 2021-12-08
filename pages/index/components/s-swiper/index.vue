@@ -83,11 +83,7 @@
 			toGoods(item){
 				if (item.toPages != '-1'){
 					if(item.toPages === 'pages/shopping/index') {
-						my.switchTab({ url: '/pages/shopping/index',
-							fail: (e) => {
-								console.error(e)
-								this.$tip.toast(JSON.stringify(e))
-						}})
+						my.switchTab({ url: '/pages/shopping/index' })
 					} else {
 						uni.navigateTo({ url: '/' + item.toPages + '?goodsID=' + item.goodsId })
 					}
