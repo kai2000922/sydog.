@@ -55,7 +55,7 @@
 			// 回收重量
 			weight: {
 				type: Number,
-				default: 10
+				default: 6
 			},
 			// 地址信息
 			address: {
@@ -126,14 +126,17 @@
 		},
 		created() {
 			switch(this.weight) {
-				case 8:
+				case 6:
 					this.weightObj.select = 1
 					break
-				case 16:
+				case 11:
 					this.weightObj.select = 2
 					break
-				default:
+				case 21:
 					this.weightObj.select = 3
+					break
+				default:
+					this.weightObj.select = 4
 					break
 			}
 			this.dateLabel = this.date === '' ? '请选择上门取件时间' : this.date

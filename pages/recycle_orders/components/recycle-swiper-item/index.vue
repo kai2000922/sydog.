@@ -6,7 +6,7 @@
 				<recyle :item="item" @formChange="showUpdate" @update="updateRecycle(item.recycleID, -2)" @delete="deleteRecycle(item)" @sto="toShopping"/>
 			</view>
 		</z-paging>
-		
+
 		<u-popup v-model="alterPopup" height="85%" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3">
 			<view class="alter">
 				<view class="alter_title">
@@ -27,9 +27,9 @@
 	import recyle from '../recycle'
 	import sButton from '@/components/pages/s-button'
 	import sForm from '@/components/pages/s-form'
-	
+
 	import api from '@/utils/api.js'
-	
+
 	export default {
 		components: {
 			recyle,
@@ -98,7 +98,6 @@
 			},
 			reload: {
 				handler(newVal) {
-					console.log(newVal);
 					if(newVal) {
 						this.$refs.paging.reload()
 						this.$emit('update:reload', false)
@@ -131,9 +130,9 @@
 						this.$refs.paging.complete(false);
 					})
 				})
-				
+
 			},
-			
+
 			// 修改弹窗弹出
 			showUpdate(item) {
 				console.log(this.updateOrderInfo)
@@ -144,7 +143,7 @@
 				this.updateInfo.expectWeight = item.expectWeight
 				this.alterPopup = true
 			},
-			
+
 			showUpdateOnStart(item){
 				console.log(item)
 				if (JSON.stringify(item)=='{}')
@@ -156,7 +155,7 @@
 				this.updateInfo.expectWeight = item.expectWeight
 				this.alterPopup = true
 			},
-			
+
 			// 删除回收订单
 			deleteRecycle(item) {
 				this.$tip.loading('删除中')
@@ -169,7 +168,7 @@
 					this.$tip.toast('订单不存在')
 				}
 			},
-			
+
 			/*
 				orderID 订单ID
 				status 修改后的订单状态，
@@ -192,7 +191,7 @@
 					this.alterPopup = false
 				})
 			},
-			
+
 			getAddressString() {
 				//修改后的收货地址
 				let addressInfo = this.updateInfo.expectAddress.prov == null ? ' ' : this.updateInfo.expectAddress.prov +
@@ -201,16 +200,16 @@
 					.area + this.updateInfo.expectAddress.street +
 					this.updateInfo.expectAddress.address + ";" + this.updateInfo.expectAddress.fullname + ";" + this
 					.updateInfo.expectAddress.mobilePhone
-			
+
 				//修改后的时间
 				let timeInfo = this.updateInfo.expectTime
-			
+
 				//修改后的期望重量
 				let weightInfo = this.updateInfo.expectWeight
-			
+
 				return timeInfo + "," + weightInfo + "," + addressInfo
 			},
-			
+
 			// 前往商品页
 			toShopping() {
 				uni.switchTab({url: '/pages/shopping/index'})
@@ -225,7 +224,7 @@
 	.content {
 		height: 100%;
 	}
-	
+
 	.alter {
 		&_title {
 			display: flex;
@@ -238,7 +237,7 @@
 			letter-spacing: 0;
 			line-height: 54rpx;
 		}
-	
+
 		&_form {
 			padding: 56rpx 92rpx 48rpx 92rpx;
 		}

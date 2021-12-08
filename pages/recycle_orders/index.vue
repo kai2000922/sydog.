@@ -46,28 +46,6 @@
 				// 因为内部的滑动机制限制，请将tabs组件和swiper组件的current用不同变量赋值
 				current: 0, // tabs组件的current值，表示当前活动的tab选项
 				swiperCurrent: 0, // swiper组件的current值，表示当前那个swiper-item是活动的
-				// 商品订单
-				orderList: [],
-				// 退款弹出层
-				refundPopup: false,
-				// 退款成功弹出层
-				refundOkPopup: false,
-				// 需要退款的订单
-				tkObj: {
-					// 图片
-					img: '',
-					// 商品名
-					goodsName: '商品',
-					// 规格
-					goodsType: '规格',
-					// 画线价格
-					hxPrice: 30,
-					// 运费
-					expressPrice: 10,
-					// 支付价格
-					zfPrice: 10
-				},
-				tkQuery: undefined,
 				// 商城订单刷新
 				orderReload: false,
 				// 回收订单刷新
@@ -77,8 +55,10 @@
 			}
 		},
 		onLoad(option) {
-			if (option.updateData != null)
+			if (option.updateData != null) {
 				this.updateOrderInfo = JSON.parse(decodeURIComponent(option.updateData))
+			}
+				
 			this.pagesFlag = true
 			uni.setNavigationBarTitle({title: ''})
 			uni.setBackgroundColor({backgroundColor: '#fafffc'})
