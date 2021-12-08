@@ -14,25 +14,24 @@
 				<view style="width: 750rpx; flex-shrink: 0;">
 					<image style="width: 100%;" src="@/static/index/liucheng.png" mode="widthFix"/>
 				</view>
-			</scroll-view>	
+			</scroll-view>
 		</view>
 
-		<view class="monitor-box" style="z-index: 1 !important;">
-			<s-panel :custom-style="{marginTop: '0rpx', paddingBottom: '0rpx', zIndex: '1 !important'}">
-				<view style="padding-left: 32rpx;">
-					<s-form :addressObj.sync="addressInfo" :date.sync="orderInfo.expectTime"
-						:weight.sync="orderInfo.expectWeight"/>
-				</view>
-				<view style="display: flex; align-items: center; justify-content: center; margin-top: 48rpx;">
-					<form @submit="sendData" @reset="formReset" report-submit="true">
-						<view class="monitor-btn" style="padding-bottom: 30rpx;">
-							<s-button background="#43A668" width="570" height="120" color="#FFFFFF"
-								text="预约上门回收" />
-						</view>
-					</form>
-				</view>
-			</s-panel>
-		</view>
+
+		<s-panel :custom-style="{marginTop: '0rpx', paddingBottom: '0rpx'}">
+			<view class="monitor-box" style="padding-left: 32rpx;">
+				<s-form :addressObj.sync="addressInfo" :date.sync="orderInfo.expectTime"
+					:weight.sync="orderInfo.expectWeight"/>
+			</view>
+			<view style="display: flex; align-items: center; justify-content: center; margin-top: 48rpx;">
+				<form @submit="sendData" @reset="formReset" report-submit="true">
+					<view class="monitor-btn" style="padding-bottom: 30rpx;">
+						<s-button background="#43A668" width="570" height="120" color="#FFFFFF"
+							text="预约上门回收" />
+					</view>
+				</form>
+			</view>
+		</s-panel>
 
 		<uni-transition custom-class="transition" :mode-class="['fade', 'slide-bottom']" :show="btnShow">
 			<s-button width="630" height="120" color="#FFFFFF" bgImg="linear-gradient(270deg, #43A668 0%, #30BB63 100%)"
@@ -105,7 +104,7 @@
 				// 地址信息
 				addressInfo: {},
 				// 商品展示列表
-				storeList: []
+				storeList: [],
 			}
 		},
 		onShareAppMessage () {
@@ -198,7 +197,7 @@
 					}
 				})
 			},
-			
+
 			// 获取订单
 			async getRecycle() {
 				let flag = await api.login()
@@ -207,7 +206,7 @@
 					this.recycleList = dsm.data.rows
 				}
 			},
-			
+
 			// 首页商品展示
 			getStoreList() {
 				this.storeList = []
@@ -251,7 +250,7 @@
 </script>
 
 <style lang="scss" scoped>
-	
+
 	/deep/ ::-webkit-scrollbar {
 		display: none;//设置隐藏
 		width: 0 !important;//设置大小
@@ -259,7 +258,7 @@
 		-webkit-appearance: none;
 		background: transparent;
 	}
-	
+
 	.content {
 		position: relative;
 	}
@@ -270,9 +269,9 @@
 		width: 100%;
 		display: flex;
 		justify-content: center;
-		z-index: 666;
+		z-index: 66;
 	}
-	
+
 	.scroll_x {
 		margin-bottom: 30rpx;
 		width: 100%;

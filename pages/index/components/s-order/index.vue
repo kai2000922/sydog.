@@ -42,20 +42,22 @@
 				<s-button v-if="type === 'pickup' && !courierError" background="#43A668" color="#FFFFFF" width="128" height="56" :custom-style="{}" :bold="false" text="拨打" font-size="28" @click="call"/>
 			</view>
 		</s-panel>
-		
+
 		<!-- 修改订单弹窗 -->
-		<u-popup v-model="alterPopup" height="80%" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3" :custom-style="{ zIndex: '999 !important'}">
-			<view class="alter" style="z-index: 999 !important;">
-				<view class="alter_title">
-					<text>修改订单信息</text>
+		<u-popup v-model="alterPopup" height="80%" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3">
+			<scroll-view style="height: 85vh;" :scroll-y="true">
+				<view class="alter">
+					<view class="alter_title">
+						<text>修改订单信息</text>
+					</view>
+					<view class="alter_form">
+						<s-form :addressObj.sync="updateInfo.expectAddress" :date.sync="updateInfo.expectTime" :weight.sync="updateInfo.expectWeight" :address="updateInfo.expectAddressLabel" :contacts="updateInfo.contacts" />
+					</view>
+					<view style="display: flex; align-items: center; justify-content: center; margin-bottom: 48rpx;">
+						<s-button background="#43A668" width="690" height="120" color="#FFFFFF" :custom-style="{zIndex: '10'}" text="确认修改" @click="updateRecycle(updateInfo.recycleID, -1)" />
+					</view>
 				</view>
-				<view class="alter_form">
-					<s-form :addressObj.sync="updateInfo.expectAddress" :date.sync="updateInfo.expectTime" :weight.sync="updateInfo.expectWeight" :address="updateInfo.expectAddressLabel" :contacts="updateInfo.contacts" />
-				</view>
-				<view style="display: flex; align-items: center; justify-content: center; margin-bottom: 48rpx;">
-					<s-button background="#43A668" width="690" height="120" color="#FFFFFF" :custom-style="{zIndex: '10'}" text="确认修改" @click="updateRecycle(updateInfo.recycleID, -1)" />
-				</view>
-			</view>
+			</scroll-view>
 		</u-popup>
 	</view>
 </template>
@@ -110,27 +112,39 @@
 				},
 			}
 		},
+		watch: {
+			order: {
+				handler: function(newValue, oldValue) {
+					this.item = newValue
+					this.init()
+				},
+				deep: true
+			}
+		},
 		created() {
 			this.item = this.order
-			if (this.item.courier != undefined && this.item.courier != '' && this.item.courier != null) {
-				this.type = 'pickup'
-				if(this.item.courier.indexOf(' ') === -1) {
-					this.courierError = true
-				}
-				let arr = this.item.courier.split(' ')
-				// let reg = /^1(3\d|47|(5[0-3|5-9])|(7[0|7|8])|(8[0-3|5-9]))-?\d{4}-?\d{4}$/
-				if(arr[1] && arr[1].length === 11) {
-					this.courierName = arr[0]
-					this.courierPhone = arr[1]
-				} else {
-					this.courierError = true
-				}
-			} else {
-				this.type = 'stay'
-			}
-			this.expectTime = getDate(this.item.expectTime)
+			this.init()
 		},
 		methods: {
+			init() {
+				if (this.item.courier != undefined && this.item.courier != '' && this.item.courier != null) {
+					this.type = 'pickup'
+					if(this.item.courier.indexOf(' ') === -1) {
+						this.courierError = true
+					}
+					let arr = this.item.courier.split(' ')
+					// let reg = /^1(3\d|47|(5[0-3|5-9])|(7[0|7|8])|(8[0-3|5-9]))-?\d{4}-?\d{4}$/
+					if(arr[1] && arr[1].length === 11) {
+						this.courierName = arr[0]
+						this.courierPhone = arr[1]
+					} else {
+						this.courierError = true
+					}
+				} else {
+					this.type = 'stay'
+				}
+				this.expectTime = getDate(this.item.expectTime)
+			},
 			// 修改弹窗弹出
 			showUpdate() {
 				this.updateInfo.recycleID = this.item.recycleID
@@ -143,7 +157,7 @@
 					url:"/pages/recycle_orders/index?updateData=" + data,
 				})
 			},
-			
+
 			getAddressString() {
 				//修改后的收货地址
 				let addressInfo = this.updateInfo.expectAddress.prov == null ? ' ' : this.updateInfo.expectAddress.prov +
@@ -152,16 +166,16 @@
 					.area + this.updateInfo.expectAddress.street +
 					this.updateInfo.expectAddress.address + ";" + this.updateInfo.expectAddress.fullname + ";" + this
 					.updateInfo.expectAddress.mobilePhone
-			
+
 				//修改后的时间
 				let timeInfo = this.updateInfo.expectTime
-			
+
 				//修改后的期望重量
 				let weightInfo = this.updateInfo.expectWeight
-			
+
 				return timeInfo + "," + weightInfo + "," + addressInfo
 			},
-			
+
 			// 修改订单
 			updateRecycle(recycleID, status) {
 				this.$tip.loading('修改中')
@@ -178,7 +192,7 @@
 					this.$emit('update')
 				})
 			},
-			
+
 			// 拨打电话号码
 			call() {
 				uni.makePhoneCall({phoneNumber: this.courierPhone})
@@ -191,7 +205,7 @@
 	.cl_grey {
 		color: #7F8581;
 	}
-	
+
 	.cl_green {
 		color: #43A668;
 	}
@@ -218,7 +232,7 @@
 		bottom: 0;
 		right: 22rpx;
 	}
-	
+
 	.alter {
 		&_title {
 			display: flex;
@@ -231,7 +245,7 @@
 			letter-spacing: 0;
 			line-height: 54rpx;
 		}
-	
+
 		&_form {
 			padding: 56rpx 92rpx 48rpx 92rpx;
 		}
