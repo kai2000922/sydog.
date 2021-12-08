@@ -24,13 +24,13 @@
 		<!-- 按钮行 -->
 		<view style="margin-top: 40rpx; justify-content: space-around;" class="flex_row">
 			<!-- <contact-button tnt-inst-id="企业编码" scene="聊天窗编码" size="咨询按钮大小" color="咨询按钮颜色" icon="咨询按钮图片url" /> -->
-			<s-button v-if="waitPay" background="#ffffff" color="#06180C" width="184" height="64"  fontSize="28"
+			<s-button v-if="waitPay" background="#ffffff" color="#06180C" width="184" height="64"  fontSize="28" :bold="false"
 				:custom-style="{border: '0px solid #707070'}"/>
-			<s-button v-if="!waitPay" background="#ffffff" color="#06180C" width="184" height="64" :text="text.refund" fontSize="28" 
+			<s-button v-if="!waitPay" background="#ffffff" color="#06180C" width="184" height="64" :text="text.refund" fontSize="28" :bold="false"
 				:custom-style="{border: '1px solid #707070'}" @click="tkClik" />
-	  		<s-button v-if="!waitPay" background="#ffffff" color="#06180C" width="184" height="64" text="查看物流" fontSize="28"
+	  		<s-button v-if="!waitPay" background="#ffffff" color="#06180C" width="184" height="64" text="查看物流" fontSize="28" :bold="false"
 				:custom-style="{border: '1px solid #707070'}" @click="toDetails" />
-			<s-button v-if="waitPay" background="#ffffff" color="#06180C" width="184" height="64" text="待付款" fontSize="28"
+			<s-button v-if="waitPay" background="#ffffff" color="#06180C" width="184" height="64" text="待付款" fontSize="28" :bold="false"
 				:custom-style="{border: '1px solid #707070'}" @click="zfClick" />
 		</view>
 		

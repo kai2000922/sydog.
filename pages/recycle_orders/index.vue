@@ -15,12 +15,13 @@
 		
 		<view class="abs_view">
 <!-- 			<view class="abs_view_btn" @click="toHome">
-				<image src="@/static/order_home.png"></image>
-			</view> -->
+					<image src="@/static/order_home.png"></image>
+				</view> -->
 			<view class="abs_view_btn">
 				<contact-button tnt-inst-id="n8c_Hb8w" scene="SCE01205269" color="#30BB63" size="50" icon="https://hkkkkk.cn:8080/profile/upload/2021/11/09/2a1f5a55-11a1-4d27-bcaa-f15416cfa50a.png"/>
 			</view>
 		</view>
+		
 	</z-paging-swiper>
 </template>
 
@@ -163,8 +164,8 @@
 
 	.abs_view {
 		position: absolute;
-		bottom: 80rpx;
 		right: 30rpx;
+		bottom: 80rpx;
 
 		&>view:first-child {
 			margin-top: 0rpx;

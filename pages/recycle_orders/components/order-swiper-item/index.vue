@@ -140,7 +140,7 @@
 				this.$http.post('/recycle/orders/refund', this.tkQuery).then(res => {
 					this.refundPopup = false
 					this.refundOkPopup = true
-					this.$refs.paging.refresh()
+					this.$refs.paging.reload()
 				})
 			},
 		}
