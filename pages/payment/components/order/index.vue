@@ -14,7 +14,7 @@
 				<text class="name">商品价格</text>
 				<view class="price">
 					<text class="price_original">{{ '¥' + hxPrice }}</text>
-					<text class="price_now">{{ channel === 1 ? '¥0' : '¥' + yhPrice}}</text>
+					<text class="price_now">{{ '¥' + yhPrice }}</text>
 				</view>
 			</view>
 			<view class="main_item">
@@ -28,7 +28,7 @@
 		</view>
 		<view class="bottom">
 			<text class="xiaoji">小计：</text>
-			<text>{{ '¥' + zfPrice }}</text>
+			<text>{{ '¥' + (yhPrice + expressPrice) }}</text>
 		</view>
 	</s-panel>
 </template>

@@ -5,7 +5,7 @@
 			<order :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-describe="goods.goodsDescribe" :hx-price="goods.hxPrice" :channel="parseInt(goods.channel)" :express-price="goods.expressPrice" :yh-price="goods.yhPrice" :zf-price="goods.zfPrice"/>
 		</view>
 		<view class="payment_bottom">
-			<collection :zfPrice="goods.zfPrice" @zfBtnClick="payBeforeHandler"/>
+			<collection :zfPrice="goods.yhPrice + goods.expressPrice" @zfBtnClick="payBeforeHandler"/>
 		</view>
 	</view>
 </template>
@@ -128,7 +128,7 @@
 				}).then(res => {
 					let goods = res.data.data
 					if(goods.yhPrice === null) {
-						goods.yhPrice = goods.hxPrice
+						goods.yhPrice = parseInt(goods.channel) === 1 ? 0 : goods.hxPrice
 					}
 					this.goods = res.data.data
 				})
