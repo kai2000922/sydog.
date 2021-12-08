@@ -44,8 +44,8 @@
 		</s-panel>
 		
 		<!-- 修改订单弹窗 -->
-		<u-popup v-model="alterPopup" height="80%" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3" z-index="999">
-			<view class="alter" style="z-index: 999;">
+		<u-popup v-model="alterPopup" height="80%" mode="bottom" close-icon="close-circle" :closeable="true" close-icon-color="#B0B7B3" :custom-style="{ zIndex: '999 !important'}">
+			<view class="alter" style="z-index: 999 !important;">
 				<view class="alter_title">
 					<text>修改订单信息</text>
 				</view>

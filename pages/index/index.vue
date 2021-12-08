@@ -17,8 +17,8 @@
 			</scroll-view>	
 		</view>
 
-		<view class="monitor-box">
-			<s-panel :custom-style="{marginTop: '0rpx', paddingBottom: '0rpx', zIndex: '1'}">
+		<view class="monitor-box" style="z-index: 1 !important;">
+			<s-panel :custom-style="{marginTop: '0rpx', paddingBottom: '0rpx', zIndex: '1 !important'}">
 				<view style="padding-left: 32rpx;">
 					<s-form :addressObj.sync="addressInfo" :date.sync="orderInfo.expectTime"
 						:weight.sync="orderInfo.expectWeight"/>
