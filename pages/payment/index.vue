@@ -14,7 +14,7 @@
 	import Pickup from './components/pickup'
 	import Order from './components/order'
 	import Collection from './components/collection'
-	
+
 	import api from '@/utils/api.js'
 	export default {
 		components: {
@@ -93,11 +93,11 @@
 			if(this.from === 'order') {
 				let waitPayOrder = this.$store.getters.waitPayOrder
 				this.goodsId = waitPayOrder.goodsId
-				
+
 				this.address.user = waitPayOrder.userName
 				this.address.phone = waitPayOrder.userPhone
 				this.address.address = waitPayOrder.userAddress
-				
+
 				this.orderQuery.ordersID = waitPayOrder.ordersID
 				this.orderQuery.ordersNum = waitPayOrder.ordersNum
 				this.orderQuery.goodsId = waitPayOrder.goodsId
@@ -110,9 +110,9 @@
 				this.orderQuery.userAddress = waitPayOrder.userAddress
 				this.orderQuery.tradeNo = waitPayOrder.tradeNo
 				this.orderQuery.ordersStatus = waitPayOrder.ordersStatus
-				
+
 				this.getGoods()
-				
+
 				return
 			}
 			this.goodsId = option.goodsId
@@ -133,7 +133,7 @@
 					this.goods = res.data.data
 				})
 			},
-			
+
 			// 验证收货地址是否选择
 			addressJudge() {
 				if(this.address.address != '' && this.address.user != '' && this.address.phone != '' && this.orderQuery.ordersID != undefined) {
@@ -145,7 +145,7 @@
 				}
 				return true
 			},
-			
+
 			//调用支付前处理
 			async payBeforeHandler() {
 				if(!this.addressJudge()) {
@@ -187,17 +187,16 @@
 					this.pay(this.orderNum)
 				})
 			},
-			
+
 			// 支付
 			pay(orderNumber) {
 				let that = this
-				console.log(orderNumber)
 				uni.requestPayment({
 				    provider: 'alipay',
 				    orderInfo: orderNumber, //微信、支付宝订单数据 【注意微信的订单信息，键值应该全部是小写，不能采用驼峰命名】
 				    success: function (res) {
 						switch(res.resultCode) {
-							case '6001': 
+							case '6001':
 								that.$tip.toast('支付已取消')
 								that.payAfterHandler()
 								break
@@ -205,7 +204,7 @@
 								that.$tip.toast('网络连接出错')
 								that.payAfterHandler()
 								break
-							default: 
+							default:
 								that.payAfterHandler()
 								break
 						}
@@ -215,7 +214,7 @@
 				    }
 				});
 			},
-			
+
 			// 调用支付后处理
 			payAfterHandler() {
 				this.$tip.loading('获取支付结果中...')
@@ -227,7 +226,7 @@
 					}
 				})
 			},
-			
+
 			// 添加商品订单
 			addOrder(status) {
 				if(status === '待支付' && this.orderQuery.ordersID != undefined) {
@@ -258,7 +257,7 @@
 					})
 				}
 			},
-			
+
 			toEnd() {
 				if(this.orderQuery.ordersStatus === '待支付') {
 					this.$tip.toast('已生成一笔待支付订单')
@@ -281,11 +280,11 @@
 		flex-direction: column;
 		justify-content: space-between;
 		height: 100vh;
-		
+
 		&_main {
 			flex: 1;
 		}
-		
+
 		&_bottom {
 			background: #FFFFFF;
 			box-sizing: border-box;

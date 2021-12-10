@@ -5,7 +5,11 @@ import tip from '@/utils/tip.js'
 const api = {
 
 	async login() {
-		if(store.getters.userid) {
+		let userid = uni.getStorageSync('userid')
+		if(userid.indexOf('2088') !== -1 || store.getters.userid) {
+			if(!store.getters.userid) {
+				store.commit('SET_USERID', userid)
+			}
 			return true
 		}
 		let flag = await this.loginReq()
@@ -27,6 +31,11 @@ const api = {
 			tip.loading('获取用户信息中')
 			let user = await http.post('/ali/auth', { authCode: auth.authCode })
 			store.commit('SET_USERID', user.data.msg)
+			// 缓存到本地
+			uni.setStorage({
+			    key: 'userid',
+			    data: user.data.msg
+			});
 			return true
 		} catch (e) {
 			return false

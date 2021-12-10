@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		userid: '',
+		userid: null,
 		waitPayOrder: {},
 		orderReload: false,
 		recycleReload: false,

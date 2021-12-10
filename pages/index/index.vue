@@ -94,7 +94,7 @@
 					prov: '',
 					city: '',
 					expectTime: '',
-					expectWeight: 8,
+					expectWeight: 6,
 					address: '',
 					area: '',
 					authCode: '',
@@ -120,9 +120,7 @@
 			this.getRecycle()
 		},
 		created() {
-			api.login()
 			this.getStoreList()
-			this.getRecycle()
 		},
 		mounted() {
 			let that = this

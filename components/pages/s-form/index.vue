@@ -86,7 +86,7 @@
 		data() {
 			return {
 				weightObj: {
-					select: 0,
+					select: 1,
 					list: [
 						{
 							index: 1,

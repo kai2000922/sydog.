@@ -28,7 +28,7 @@
 					@loadmore="goodsListErrorHandle" />
 			</view>
 		</s-panel>
-		
+
 		<u-back-top duration="300" :scroll-top="scrollTop"></u-back-top>
 	</view>
 </template>
