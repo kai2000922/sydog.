@@ -22,7 +22,6 @@ const helper = {
 		try {
 			let res = await http.get('/recycle/config/getConfigs', {custom: {autoload: false, neglectError: true}})
 			let config = JSON.parse(res.data.msg.replace(/configImgPath/g, "image"))
-			console.log(config);
 			if(config.banner) {
 				config.banner.map(v => {
 					v.image = BASE_URL + v.image
@@ -31,6 +30,12 @@ const helper = {
 			}
 			if(config.store) {
 				config.store.map(v => {
+					v.image = BASE_URL + v.image
+					return v
+				})
+			}
+			if(config.activity) {
+				config.activity.map(v => {
 					v.image = BASE_URL + v.image
 					return v
 				})
@@ -52,7 +57,7 @@ const helper = {
 			if(num >= 10) return false
 			timer = setTimeout(() => {
 				getConfigs(num++)
-			})
+			}, 700)
 		}
 	}
 }

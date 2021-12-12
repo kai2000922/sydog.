@@ -14,22 +14,28 @@
 				</view>
 			</scroll-view>
 		</view>
+		
+		<!-- 我的订单 -->
+		<view class="sticky">
+				<image @click="toRecycleOrders" src="@/static/wdddicon.png" />
+		</view>
 
-
-		<s-panel :custom-style="{marginTop: '0rpx', paddingBottom: '0rpx'}">
-			<view class="monitor-box" style="padding-left: 32rpx;">
-				<s-form :addressObj.sync="addressInfo" :date.sync="orderInfo.expectTime"
-					:weight.sync="orderInfo.expectWeight"/>
-			</view>
-			<view style="display: flex; align-items: center; justify-content: center; margin-top: 48rpx;">
-				<form @submit="sendData" @reset="formReset" report-submit="true">
-					<view class="monitor-btn" style="padding-bottom: 30rpx;">
-						<s-button background="#43A668" width="570" height="120" color="#FFFFFF"
-							text="预约上门回收" />
-					</view>
-				</form>
-			</view>
-		</s-panel>
+		<view class="form">
+			<s-panel :custom-style="{marginTop: '0rpx', paddingBottom: '0rpx'}">
+				<view class="monitor-box" style="padding-left: 32rpx;">
+					<s-form :addressObj.sync="addressInfo" :date.sync="orderInfo.expectTime"
+						:weight.sync="orderInfo.expectWeight"/>
+				</view>
+				<view style="display: flex; align-items: center; justify-content: center; margin-top: 48rpx;">
+					<form @submit="sendData" @reset="formReset" report-submit="true">
+						<view class="monitor-btn" style="padding-bottom: 30rpx;">
+							<s-button background="#43A668" width="570" height="120" color="#FFFFFF"
+								text="预约上门回收" />
+						</view>
+					</form>
+				</view>
+			</s-panel>
+		</view>
 
 		<uni-transition custom-class="transition" :mode-class="['fade', 'slide-bottom']" :show="btnShow">
 			<s-button width="630" height="120" color="#FFFFFF" bgImg="linear-gradient(270deg, #43A668 0%, #30BB63 100%)"
@@ -46,7 +52,7 @@
 
 <script>
 	import step from '@/components/pages/step'
-	import sBanner from '@/components/pages/s-banner'
+	import sBanner from './components/s-banner'
 	import sPanel from '@/components/pages/s-panel'
 	import sForm from '@/components/pages/s-form'
 	import sButton from '@/components/pages/s-button'
@@ -120,7 +126,7 @@
 		},
 		created() {
 			getConfig('all').then(res => {
-				this.bannerList = res.banner
+				this.bannerList = res.activity
 				this.flow = res.flow
 			})
 		},
@@ -134,22 +140,12 @@
 			if(this.isScroll) {
 				return
 			}
-			// uni.createSelectorQuery().select('.monitor-box').boundingClientRect(data => {
-			// 	if(this.viewHeight - data.top >= data.height - this.btnHeight && data.height + data.top >= 0) {
-			// 		this.btnShow = false
-			// 	}
-			// 	else {
-			// 		this.btnShow = true
-			// 	}
-			// }).exec();
 			uni.createSelectorQuery().select('.monitor-btn').boundingClientRect(data => {
 				if(data.top >= this.viewHeight) {
 					this.btnShow = true
 				} else {
 					this.btnShow = false
 				}
-				console.log(data.top);
-				console.log(this.viewHeight);
 			}).exec()
 		},
 		methods: {
@@ -222,6 +218,10 @@
 			toGoods(goodsId){
 				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + goodsId })
 			},
+			
+			toRecycleOrders() {
+				uni.navigateTo({ url: '/pages/recycle_orders/index' })
+			},
 
 			sendChannel(channelName){
 				if (channelName != null){
@@ -263,5 +263,28 @@
 		height: 100%;
 		display: flex;
 		align-items: center;
+	}
+	
+	.sticky {
+		position: sticky;
+		margin-left: 624rpx;
+		top: 35%;
+		display: flex;
+		justify-content: flex-end;
+		height: 88rpx;
+		width: 126rpx;
+		border-top-left-radius: 53rpx;
+		border-bottom-left-radius: 53rpx;
+		z-index: 999;
+		overflow: hidden;
+	
+		&>image {
+			height: 100%;
+			width: 100%;
+		}
+	}
+		
+	.form {
+		margin-top: -88rpx;
 	}
 </style>

@@ -66,7 +66,11 @@
 
 			// 订单页
 			toRecycleOrders() {
-				my.switchTab({ url: '/pages/recycle_orders/index' })
+				if(this.from === 'hd') {
+					uni.navigateTo({ url: '/pages/recycle_orders/index' })
+				} else {
+					my.switchTab({ url: '/pages/recycle_orders/index' })
+				}
 			},
 			
 			getCoupons() {
@@ -85,7 +89,6 @@
 			
 			toPage() {
 				let url = '/' + this.coupon.toPages + '?goodsID=' + this.coupon.goodsId
-				console.log(url);
 				uni.navigateTo({ url: url })
 			},
 			
