@@ -217,6 +217,8 @@
 						obj = JSON.parse(obj)
 						if(obj.img.charAt(obj.img.length - 1) === ';') {
 							obj.img = api.getImgUrl(obj.img.substr(0, obj.img.length - 1))
+						} else {
+							obj.img = api.getImgUrl(obj.img)
 						}
 						this.storeList.push(obj)
 					})
