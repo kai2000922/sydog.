@@ -9,12 +9,19 @@
 				<text class="ok_title">预约旧衣回收成功</text>
 				<text class="ok_tips">快递员将按您要求的时间上门</text>
 			</view>
-			<view class="coupons mt_20 flex_row flex_ai_center flex_jc_center">
-				<image :src="img" mode="widthFix" @click="getCoupons"/>
+			<view v-if="from === ''">
+				<view class="coupons mt_20 flex_row flex_ai_center flex_jc_center">
+					<image :src="img" mode="widthFix" @click="getCoupons"/>
+				</view>
+				<s-button v-if="haveCoupons" width="600" height="120" text="去兑换好礼 GO" background="#43A668"
+					:custom-style="{margin: '40rpx auto 0 auto'}"
+					color="#FFFFFF" @click="toShopping" />
 			</view>
-			<s-button v-if="haveCoupons" width="600" height="120" text="去兑换好礼 GO" background="#43A668"
-				:custom-style="{margin: '40rpx auto 0 auto'}"
-				color="#FFFFFF" @click="toShopping" />
+			<view v-if="from === 'hd'">
+				<view class="coupons mt_20 flex_row flex_ai_center flex_jc_center">
+					<image :src="coupon.image" mode="widthFix" @click="toPage"/>
+				</view>
+			</view>
 		</s-panel>
 		
 		<s-button width="600" height="120" text="查看订单"
@@ -28,6 +35,8 @@
 	import sPanel from '@/components/pages/s-panel'
 	import sButton from '@/components/pages/s-button'
 	import sDot from '@/components/pages/s-dot'
+	
+	import {getConfig} from '@/utils/common.js'
 
 	export default {
 		components: {
@@ -38,11 +47,17 @@
 		},
 		data() {
 			return {
+				from: '',
 				img: '/static/collect/coupons.gif',
-				haveCoupons: false
+				haveCoupons: false,
+				coupon: {}
 			}
 		},
 		onLoad(option) {
+			this.from = option.from ? option.from: ''
+			if(this.from === 'hd') {
+				getConfig('coupon').then(res => this.coupon = res)
+			}
 			uni.setNavigationBarTitle({title: ''})
 			uni.setBackgroundColor({backgroundColor: '#fafffc'})
 			uni.setNavigationBarColor({backgroundColor: '#44aa67'})
@@ -66,6 +81,12 @@
 					this.haveCoupons = true
 					this.img = '/static/collect/coupons-grey.jpg'
 				}, Math.round(Math.random() * 300 + 300))
+			},
+			
+			toPage() {
+				let url = '/' + this.coupon.toPages + '?goodsID=' + this.coupon.goodsId
+				console.log(url);
+				uni.navigateTo({ url: url })
 			},
 			
 			toShopping() {

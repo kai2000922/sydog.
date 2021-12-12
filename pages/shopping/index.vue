@@ -4,7 +4,7 @@
 
 		<view class="flex_row flex_ai_center flex_jc_center title">小鸽商城</view>
 
-		<s-swiper :from="1"/>
+		<s-banner :list="bannerList"/>
 
 		<s-panel>
 			<liuyuno-tabs :tabData="tabs.list" :activeIndex="tabs.index" @tabClick="onswiperchange" :config="{underLineBottom: '0'}"/>
@@ -35,16 +35,17 @@
 
 <script>
 	import sPanel from '@/components/pages/s-panel'
-	import sSwiper from '@/pages/index/components/s-swiper'
 	import goodsItem from './components/goods-item'
 	import sDot from '@/components/pages/s-dot'
+	import sBanner from '@/components/pages/s-banner'
 
 	import api from '@/utils/api.js'
+	import {getConfig} from '@/utils/common.js'
 
 	export default {
 		components: {
 			sPanel,
-			sSwiper,
+			sBanner,
 			goodsItem,
 			sDot
 		},
@@ -58,6 +59,8 @@
 				},
 				// 商品列表
 				goods: [[], []],
+				// banner
+				bannerList: [],
 				// 请求参数
 				goodsRequest: [
 					{
@@ -98,6 +101,7 @@
 			this.sendChannel(options.channelName)
 		},
 		created() {
+			getConfig('store').then(res => this.bannerList = res)
 			api.login().then(flag => {
 				this.getGoodsList()
 			})

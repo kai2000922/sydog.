@@ -3,7 +3,8 @@ import store from '@/store'
 import tip from '@/utils/tip.js'
 
 const api = {
-
+	
+	// 登录
 	async login() {
 		let userid = uni.getStorageSync('userid')
 		if(userid.indexOf('2088') !== -1 || store.getters.userid) {
@@ -32,16 +33,14 @@ const api = {
 			let user = await http.post('/ali/auth', { authCode: auth.authCode })
 			store.commit('SET_USERID', user.data.msg)
 			// 缓存到本地
-			uni.setStorage({
-			    key: 'userid',
-			    data: user.data.msg
-			});
+			uni.setStorage({ key: 'userid', data: user.data.msg});
 			return true
 		} catch (e) {
 			return false
 		}
 	},
-
+	
+	// 获取图片连接
 	getImgUrl(url) {
 		return BASE_URL + url
 	},

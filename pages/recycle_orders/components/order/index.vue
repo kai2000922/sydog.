@@ -6,7 +6,7 @@
 			<text style="margin-left: 8rpx;" class="font_24 color_black">{{ title }}</text>
 		</view>
 		
-		<order-briefly :goodsID="goods.goodID" :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="goods.zfPrice" :refund-text="text.img" :channel='parseInt(goods.channel)'/>
+		<order-briefly :goodsID="goods.goodID" :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="item.zfPrice" :refund-text="text.img" :channel='parseInt(goods.channel)'/>
 		<!-- 订单状态 -->
 		<view class="express flex_row flex_jc_between" @click="toDetails">
 			<view class="che">
@@ -87,7 +87,7 @@
 		},
 		methods: {
 			getGoods(id) {
-				this.$http.post('/recycle/goods/listByID', {goodsID: id}, {custom: {neglectError: true},}).then(res => {
+				this.$http.post('/recycle/goods/listByID', {goodsID: id}, {custom: {neglectError: true}}).then(res => {
 					this.goods = res.data.data
 				}).catch(e => {
 					if(e.data && e.data.msg && e.data.msg === '商品不存在') {

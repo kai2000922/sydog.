@@ -4,7 +4,7 @@
 		<step :step-style="{marginBottom: '40rpx'}"/>
 
 		<!-- 轮播图 -->
-		<s-swiper :from="0"/>
+		<s-banner :list="bannerList"/>
 
 		<s-goods-swiper :list="storeList" @goodsClick="toGoods"/>
 
@@ -48,7 +48,7 @@
 
 <script>
 	import step from '@/components/pages/step'
-	import sSwiper from './components/s-swiper'
+	import sBanner from '@/components/pages/s-banner'
 	import sGoodsSwiper from './components/s-goods-swiper'
 	import sPanel from '@/components/pages/s-panel'
 	import sForm from '@/components/pages/s-form'
@@ -57,11 +57,12 @@
 	import sOrder from './components/s-order'
 
 	import api from '@/utils/api.js'
+	import {getConfig} from '@/utils/common.js'
 
 	export default {
 		components: {
 			step,
-			sSwiper,
+			sBanner,
 			sGoodsSwiper,
 			sPanel,
 			sForm,
@@ -83,6 +84,8 @@
 				btnShow: true,
 				// 滑动中？
 				isScroll: false,
+				// banner
+				bannerList: [],
 				// 进行中的订单
 				recycleList: [],
 				// 订单表单
@@ -114,6 +117,7 @@
 			uni.setNavigationBarTitle({ title: '' })
 			uni.setBackgroundColor({ backgroundColor: '#fafffc' })
 			uni.setNavigationBarColor({ backgroundColor: '#44aa67' })
+			getConfig('banner').then(res => this.bannerList = res)
 			this.sendChannel(options.channelName)
 		},
 		onShow() {

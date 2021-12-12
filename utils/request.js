@@ -2,7 +2,7 @@ import Request from '@/utils/luch-request/index.js'
 import tip from './tip.js'
 
 // const BASE_URL = 'https://49.235.238.110:8080'
-const BASE_URL = 'https://hkkkkk.cn:8080'
+const BASE_URL = 'https://hkkkkk.cn:8090'
 // const BASE_URL = 'https://127.0.0.1:8080'
 // const BASE_URL = 'https://192.168.0.102:8080'
 
@@ -13,6 +13,9 @@ http.setConfig((config) => {
 	config.header = {
 		'content-type': 'application/x-www-form-urlencoded',
 		...config.header
+	}
+	config.custom = {
+		autoload: true
 	}
 	return config
 })
@@ -28,7 +31,7 @@ http.validateStatus = (statusCode) => {
 }
 
 http.interceptors.response.use((response) => {
-	if(tip.isLoading) {
+	if(tip.isLoading && response.config.custom.autoload) {
 		tip.loaded()
 	}
 	/* 对响应成功做点什么 可使用async await 做异步操作*/
@@ -42,7 +45,7 @@ http.interceptors.response.use((response) => {
 	}
 	return response
 }, (response) => {
-	if(tip.isLoading) {
+	if(tip.isLoading && response.config.custom.autoload) {
 		tip.loaded()
 	}
 	/*  对响应错误做点什么 （statusCode !== 200）*/

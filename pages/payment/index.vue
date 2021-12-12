@@ -14,8 +14,11 @@
 	import Pickup from './components/pickup'
 	import Order from './components/order'
 	import Collection from './components/collection'
+	import Qs from 'qs'
 
 	import api from '@/utils/api.js'
+	import { queryOrderStatus, queryOrderNum } from '@/utils/api/ali.js'
+	
 	export default {
 		components: {
 			Pickup,
@@ -84,7 +87,19 @@
 				},
 				utils: api,
 				// 用户
-				user: {}
+				user: {},
+				// 错误？
+				err: false,
+				// 错误码
+				errCode: 0,
+				// 错误信息
+				errMsg: '',
+				// 请求次数
+				frequency: 0,
+				// 订单是否修改
+				orderCreat: false,
+				// 支付完成？
+				isPay: false
 			}
 		},
 		onLoad(option) {
@@ -92,6 +107,13 @@
 			this.from = option.from
 			if(this.from === 'order') {
 				let waitPayOrder = this.$store.getters.waitPayOrder
+				
+				if(!waitPayOrder) {
+					this.err = true
+					this.errMsg = '未找到待支付订单~请稍后重试'
+					this.$tip.toast(this.errMsg)
+				}
+				
 				this.goodsId = waitPayOrder.goodsId
 
 				this.address.user = waitPayOrder.userName
@@ -131,6 +153,11 @@
 						goods.yhPrice = parseInt(goods.channel) === 1 ? 0 : goods.hxPrice
 					}
 					this.goods = res.data.data
+				}).catch(e => {
+					if(!this.err) {
+						this.err = true
+						this.errMsg = '获取商品出错~请稍后重试'
+					}
 				})
 			},
 
@@ -148,7 +175,15 @@
 
 			//调用支付前处理
 			async payBeforeHandler() {
+				if(this.err) {
+					this.$tip.toast(this.errMsg)
+					return
+				}
 				if(!this.addressJudge()) {
+					return
+				}
+				if(this.isPay) {
+					this.upOrderStatus('未发货')
 					return
 				}
 				let flag = await api.login()
@@ -175,16 +210,48 @@
 				}
 				this.orderNumQuery.title = this.goods.goodsName
 				this.orderNumQuery.price = this.goods.hxPrice + this.goods.expressPrice
-				// if(this.orderQuery.ordersID != undefined) {
-				// 	this.orderNumQuery.price = this.orderQuery.hxPrice + this.orderQuery.expressPrice
-				// } else {
-				// 	this.orderNumQuery.price = this.goods.hxPrice + this.goods.expressPrice
-				// }
+				// this.orderNumQuery.price = 0.01
 				this.orderNumQuery.userID = this.$store.getters.userid
-				this.$tip.loading()
-				this.$http.post('/ali/queryOrderNum', this.orderNumQuery).then(res => {
+				
+				let isOk
+				// 判断在本页面，用户是否修改或创建过订单，创建过则直接走修改api
+				if(this.orderCreat) {
+					isOk = await this.editOrder()
+				} else {
+					if(this.from === 'order') {
+						isOk = await this.editOrder()
+					} else {
+						isOk = await this.addOrder()
+					}
+				}
+				
+				if(isOk) {
+					this.getOrderNumAndPay()
+				}
+			},
+			
+			// 获取支付单号
+			getOrderNumAndPay() {
+				let timer
+				this.$tip.loading('请求支付中...')
+				queryOrderNum(this.orderNumQuery, {autoload: false, neglectError: true}).then(res => {
+					this.frequency = 0
+					this.$tip.loaded()
 					this.orderNum = res.data.msg
 					this.pay(this.orderNum)
+				}).catch(e => {
+					if(this.frequency >= 10 || e.data.msg) {
+						this.frequency = 0
+						this.$tip.loaded()
+						this.$tip.toast(e.data.msg)
+						return
+					} else {
+						this.frequency++
+						// 调用失败则700ms后重试
+						timer = setTimeout(() => {
+							this.getOrderNumAndPay()
+						}, 700)
+					}
 				})
 			},
 
@@ -217,58 +284,111 @@
 
 			// 调用支付后处理
 			payAfterHandler() {
+				let timer
 				this.$tip.loading('获取支付结果中...')
-				this.$http.post('/ali/queryOrderStatus', { orderNo: this.orderNum }).then(res => {
+				queryOrderStatus({ orderNo: this.orderNum }, {autoload: false, neglectError: true}).then(res => {
+					this.frequency = 0
+					this.$tip.loaded()
 					if(res.data.msg === 'TRADE_FINISHED' || res.data.msg === 'TRADE_SUCCESS') {
-						this.addOrder('未发货')
+						this.isPay = true
+						this.upOrderStatus('未发货')
 					} else if(res.data.msg === 'WAIT_BUYER_PAY') {
-						this.addOrder('待支付')
+						// this.$tip.toast('已生成一笔待支付订单')
+						// this.$store.commit('SET_ORDERRELOAD', true)
+						// this.$store.commit('SET_DDTAB', 1)
+						// uni.switchTab({ url: '/pages/recycle_orders/index' })
+						this.isPay = true
+						this.upOrderStatus('待支付')
+					}
+				}).catch(e => {
+					if(this.frequency >= 10 || e.data.msg) {
+						this.frequency = 0
+						this.$tip.loaded()
+						this.$tip.toast(e.data.msg)
+						return
+					} else {
+						this.frequency++
+						// 调用失败则700ms后重试
+						timer = setTimeout(() => {
+							this.payAfterHandler()
+						}, 700)
 					}
 				})
 			},
-
-			// 添加商品订单
-			addOrder(status) {
-				if(status === '待支付' && this.orderQuery.ordersID != undefined) {
-					return
-				} else if (status === '未发货' && this.orderQuery.ordersID != undefined) {
-					this.orderQuery.userName = this.address.user
-					this.orderQuery.userPhone = this.address.phone
-					this.orderQuery.userAddress = this.address.prov + this.address.city + this.address.area + this.address.street + this.address.address
-					this.orderQuery.tradeNo = this.orderNum
-					this.orderQuery.ordersStatus = status
-					this.$http.post('/recycle/orders/edit', this.orderQuery).then(res => {
-						this.toEnd()
-					})
-				} else {
-					this.orderQuery.goodsId = this.goods.goodID
-					this.orderQuery.goodsName = this.goods.goodsName
-					this.orderQuery.goodsType = this.goods.goodsType
-					this.orderQuery.zfPrice = this.goods.zfPrice
-					this.orderQuery.userId = this.$store.getters.userid
-					this.orderQuery.userName = this.address.user
-					this.orderQuery.userPhone = this.address.phone
-					this.orderQuery.userAddress = this.address.prov + this.address.city + this.address.area + this.address.street + this.address.address
-					this.orderQuery.tradeNo = this.orderNum
-					this.orderQuery.ordersStatus = status
-					this.$tip.loading('生成订单中...')
-					this.$http.post('/recycle/orders/add', this.orderQuery).then(res => {
-						this.toEnd()
-					})
+			
+			// 修改订单
+			async editOrder() {
+				this.orderQuery.userName = this.address.user
+				this.orderQuery.userPhone = this.address.phone
+				this.orderQuery.userAddress = this.address.prov + this.address.city + this.address.area + this.address.street + this.address.address
+				this.orderQuery.ordersStatus = '待支付'
+				this.$tip.loading('生成订单中...')
+				try {
+					await this.$http.post('/recycle/orders/edit', this.orderQuery)
+					this.orderCreat = true
+					return true
+				} catch (e) {
+					return false
+				}
+				
+			},
+			
+			// 添加订单
+			async addOrder() {
+				this.orderQuery.goodsId = this.goods.goodID
+				this.orderQuery.goodsName = this.goods.goodsName
+				this.orderQuery.goodsType = this.goods.goodsType
+				this.orderQuery.zfPrice = this.goods.zfPrice
+				this.orderQuery.userId = this.$store.getters.userid
+				this.orderQuery.userName = this.address.user
+				this.orderQuery.userPhone = this.address.phone
+				this.orderQuery.userAddress = this.address.prov + this.address.city + this.address.area + this.address.street + this.address.address
+				this.orderQuery.ordersStatus = '待支付'
+				this.$tip.loading('生成订单中...')
+				try {
+					let res = await this.$http.post('/recycle/orders/add', this.orderQuery)
+					this.orderQuery.ordersID = res.data.data
+					this.orderCreat = true
+					return true
+				} catch(e) {
+					console.log(e);
+					return false
 				}
 			},
-
-			toEnd() {
-				if(this.orderQuery.ordersStatus === '待支付') {
-					this.$tip.toast('已生成一笔待支付订单')
+			
+			// 修改订单状态
+			upOrderStatus(status) {
+				let timer
+				const query = Qs.stringify({
+					orderID: this.orderQuery.ordersID,
+					tradeNo: this.orderNum,
+					status: status
+				})
+				this.$tip.loading('更新订单状态...')
+				this.$http.post('/recycle/orders/updateOrderStatus', query, {custom: {autoload: false, neglectError: true}}).then(res => {
+					this.isPay = false
+					this.$tip.loaded()
 					this.$store.commit('SET_ORDERRELOAD', true)
 					this.$store.commit('SET_DDTAB', 1)
-					uni.switchTab({ url: '/pages/recycle_orders/index' })
-				} else {
-					this.$store.commit('SET_ORDERRELOAD', true)
-					this.$store.commit('SET_DDTAB', 1)
-					uni.redirectTo({ url:'/pages/end/index' })
-				}
+					if(status === '未发货') {
+						uni.redirectTo({ url:'/pages/end/index' })
+					} else {
+						uni.switchTab({ url: '/pages/recycle_orders/index' })
+					}
+				}).catch(e => {
+					if(this.frequency >= 10 || e.data.msg) {
+						this.frequency = 0
+						this.$tip.loaded()
+						this.$tip.toast('更新订单失败~请点击重试或联系客服')
+						return
+					} else {
+						this.frequency++
+						// 调用失败则700ms后重试
+						timer = setTimeout(() => {
+							this.upOrderStatus('未发货')
+						}, 700)
+					}
+				})
 			}
 		}
 	}
