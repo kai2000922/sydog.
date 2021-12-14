@@ -61,13 +61,13 @@ export default {
 			return this.config.space;
 		},
 		itemStyle() {
-			if (this.index == this.size - 1) {
-				return this.rightSpaceStyle();
-			} else if (this.index == this.size - 2) {
-				return this.centerSpaceStyle();
-			} else {
+			// if (this.index == this.size - 1) {
+			// 	return this.rightSpaceStyle();
+			// } else if (this.index == this.size - 2) {
+			// 	return this.centerSpaceStyle();
+			// } else {
 				return this.leftSpaceStyle();
-			}
+			// }
 		},
 		scale() {
 			if (!this.config.is3D) {

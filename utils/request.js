@@ -2,7 +2,7 @@ import Request from '@/utils/luch-request/index.js'
 import tip from './tip.js'
 
 // const BASE_URL = 'https://49.235.238.110:8080'
-const BASE_URL = 'https://hkkkkk.cn:8090'
+const BASE_URL = 'https://hkkkkk.cn:8080'
 // const BASE_URL = 'https://127.0.0.1:8080'
 // const BASE_URL = 'https://192.168.0.102:8080'
 

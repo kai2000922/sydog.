@@ -2,13 +2,14 @@
 	<esc-swiper :autoplay="autoplay" 
 			:circular="circular" 
 			:current.sync="current"
-			:size="bannerImage.length" 
+			:size="imgList.length" 
 			:plus="plus" 
 			:width="width" 
 			:height="height"
 			:itemWidth="itemWidth" 
-			:space="space">
-		<esc-swiper-item v-for="(item, index) in bannerImage" :index="index" :key="index">
+			:space="space"
+			v-if="show">
+		<esc-swiper-item v-for="(item, index) in imgList" :index="index" :key="index">
 			<view class="swiper-item"  @click="click(item)">
 				<image :src="item.image" class="item-image" />
 			</view>
@@ -20,19 +21,14 @@
 	import {getSwiperList} from '@/components/sn-swiper/esc-swiper/helper.js';
 	import {BASE_URL} from '@/utils/request.js'
 	
+	import {getMiniProgram} from '@/utils/common.js'
+	
 	export default {
 		props: {
 			// 来源{0: 首页, 1: 商城}
 			from: Number,
 			list: Array
 		},
-		// created() {
-		// 	if(this.from === 0) {
-		// 		this.loadHomeBanner()
-		// 	} else {
-		// 		this.LoadShoppingBanner()
-		// 	}
-		// },
 		data() {
 			return {
 				autoplay: true,
@@ -43,50 +39,50 @@
 				space: 24,
 				current: 0,
 				plus: 2,
-				// imgList: [
-				// 	{
-				// 		image: 'https://picsum.photos/750/300?blur=1',
-				// 		toPages: '',
-				// 		goodsID: 0
-				// 	}
-				// ]
+				imgList: [],
+				show: true,
 			}
 		},
-		computed: {
-			bannerImage() {
-				return getSwiperList(this.list, {
-					circular: this.circular,
-					plus: this.plus
-				});
+		watch: {
+			list: {
+				handler(newVal) {
+					if(newVal.length >= 3) {
+						this.autoplay = true
+						this.circular = true
+						this.plus = 2
+						this.imgList = getSwiperList(this.list, {circular: this.circular,plus: this.plus})
+					} else {
+						this.autoplay = false
+						this.circular = false
+						this.plus = 0
+						this.itemWidth = 690
+						this.space = 30
+						this.imgList = newVal
+					}
+					this.show = false
+					this.$nextTick(() => {
+						this.show = true
+					})
+				},
+				deep: true
 			}
 		},
 		methods: {
-			// loadHomeBanner(){
-			// 	this.imgList = []
-			// 	this.$http.get('recycle/goods/getBanner').then(res => {
-			// 		for(let i = 0 ;i < res.data.data.length; i++){
-			// 			this.imgList.push({image: BASE_URL + res.data.data[i].filePath, toPages: res.data.data[i].toPages, goodsId: res.data.data[i].goodsId})
-			// 		}
-			// 	}).catch(err => {
-			// 		console.log(err)
-			// 	})
-			// },
-			// LoadShoppingBanner() {
-			// 	this.imgList = []
-			// 	this.$http.get('recycle/goods/getStore').then(res => {
-			// 		for(let i = 0 ;i < res.data.data.length; i++){
-			// 			this.imgList.push({image: BASE_URL + res.data.data[i].filePath, toPages: res.data.data[i].toPages, goodsId: res.data.data[i].goodsId})
-			// 		}
-			// 	}).catch(err => {
-			// 		console.log(err)
-			// 	})
-			// },
 			click(item){
-				if (item.toPages != '-1'){
+				if (item.toPages != '-1') {
 					if(item.toPages === 'pages/shopping/index') {
 						my.switchTab({ url: '/pages/shopping/index' })
+					} else if( item.toPages.indexOf('alipays') !== -1 ) {
+						let res = getMiniProgram(item.toPages)
+						if(res.status === false) return
+						my.navigateToMiniProgram({
+							appId: res.appId,  // 要跳转的目标小程序 appId。
+							path: res.page,  // 打开的页面路径，如果为空则打开首页。 
+							extraData: res.param,
+							fail: (e) => { this.$tip.error(e.message) }
+						})
 					} else {
-						uni.navigateTo({ url: '/' + item.toPages + '?goodsID=' + item.goodsId })
+						uni.navigateTo({ url: '/' + item.toPages + '?goodsID=' + item.param })
 					}
 				}
 			}

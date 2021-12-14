@@ -134,7 +134,7 @@ export default {
 					// 第一项，不能向右滑(上一项)
 					(deltaX > 0 && this.mCurrent == 0) ||
 					// 最后一项，不能向左滑(下一项)
-					(deltaX < 0 && this.mCurrent == this._size)
+					(deltaX < 0 && this.mCurrent == this._size - 1)
 				) {
 					if (!this.bounce) return
 					// 添加阻尼滑动
@@ -162,7 +162,7 @@ export default {
 					return
 				}
 				// 最后一项，不能向左滑(下一项)
-				if (deltaX < 0 && this.mCurrent == this._size) {
+				if (deltaX < 0 && this.mCurrent == this._size - 1) {
 					this._restoreStartTouch()
 					return
 				}

@@ -52,7 +52,7 @@
 
 <script>
 	import step from '@/components/pages/step'
-	import sBanner from './components/s-banner'
+	import sBanner from '@/components/pages/s-banner'
 	import sPanel from '@/components/pages/s-panel'
 	import sForm from '@/components/pages/s-form'
 	import sButton from '@/components/pages/s-button'

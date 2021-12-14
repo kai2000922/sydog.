@@ -117,7 +117,9 @@
 			uni.setNavigationBarTitle({ title: '' })
 			uni.setBackgroundColor({ backgroundColor: '#fafffc' })
 			uni.setNavigationBarColor({ backgroundColor: '#44aa67' })
-			getConfig('banner').then(res => this.bannerList = res)
+			getConfig('banner').then(res => {
+				this.bannerList = res
+			})
 			this.sendChannel(options.channelName)
 		},
 		onShow() {

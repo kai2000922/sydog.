@@ -11,6 +11,48 @@ export async function getConfig(name) {
 		else return null
 	}
 }
+
+export function getMiniProgram(url) {
+	let result = {
+		appId: null,
+		page: null,
+		param: {},
+		status: true
+	}
+	let a = url.split('?')
+	let b = a[1]
+	let c = a.length === 3 ? a[2] : null
+	let d = b.split('&')
+	d.forEach(f => {
+		f = f.split('=')
+		if(f[0] === 'appId') {
+			result.appId = f[1]
+		}
+		if(f[0] === 'page') {
+			let g = unescape(f[1])
+			let h = g.split('?')
+			result.page = unescape(h[0])
+			if(h.length === 2) {
+				h[1].split('&').forEach(l => {
+					l = l.split('=')
+					if(l.length === 2) result.param[l[0]] = l[1]
+				})
+			}
+		}
+	})
+	if(!result.appId || !result.page) {
+		result.status = false
+		return result
+	}
+	if(c !== null) {
+		c.split('&').forEach(m => {
+			m = m.split('=')
+			if(m.length === 2) result.param[m[0]] = m[1]
+		})
+	}
+	return result
+}
+
 // 获取图片连接
 export function getImgUrl(url) {
 	return BASE_URL + url
@@ -22,6 +64,7 @@ const helper = {
 		try {
 			let res = await http.get('/recycle/config/getConfigs', {custom: {autoload: false, neglectError: true}})
 			let config = JSON.parse(res.data.msg.replace(/configImgPath/g, "image"))
+			console.log(config);
 			if(config.banner) {
 				config.banner.map(v => {
 					v.image = BASE_URL + v.image

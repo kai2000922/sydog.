@@ -93,8 +93,13 @@
 			}
 		},
 		onLoad(options) {
-			this.goodsID = options.goodsID;
-			this.from = options.from
+			let params = options.goodsID.split("_");
+			if (params.length > 1){
+				this.sendChannel(params[1])
+				this.goodsID = params[0];
+			} else {
+				this.goodsID = options.goodsID;
+			}
 			api.login().then(flag => {
 				this.$tip.loading('加载中')
 				this.$http.post('/recycle/user/list', {userNo: this.$store.getters.userid}).then(res => {
@@ -103,7 +108,6 @@
 				})
 				this.getGoods()
 			})
-			this.sendChannel(options.channelName)
 		},
 		watch: {
 			channel() {
