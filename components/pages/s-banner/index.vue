@@ -20,6 +20,7 @@
 <script>
 	import {getSwiperList} from '@/components/sn-swiper/esc-swiper/helper.js';
 	import {BASE_URL} from '@/utils/request.js'
+	import qs from 'qs'
 	
 	import {getMiniProgram, sendChannel} from '@/utils/common.js'
 	
@@ -75,10 +76,11 @@
 					} else if( item.toPages.indexOf('alipays') !== -1 ) {
 						let res = getMiniProgram(item.toPages)
 						if(res.status === false) return
-						sendChannel('TTZQ', '', '跳转其他小程序')
+						sendChannel(qs.stringify(res.param), '', '跳转其他小程序')
+						console.log(res.page + '?' +  qs.stringify(res.param));
 						my.navigateToMiniProgram({
 							appId: res.appId,  // 要跳转的目标小程序 appId。
-							path: res.page,  // 打开的页面路径，如果为空则打开首页。 
+							path: res.page + '?' +  qs.stringify(res.param),  // 打开的页面路径，如果为空则打开首页。 
 							extraData: {},
 							fail: (e) => { this.$tip.error(e.message) },
 						})

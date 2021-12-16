@@ -1,5 +1,6 @@
 import { http, BASE_URL } from './request.js'
 import store from '@/store'
+import qs from 'qs'
 
 // 获取小程序配置
 export async function getConfig(name) {
@@ -31,16 +32,12 @@ export function getMiniProgram(url) {
 			result.appId = f[1]
 		}
 		if(f[0] === 'page') {
-			result.page = unescape(f[1])
-			// let g = unescape(f[1])
-			// let h = g.split('?')
-			// result.page = unescape(h[0])
-			// if(h.length === 2) {
-			// 	h[1].split('&').forEach(l => {
-			// 		l = l.split('=')
-			// 		if(l.length === 2) result.param[l[0]] = l[1]
-			// 	})
-			// }
+			let g = unescape(f[1])
+			let h = g.split('?')
+			result.page = unescape(h[0])
+			if(h.length === 2) {
+				result.param = qs.parse(h[1])
+			}
 		}
 	})
 	if(!result.appId || !result.page) {
@@ -48,14 +45,11 @@ export function getMiniProgram(url) {
 		return result
 	}
 	if(c != null) {
-		result.concat('?', c)
+		c.split('&').forEach(m => {
+			m = m.split('=')
+			if(m.length === 2) result.param[m[0]] = m[1]
+		})
 	}
-	// if(c !== null) {
-	// 	c.split('&').forEach(m => {
-	// 		m = m.split('=')
-	// 		if(m.length === 2) result.param[m[0]] = m[1]
-	// 	})
-	// }
 	return result
 }
 
