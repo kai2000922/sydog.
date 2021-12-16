@@ -88,7 +88,7 @@
 			},
 			
 			toPage() {
-				let url = '/' + this.coupon.toPages + '?goodsID=' + this.coupon.goodsId
+				let url = '/' + this.coupon.toPages + '?goodsID=' + this.coupon.param
 				uni.navigateTo({ url: url })
 			},
 			

@@ -21,7 +21,8 @@
 				<text class="name">运费</text>
 				<text>{{ '¥' + expressPrice }}</text>
 			</view>
-			<view v-if="channel === 1" class="main_item">
+			<!-- <view v-if="channel === 1" class="main_item"> -->
+			<view v-if="false" class="main_item">
 				<text class="name">享受优惠</text>
 				<s-tag/>
 			</view>

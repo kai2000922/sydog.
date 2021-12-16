@@ -7,7 +7,8 @@
 					<u-image width="750rpx" height="750rpx" :src="sapi.getImgUrl(goods.images)"/>
 				</view>
 				<!-- 详细信息 -->
-				<goods-info :express-price="goods.expressPrice" :goods-name="goods.goodsName" :original-price="goods.hxPrice" :original-price-show="channel === 0 || (channel === 1 && user.recycled > 0)" :present-price="channel === 0 ? goods.yhPrice : user.recycled < 1 ? goods.hxPrice : goods.yhPrice" :tag-show="channel === 1 && user.recycled > 0"/>
+				<!-- <goods-info :express-price="goods.expressPrice" :goods-name="goods.goodsName" :original-price="goods.hxPrice" :original-price-show="channel === 0 || (channel === 1 && user.recycled > 0)" :present-price="channel === 0 ? goods.yhPrice : user.recycled < 1 ? goods.hxPrice : goods.yhPrice" :tag-show="channel === 1 && user.recycled > 0"/> -->
+				<goods-info :express-price="goods.expressPrice" :goods-name="goods.goodsName" :original-price="goods.hxPrice" :original-price-show="channel === 0 || (channel === 1 && user.recycled > 0)" :present-price="channel === 0 ? goods.yhPrice : user.recycled < 1 ? goods.hxPrice : goods.yhPrice" :tag-show="false"/>
 				<!-- 介绍 -->
 				<view class="flex_colum">
 					<image style="width: 100%;" :lazy-load="true" v-for="(img, index) in descImgs" :key="index" :src="img" mode="widthFix"/>

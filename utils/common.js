@@ -1,6 +1,7 @@
 import { http, BASE_URL } from './request.js'
 import store from '@/store'
 
+// 获取小程序配置
 export async function getConfig(name) {
 	let config = store.getters.config
 	if(config != null) {
@@ -12,6 +13,7 @@ export async function getConfig(name) {
 	}
 }
 
+// 跳转其他小程序
 export function getMiniProgram(url) {
 	let result = {
 		appId: null,
@@ -29,28 +31,41 @@ export function getMiniProgram(url) {
 			result.appId = f[1]
 		}
 		if(f[0] === 'page') {
-			let g = unescape(f[1])
-			let h = g.split('?')
-			result.page = unescape(h[0])
-			if(h.length === 2) {
-				h[1].split('&').forEach(l => {
-					l = l.split('=')
-					if(l.length === 2) result.param[l[0]] = l[1]
-				})
-			}
+			result.page = unescape(f[1])
+			// let g = unescape(f[1])
+			// let h = g.split('?')
+			// result.page = unescape(h[0])
+			// if(h.length === 2) {
+			// 	h[1].split('&').forEach(l => {
+			// 		l = l.split('=')
+			// 		if(l.length === 2) result.param[l[0]] = l[1]
+			// 	})
+			// }
 		}
 	})
 	if(!result.appId || !result.page) {
 		result.status = false
 		return result
 	}
-	if(c !== null) {
-		c.split('&').forEach(m => {
-			m = m.split('=')
-			if(m.length === 2) result.param[m[0]] = m[1]
-		})
+	if(c != null) {
+		result.concat('?', c)
 	}
+	// if(c !== null) {
+	// 	c.split('&').forEach(m => {
+	// 		m = m.split('=')
+	// 		if(m.length === 2) result.param[m[0]] = m[1]
+	// 	})
+	// }
 	return result
+}
+
+// 渠道
+export function sendChannel(channelName, links = '', remark = ''){
+	if (channelName != null){
+		http.post('recycle/channel/add', {channelName: channelName, links: links ? links + '?channelName=' + channelName : links, remark: remark})
+		.then(res => {})
+		.catch(err => { tip.confirm('渠道信息添加失败', true).then(() => {}) })
+	}
 }
 
 // 获取图片连接
