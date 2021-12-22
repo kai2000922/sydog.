@@ -1,82 +1,20 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/index/index",
-			"style": {
-				"enablePullDownRefresh": true
-				// "navigationBarTitleText": "uni-app"
-			}
-		},
-		{
-			"path": "pages/collect/index",
-			"style": {
-				// "navigationBarBackgroundColor": "#44aa67",
-				// "backgroundColor": "#fafafa"
-			}
-		},
-		{
-		    "path": "pages/recycle_orders/index",
-		    "style": {
-		        // "navigationBarTitleText": "",
-		        // "enablePullDownRefresh": false
-		    }
-
-		},
-		{
-		    "path": "pages/hd/index",
-		    "style": {
-		        // "navigationBarTitleText": "",
-		        // "enablePullDownRefresh": false
-		    }
-
-		},
-		{
-		    "path": "pages/shopping/index",
-		    "style": {
-		        // "navigationBarTitleText": "",
-		        // "enablePullDownRefresh": false
-		    }
-
-		},
-		{
-		    "path": "pages/goods/index",
-		    "style": {
-		        // "navigationBarTitleText": "",
-		        // "enablePullDownRefresh": false
-		    }
-
-		},
-		{
-		    "path": "pages/end/index",
-		    "style": {
-		        // "navigationBarTitleText": "",
-		        // "enablePullDownRefresh": false
-		    }
-
-		},
-		{
-		    "path": "pages/payment/index",
-		    "style": {
-		        // "navigationBarTitleText": "",
-		        // "enablePullDownRefresh": false
-		    }
-
-		},
-		{
-		    "path": "pages/order_details/index",
-		    "style": {
-		        // "navigationBarTitleText": "",
-		        // "enablePullDownRefresh": false
-		    }
-
-		}
+		{ "path": "pages/index/index" },
+		{ "path": "pages/collect/index" },
+		{ "path": "pages/recycle_orders/index" },
+		{ "path": "pages/hd/index" },
+		{ "path": "pages/shopping/index" },
+		{ "path": "pages/goods/index" },
+		{ "path": "pages/end/index" },
+		{ "path": "pages/payment/index" },
+		{ "path": "pages/order_details/index" }
 	],
 	"tabBar": {
 	    "color": "#7F8581",
 	    "selectedColor": "#06180C",
 	    "borderStyle": "black",
 	    "backgroundColor": "#ffffff",
-		"height":"56px",
 	    "list": [
 			{
 				"pagePath": "pages/shopping/index",

@@ -15,13 +15,16 @@
 <script>
 	import order from '../order'
 	import refund from '@/components/pages/refund'
+	// import sPanel from '@/components/pages/s-panel'
 	
-	import api from '@/utils/api.js'
+	import { login } from '@/utils/common.js'
+	import { getOrder, orderRefund } from '@/utils/api/order.js'
 	
 	export default {
 		components: {
 			order,
-			refund
+			refund,
+			// sPanel
 		},
 		props: {
 			//当前组件的index，也就是当前组件是swiper中的第几个
@@ -101,7 +104,7 @@
 			},
 			// 获取商品订单列表
 			queryList(pageNo, pageSize) {
-				api.login().then(flag => {
+				login().then(flag => {
 					if(!flag) {
 						this.$refs.paging.complete(false);
 						return
@@ -112,7 +115,7 @@
 						userId: this.$store.getters.userid
 					}
 					this.$tip.loading()
-					this.$http.post('/recycle/orders/list', params).then(res => {
+					getOrder(params).then(res => {
 						this.$refs.paging.complete(res.data.rows);
 						this.firstLoaded = true;
 					}).catch(err => {
@@ -137,7 +140,7 @@
 			// 退款
 			tk() {
 				this.$tip.loading('退款中...')
-				this.$http.post('/recycle/orders/refund', this.tkQuery).then(res => {
+				orderRefund(this.tkQuery).then(res => {
 					this.refundPopup = false
 					this.refundOkPopup = true
 					this.$refs.paging.reload()

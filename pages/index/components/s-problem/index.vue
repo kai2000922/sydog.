@@ -54,7 +54,7 @@
 
 <style lang="scss" scoped>
 	.problem {
-		margin: 40rpx 30rpx 30rpx 30rpx;
+		margin: 30rpx;
 		padding: 30rpx;
 		background: #FFFFFF;
 		box-shadow: 0 1rpx 24px 0 #E8F0EB;

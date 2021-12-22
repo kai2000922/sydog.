@@ -36,7 +36,7 @@
 	import sButton from '@/components/pages/s-button'
 	import sDot from '@/components/pages/s-dot'
 	
-	import {getConfig} from '@/utils/common.js'
+	import {getConfig, getActivityConfig} from '@/utils/common.js'
 
 	export default {
 		components: {
@@ -56,7 +56,7 @@
 		onLoad(option) {
 			this.from = option.from ? option.from: ''
 			if(this.from === 'hd') {
-				getConfig('coupon').then(res => this.coupon = res)
+				getActivityConfig(null, 'coupon').then(res => this.coupon = res)
 			}
 			uni.setNavigationBarTitle({title: ''})
 			uni.setBackgroundColor({backgroundColor: '#fafffc'})

@@ -1,7 +1,7 @@
 <template>
 	<view class="item flex_colum" :style="customStyle" @click="click">
 		<view class="image_box">
-			<u-image :src="sapi.getImgUrl(item.images)" width="100%" height="100%" />
+			<u-image :src="getImgUrl(item.images)" width="100%" height="100%" />
 		</view>
 
 		<view class="title">{{ item.goodsName }}</view>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-	import api from '@/utils/api.js'
+	import { getImgUrl } from '@/utils/common.js'
 
 	export default {
 		props: {
@@ -23,7 +23,7 @@
 		},
 		data() {
 			return {
-				sapi: api
+				getImgUrl: getImgUrl
 			}
 		},
 		methods: {

@@ -4,7 +4,7 @@
 			<scroll-view class="scroll" enableBackToTop="true" scroll-y>
 				<!-- 商品图片 -->
 				<view>
-					<u-image width="750rpx" height="750rpx" :src="sapi.getImgUrl(goods.images)"/>
+					<u-image width="750rpx" height="750rpx" :src="goods.images"/>
 				</view>
 				<!-- 详细信息 -->
 				<!-- <goods-info :express-price="goods.expressPrice" :goods-name="goods.goodsName" :original-price="goods.hxPrice" :original-price-show="channel === 0 || (channel === 1 && user.recycled > 0)" :present-price="channel === 0 ? goods.yhPrice : user.recycled < 1 ? goods.hxPrice : goods.yhPrice" :tag-show="channel === 1 && user.recycled > 0"/> -->
@@ -60,8 +60,11 @@
 <script>
 	import goodsInfo from './components/goods-info'
 	import sButton from '@/components/pages/s-button'
-
-	import api from '@/utils/api.js'
+	
+	import {login, getShareObject, getImgUrl} from '@/utils/common.js'
+	import { getUser } from '@/utils/api/user.js'
+	import { getGoodsById } from '@/utils/api/goods.js'
+	import { addChannel } from '@/utils/api/channel.js'
 
 	export default {
 		components: {
@@ -69,7 +72,7 @@
 			sButton
 		},
 		onShareAppMessage () {
-		    return api.getShareObject()
+		    return getShareObject()
 		},
 		data() {
 			return {
@@ -80,13 +83,9 @@
 				// 商品
 				goods: {},
 				// 用户
-				user: {
-					recycled: 0
-				},
+				user: { recycled: 0 },
 				// 详情图
 				descImgs: [],
-				// 
-				sapi: api,
 				// channel
 				channel: 0,
 				// 是否下架
@@ -101,9 +100,9 @@
 			} else {
 				this.goodsID = options.goodsID;
 			}
-			api.login().then(flag => {
+			login().then(flag => {
 				this.$tip.loading('加载中')
-				this.$http.post('/recycle/user/list', {userNo: this.$store.getters.userid}).then(res => {
+				getUser({userNo: this.$store.getters.userid}).then(res => {
 					let user = res.data.rows[0]
 					this.user = user
 				})
@@ -113,7 +112,7 @@
 		watch: {
 			channel() {
 				if(this.channel === 1) {
-					api.login().then(flag => {
+					login().then(flag => {
 						if(!flag) {
 							uni.switchTab({ url: '/pages/shopping/index' })
 							return
@@ -122,7 +121,7 @@
 							return
 						}
 						this.$tip.loading('加载中')
-						this.$http.post('/recycle/user/list', {userNo: this.$store.getters.userid}).then(res => {
+						getUser({userNo: this.$store.getters.userid}).then(res => {
 							let user = res.data.rows[0]
 							this.user = user
 						}).catch(err => {
@@ -136,17 +135,18 @@
 			// 获取商品信息
 			getGoods() {
 				this.$tip.loading('加载中')
-				this.$http.post('/recycle/goods/listByID', { goodsID: this.goodsID }).then(res => {
+				getGoodsById({ goodsID: this.goodsID }).then(res => {
 					let goods = res.data.data
 					if(goods.yhPrice === null) {
 						goods.yhPrice = parseInt(goods.channel) === 1 ? 0 : goods.hxPrice
 					}
+					goods.images = getImgUrl(goods.images)
 					this.goods = goods
 					this.channel = parseInt(goods.channel)
 					this.descImgs = []
 					goods.descImages.split(';').forEach(img => {
 						if(img !== '') {
-							this.descImgs.push(api.getImgUrl(img))
+							this.descImgs.push(getImgUrl(img))
 						}
 					})
 				}).catch(e => {
@@ -173,7 +173,7 @@
 			//发送渠道信息
 			sendChannel(channelName){
 				if (channelName != null)
-					this.$http.post('recycle/channel/add', {'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
+					addChannel({'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
 					.catch(err => {
 							tip.confirm('渠道信息添加失败', true).then(() => {})
 					})

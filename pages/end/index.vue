@@ -30,8 +30,6 @@
 	import sPanel from '@/components/pages/s-panel'
 	import sButton from '@/components/pages/s-button'
 
-	import api from '@/utils/api.js'
-
 	export default {
 		components: {
 			step,

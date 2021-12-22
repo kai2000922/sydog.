@@ -30,6 +30,8 @@
 <script>
 	import recycleSwiperItem from './components/recycle-swiper-item/index.vue'
 	import orderSwiperItem from './components/order-swiper-item'
+	
+	import { getShareObject } from '@/utils/common.js'
 
 	export default {
 		components: {
@@ -37,7 +39,7 @@
 			orderSwiperItem
 		},
 		onShareAppMessage () {
-		    return api.getShareObject()
+		    return getShareObject()
 		},
 		data() {
 			return {

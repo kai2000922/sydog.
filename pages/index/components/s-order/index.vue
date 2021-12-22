@@ -71,6 +71,8 @@
 	import {
 		getDate
 	} from '@/utils/dateUtil.js'
+	
+	import { editRecycle } from '@/utils/api/recycle.js'
 
 	export default {
 		components: {
@@ -179,7 +181,7 @@
 			// 修改订单
 			updateRecycle(recycleID, status) {
 				this.$tip.loading('修改中')
-				this.$http.post('/recycle/recycle/editOrder', {
+				editRecycle({
 					orderStatus: status,
 					param: this.getAddressString(),
 					orderID: recycleID

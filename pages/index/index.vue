@@ -32,6 +32,15 @@
 				</form>
 			</view>
 		</s-panel>
+		
+		<s-panel :custom-style="{padding: '0rpx 14rpx'}">
+			<view class="flex_row flex_ai_center flex_jc_between">
+				<image style="width: 193rpx;" src="@/static/gzdhl.png" mode="widthFix"/>
+				<text style="font-size: 22rpx; font-weight: bold;">关注一下，免费领生活好物</text>
+				<life-follow sceneId="526bf04fae2647d5b90569a439a0574c"/>
+				
+			</view>
+		</s-panel>
 
 		<uni-transition custom-class="transition" :mode-class="['fade', 'slide-bottom']" :show="btnShow">
 			<s-button width="630" height="120" color="#FFFFFF" bgImg="linear-gradient(270deg, #43A668 0%, #30BB63 100%)"
@@ -55,9 +64,11 @@
 	import sButton from '@/components/pages/s-button'
 	import sProblem from './components/s-problem'
 	import sOrder from './components/s-order'
-
-	import api from '@/utils/api.js'
-	import {getConfig} from '@/utils/common.js'
+	
+	import {getConfig, getShareObject, login, getImgUrl} from '@/utils/common.js'
+	import { addRecycle, getRecycle } from '@/utils/api/recycle.js'
+	import { getStoreList } from '@/utils/api/goods.js'
+	import { addChannel } from '@/utils/api/channel.js'
 
 	export default {
 		components: {
@@ -107,11 +118,11 @@
 				// 地址信息
 				addressInfo: {},
 				// 商品展示列表
-				storeList: [],
+				storeList: []
 			}
 		},
 		onShareAppMessage () {
-		    return api.getShareObject()
+		    return getShareObject()
 		},
 		onLoad(options) {
 			uni.setNavigationBarTitle({ title: '' })
@@ -124,6 +135,7 @@
 		},
 		onShow() {
 			this.getRecycle()
+			this.$forceUpdate()
 		},
 		created() {
 			this.getStoreList()
@@ -180,7 +192,7 @@
 					return
 				}
 				// 判断是否登录
-				api.login().then(flag => {
+				login().then(flag => {
 					if(flag) {
 						this.orderInfo.user = this.$store.getters.userid
 						this.orderInfo.name = this.addressInfo.fullname
@@ -192,7 +204,7 @@
 						this.orderInfo.address = this.addressInfo.prov + this.addressInfo.city + this.addressInfo.area + this
 							.addressInfo.street + this.addressInfo.address
 						this.$tip.loading('请求中')
-						this.$http.post('recycle/recycle/add', this.orderInfo).then(res => {
+						addRecycle(this.orderInfo).then(res => {
 							this.getRecycle()
 							this.$store.commit('SET_RECYCLERELOAD', true)
 							this.$store.commit('SET_DDTAB', 0)
@@ -204,9 +216,9 @@
 
 			// 获取订单
 			async getRecycle() {
-				let flag = await api.login()
+				let flag = await login()
 				if(flag) {
-					let dsm = await this.$http.post('/recycle/recycle/list', {user: this.$store.getters.userid, orderStatus: '待上门'})
+					let dsm = await getRecycle({user: this.$store.getters.userid, orderStatus: '待上门'})
 					this.recycleList = dsm.data.rows
 				}
 			},
@@ -214,13 +226,13 @@
 			// 首页商品展示
 			getStoreList() {
 				this.storeList = []
-				this.$http.get('/recycle/goods/getStoreList').then(res => {
+				getStoreList().then(res => {
 					res.data.data.forEach(obj => {
 						obj = JSON.parse(obj)
 						if(obj.img.charAt(obj.img.length - 1) === ';') {
-							obj.img = api.getImgUrl(obj.img.substr(0, obj.img.length - 1))
+							obj.img = getImgUrl(obj.img.substr(0, obj.img.length - 1))
 						} else {
-							obj.img = api.getImgUrl(obj.img)
+							obj.img = getImgUrl(obj.img)
 						}
 						this.storeList.push(obj)
 					})
@@ -246,7 +258,7 @@
 
 			sendChannel(channelName){
 				if (channelName != null){
-					this.$http.post('recycle/channel/add', {'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
+					addChannel({'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
 					.catch(err => { tip.confirm('渠道信息添加失败', true).then(() => {}) })
 					this.orderInfo.channelSource = channelName
 				}

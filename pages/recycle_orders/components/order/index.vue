@@ -6,7 +6,7 @@
 			<text style="margin-left: 8rpx;" class="font_24 color_black">{{ title }}</text>
 		</view>
 		
-		<order-briefly :goodsID="goods.goodID" :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="item.zfPrice" :refund-text="text.img" :channel='parseInt(goods.channel)'/>
+		<order-briefly :goodsID="goods.goodID" :img="goods.images" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="item.zfPrice" :refund-text="text.img" :channel='parseInt(goods.channel)'/>
 		<!-- 订单状态 -->
 		<view class="express flex_row flex_jc_between" @click="toDetails">
 			<view class="che">
@@ -50,7 +50,8 @@
 	
 	import orderBriefly from '@/components/pages/order-briefly'
 	
-	import api from '@/utils/api.js'
+	import {getImgUrl} from '@/utils/common.js'
+	import { getGoodsById } from '@/utils/api/goods.js'
 	
 	export default {
 		components: {
@@ -70,7 +71,6 @@
 				// 小标题颜色
 				titleColor: '',
 				goods: {},
-				utils: api,
 				waitPay: false,
 				text: {
 					img: '',
@@ -87,8 +87,9 @@
 		},
 		methods: {
 			getGoods(id) {
-				this.$http.post('/recycle/goods/listByID', {goodsID: id}, {custom: {neglectError: true}}).then(res => {
+				getGoodsById({goodsID: id}, {neglectError: true}).then(res => {
 					this.goods = res.data.data
+					this.goods.images = getImgUrl(this.goods.images)
 				}).catch(e => {
 					if(e.data && e.data.msg && e.data.msg === '商品不存在') {
 						this.goods.goodsName = this.item.goodsName
@@ -180,7 +181,7 @@
 				}
 				if(this.item.ordersStatus === '未发货' || this.item.ordersStatus === '揽件中') {
 					let obj = {
-						img: api.getImgUrl(this.goods.images),
+						img: getImgUrl(this.goods.images),
 						goodsName: this.goods.goodsName,
 						goodsType: this.goods.goodsType,
 						hxPrice: this.goods.hxPrice,

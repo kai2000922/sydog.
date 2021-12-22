@@ -26,11 +26,17 @@
 			cost
 		},
 		props: {
+			// 运费价格
 			expressPrice: [String, Number],
+			// 原价
 			originalPrice: [String, Number],
+			// 现价
 			presentPrice: [String, Number],
+			// 商品名称
 			goodsName: String,
+			// 是否显示tag
 			tagShow: Boolean,
+			// 是否显示原价
 			originalPriceShow: Boolean
 		}
 	}

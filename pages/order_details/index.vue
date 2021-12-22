@@ -6,7 +6,7 @@
 			</view>
 		</view>
 		<s-panel>
-			<order-briefly :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="item.zfPrice" :refund-text="text.img" :channel='parseInt(goods.channel)'/>
+			<order-briefly :img="goods.images" :goods-name="goods.goodsName" :goods-type="goods.goodsType" :hx-price="goods.hxPrice" :express-price="goods.expressPrice" :zf-price="item.zfPrice" :refund-text="text.img" :channel='parseInt(goods.channel)'/>
 			<!-- 订单状态 -->
 			<view class="express flex_row flex_jc_between">
 				<view class="che">
@@ -23,7 +23,7 @@
 			<!-- 订单信息 -->
 			<view class="info">
 				<view class="label flex_row flex_ai_center">
-					<image src="@/static/dingdan.png"></image>
+					<image src="@/static/order/dingdan.png"></image>
 					<text style="margin-left: 16rpx;" class="font_28 label_color line_42">订单信息</text>
 				</view>
 				<view style="color: #7F8581; margin-top: 20rpx;" class="flex_colum font_24 line_36">
@@ -42,7 +42,7 @@
 			<view style="margin: 40rpx 0 10rpx 0;" class="flex_row flex_jc_end flex_ai_center">
 				<!-- <s-button background="#ffffff" color="#06180C" width="184" height="64" text="联系客服" fontSize="28"
 					:custom-style="{border: '1px solid #707070'}"/> -->
-				<s-button background="#ffffff" color="#06180C" width="184" height="64" :text="text.refund" fontSize="28"
+				<s-button background="#ffffff" color="#06180C" width="184" height="64" :text="text.refund" fontSize="28" :bold="false"
 					:custom-style="{border: '1px solid #707070', marginLeft: '24rpx'}" @click="refund" />
 			</view>
 		</s-panel>
@@ -76,8 +76,9 @@
 	import refund from '@/components/pages/refund'
 	
 	import orderBriefly from '@/components/pages/order-briefly'
-
-	import api from '@/utils/api.js'
+	
+	import { getImgUrl } from '@/utils/common.js'
+	import { orderRefund } from '@/utils/api/order.js'
 
 	export default {
 		components: {
@@ -90,7 +91,6 @@
 			return {
 				order: {},
 				goods: {},
-				utils: api,
 				text: {
 					img: '',
 					logistics: '',
@@ -127,6 +127,7 @@
 			eventChannel.on('setData', function(data) {
 				that.order = data.order
 				that.goods = data.goods
+				that.goods.images = getImgUrl(that.goods.images)
 				that.loadPage()
 			})
 		},
@@ -135,6 +136,7 @@
 			// 准备页面数据
 			loadPage() {
 				let status = this.order.ordersStatus
+				console.log(status);
 				switch(status) {
 					case '待支付':
 						this.text.logistics = status
@@ -191,7 +193,7 @@
 				}
 				if(this.order.ordersStatus === '未发货' || this.order.ordersStatus === '揽件中') {
 					let tkObj = {
-						img: api.getImgUrl(this.goods.images),
+						img: getImgUrl(this.goods.images),
 						goodsName: this.goods.goodsName,
 						goodsType: this.goods.goodsType,
 						hxPrice: this.goods.hxPrice,
@@ -221,7 +223,7 @@
 			// 退款
 			tk() {
 				this.$tip.loading('退款中...')
-				this.$http.post('/recycle/orders/refund', this.tkQuery).then(res => {
+				orderRefund(this.tkQuery).then(res => {
 					this.refundPopup = false
 					this.refundOkPopup = true
 					this.getOrderList()

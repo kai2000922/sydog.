@@ -2,7 +2,7 @@
 	<view class="payment">
 		<view class="payment_main">
 			<pickup :address.sync="address"/>
-			<order :img="utils.getImgUrl(goods.images)" :goods-name="goods.goodsName" :goods-describe="goods.goodsDescribe" :hx-price="goods.hxPrice" :channel="parseInt(goods.channel)" :express-price="goods.expressPrice" :yh-price="goods.yhPrice" :zf-price="goods.zfPrice"/>
+			<order :img="goods.images" :goods-name="goods.goodsName" :goods-describe="goods.goodsDescribe" :hx-price="goods.hxPrice" :channel="parseInt(goods.channel)" :express-price="goods.expressPrice" :yh-price="goods.yhPrice" :zf-price="goods.zfPrice"/>
 		</view>
 		<view class="payment_bottom">
 			<collection :zfPrice="goods.yhPrice + goods.expressPrice" @zfBtnClick="payBeforeHandler"/>
@@ -16,8 +16,11 @@
 	import Collection from './components/collection'
 	import Qs from 'qs'
 
-	import api from '@/utils/api.js'
 	import { queryOrderStatus, queryOrderNum } from '@/utils/api/ali.js'
+	import { login, getImgUrl } from '@/utils/common.js'
+	import { addOrder, editOrder, editOrderForStatus } from '@/utils/api/order.js'
+	import { getGoodsById } from '@/utils/api/goods.js'
+	import { getUser } from '@/utils/api/user.js'
 	
 	export default {
 		components: {
@@ -85,7 +88,6 @@
 					// 订单状态
 					ordersStatus: undefined
 				},
-				utils: api,
 				// 用户
 				user: {},
 				// 错误？
@@ -138,20 +140,19 @@
 				return
 			}
 			this.goodsId = option.goodsId
-			api.login()
+			login()
 			this.getGoods()
 		},
 		methods: {
 			// 获取商品信息
 			getGoods() {
 				this.$tip.loading('加载中')
-				this.$http.post('/recycle/goods/listByID', {
-					goodsID: this.goodsId
-				}).then(res => {
+				getGoodsById({ goodsID: this.goodsId }).then(res => {
 					let goods = res.data.data
 					if(goods.yhPrice === null) {
 						goods.yhPrice = parseInt(goods.channel) === 1 ? 0 : goods.hxPrice
 					}
+					goods.images = getImgUrl(goods.images)
 					this.goods = res.data.data
 				}).catch(e => {
 					if(!this.err) {
@@ -186,14 +187,14 @@
 					this.upOrderStatus('未发货')
 					return
 				}
-				let flag = await api.login()
+				let flag = await login()
 				if(!flag) {
 					return
 				}
 				if(parseInt(this.goods.channel) === 1) {
 					this.$tip.loading('获取用户信息中...')
 					try {
-						let temp = await this.$http.post('/recycle/user/list', {userNo: this.$store.getters.userid})
+						let temp = await getUser({userNo: this.$store.getters.userid})
 						let user = temp.data.rows[0]
 						if(!user) {
 							this.$tip.toast('获取用户信息失败~')
@@ -324,7 +325,7 @@
 				this.orderQuery.ordersStatus = '待支付'
 				this.$tip.loading('生成订单中...')
 				try {
-					await this.$http.post('/recycle/orders/edit', this.orderQuery)
+					await editOrder(this.orderQuery)
 					this.orderCreat = true
 					return true
 				} catch (e) {
@@ -346,7 +347,7 @@
 				this.orderQuery.ordersStatus = '待支付'
 				this.$tip.loading('生成订单中...')
 				try {
-					let res = await this.$http.post('/recycle/orders/add', this.orderQuery)
+					let res = await addOrder(this.orderQuery)
 					this.orderQuery.ordersID = res.data.data
 					this.orderCreat = true
 					return true
@@ -365,7 +366,7 @@
 					status: status
 				})
 				this.$tip.loading('更新订单状态...')
-				this.$http.post('/recycle/orders/updateOrderStatus', query, {custom: {autoload: false, neglectError: true}}).then(res => {
+				editOrderForStatus(query, {autoload: false, neglectError: true}).then(res => {
 					this.isPay = false
 					this.$tip.loaded()
 					this.$store.commit('SET_ORDERRELOAD', true)

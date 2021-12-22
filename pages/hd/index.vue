@@ -59,8 +59,9 @@
 	import sProblem from './components/s-problem'
 	import sOrder from './components/s-order'
 
-	import api from '@/utils/api.js'
-	import {getConfig} from '@/utils/common.js'
+	import {getConfig, getActivityConfig, getShareObject, login } from '@/utils/common.js'
+	import { addRecycle, getRecycle } from '@/utils/api/recycle.js'
+	import { addChannel } from '@/utils/api/channel.js'
 
 	export default {
 		components: {
@@ -113,22 +114,22 @@
 			}
 		},
 		onShareAppMessage () {
-		    return api.getShareObject()
+		    return getShareObject()
 		},
 		onLoad(options) {
 			uni.setNavigationBarTitle({ title: '' })
 			uni.setBackgroundColor({ backgroundColor: '#fafffc' })
 			uni.setNavigationBarColor({ backgroundColor: '#44aa67' })
+			let id = options.id ? options.id : 2
+			getActivityConfig(id, 'all').then(res => {
+				this.bannerList = [res.banner]
+				this.flow = res.flow
+			})
+			this.orderInfo.channelSource = id
 			this.sendChannel(options.channelName)
 		},
 		onShow() {
 			this.getRecycle()
-		},
-		created() {
-			getConfig('all').then(res => {
-				this.bannerList = res.activity
-				this.flow = res.flow
-			})
 		},
 		mounted() {
 			let that = this
@@ -171,7 +172,7 @@
 					return
 				}
 				// 判断是否登录
-				api.login().then(flag => {
+				login().then(flag => {
 					if(flag) {
 						this.orderInfo.user = this.$store.getters.userid
 						this.orderInfo.name = this.addressInfo.fullname
@@ -183,7 +184,7 @@
 						this.orderInfo.address = this.addressInfo.prov + this.addressInfo.city + this.addressInfo.area + this
 							.addressInfo.street + this.addressInfo.address
 						this.$tip.loading('请求中')
-						this.$http.post('recycle/recycle/add', this.orderInfo).then(res => {
+						addRecycle(this.orderInfo).then(res => {
 							this.getRecycle()
 							this.$store.commit('SET_RECYCLERELOAD', true)
 							this.$store.commit('SET_DDTAB', 0)
@@ -195,9 +196,9 @@
 
 			// 获取订单
 			async getRecycle() {
-				let flag = await api.login()
+				let flag = await login()
 				if(flag) {
-					let dsm = await this.$http.post('/recycle/recycle/list', {user: this.$store.getters.userid, orderStatus: '待上门'})
+					let dsm = await getRecycle({user: this.$store.getters.userid, orderStatus: '待上门'})
 					this.recycleList = dsm.data.rows
 				}
 			},
@@ -225,7 +226,7 @@
 
 			sendChannel(channelName){
 				if (channelName != null){
-					this.$http.post('recycle/channel/add', {'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
+					addChannel({'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName}).then(res => {})
 					.catch(err => { tip.confirm('渠道信息添加失败', true).then(() => {}) })
 					this.orderInfo.channelSource = channelName
 				}

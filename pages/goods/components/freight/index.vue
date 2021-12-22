@@ -12,19 +12,22 @@
 			sTag
 		},
 		props: {
+			// tag文字
 			tag: {
 				type: String,
 				default: '付邮领'
 			},
+			// 运费价格
 			freight: {
 				type: [String, Number],
 				default: '9.9'
 			},
+			// 自定义样式
 			customStyle: {
 				type: Object,
 				default: () => {return {}}
 			},
-			// 优惠
+			// 显示开关
 			tagShow: {
 				type: Boolean,
 				default: false

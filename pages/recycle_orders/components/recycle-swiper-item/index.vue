@@ -2,7 +2,17 @@
 	<view class="content">
 		<z-paging ref="paging" v-model="dataList" @query="queryList" :fixed="false" :auto="false" empty-view-text="暂时没有订单哦~" @onRefresh="refresh">
 			<!-- 如果希望其他view跟着页面滚动，可以放在z-paging标签内 -->
-			<view v-for="(item, index) in dataList" :key="index">
+			<view v-if="dataList.length > 0" :key="index">
+				<recyle :item="dataList[0]" @formChange="showUpdate" @update="updateRecycle(dataList[0].recycleID, -2)" @delete="deleteRecycle(dataList[0])" @sto="toShopping"/>
+			</view>
+			<s-panel v-if="dataList.length > 0" :custom-style="{padding: '0rpx 15rpx 0rpx 38rpx'}">
+				<view class="flex_row flex_ai_center flex_jc_between">
+					<image style="width: 149rpx;" src="@/static/gzcd.png" mode="widthFix"/>
+					<text style="font-size: 22rpx; font-weight: bold;">关注一下，随时查看订单状态</text>
+					<life-follow sceneId="0ed9adfa56e1404cb81be02a755298fe"/>
+				</view>
+			</s-panel>
+			<view v-if="index > 0" v-for="(item, index) in dataList" :key="index">
 				<recyle :item="item" @formChange="showUpdate" @update="updateRecycle(item.recycleID, -2)" @delete="deleteRecycle(item)" @sto="toShopping"/>
 			</view>
 		</z-paging>
@@ -27,14 +37,17 @@
 	import recyle from '../recycle'
 	import sButton from '@/components/pages/s-button'
 	import sForm from '@/components/pages/s-form'
+	import sPanel from '@/components/pages/s-panel'
 
-	import api from '@/utils/api.js'
+	import { login } from '@/utils/common.js'
+	import { getRecycle, deleteRecycle, editRecycle } from '@/utils/api/recycle.js'
 
 	export default {
 		components: {
 			recyle,
 			sButton,
-			sForm
+			sForm,
+			sPanel
 		},
 		props: {
 			//当前组件的index，也就是当前组件是swiper中的第几个
@@ -106,12 +119,13 @@
 			}
 		},
 		methods: {
+			// 刷新
 			refresh() {
 				this.$refs.paging.reload()
 			},
 			//获取回收订单
 			queryList(pageNo, pageSize) {
-				api.login().then(flag => {
+				login().then(flag => {
 					if(!flag) {
 						this.$refs.paging.complete(false);
 						return
@@ -123,7 +137,7 @@
 						user: this.$store.getters.userid
 					}
 					this.$tip.loading()
-					this.$http.post('/recycle/recycle/list', params).then(res => {
+					getRecycle(params).then(res => {
 						this.$refs.paging.complete(res.data.rows);
 						this.firstLoaded = true;
 					}).catch(err => {
@@ -160,7 +174,7 @@
 			deleteRecycle(item) {
 				this.$tip.loading('删除中')
 				if (item.recycleID !== '') {
-					this.$http.post('/recycle/recycle/removeOrder', {ids: item.recycleID}).then(res => {
+					deleteRecycle({ids: item.recycleID}).then(res => {
 						this.$tip.success('删除成功')
 						this.$refs.paging.refresh()
 					})
@@ -180,7 +194,7 @@
 			*/
 			updateRecycle(recycleID, status) {
 				this.$tip.loading('修改中')
-				this.$http.post('/recycle/recycle/editOrder', {
+				editRecycle({
 					orderStatus: status,
 					param: this.getAddressString(),
 					orderID: recycleID

@@ -47,7 +47,7 @@
 		watch: {
 			list: {
 				handler(newVal) {
-					if(newVal.length >= 3) {
+					if(newVal.length && newVal.length >= 3) {
 						this.autoplay = true
 						this.circular = true
 						this.plus = 2

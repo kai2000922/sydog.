@@ -39,8 +39,9 @@
 	import sDot from '@/components/pages/s-dot'
 	import sBanner from '@/components/pages/s-banner'
 
-	import api from '@/utils/api.js'
-	import {getConfig} from '@/utils/common.js'
+	import { getConfig, login, getShareObject } from '@/utils/common.js'
+	import { getGoods } from '@/utils/api/goods.js'
+	import { addChannel } from '@/utils/api/channel.js'
 
 	export default {
 		components: {
@@ -102,7 +103,7 @@
 		},
 		created() {
 			getConfig('store').then(res => this.bannerList = res)
-			api.login().then(flag => {
+			login().then(flag => {
 				this.getGoodsList()
 			})
 		},
@@ -114,7 +115,7 @@
 			  }
 		},
 		onShareAppMessage () {
-		    return api.getShareObject()
+		    return getShareObject()
 		},
 		onPageScroll(e) {
 			this.scrollTop = e.scrollTop;
@@ -141,7 +142,7 @@
 				this.goodsStatus = 'loading'
 				let num = this.tabs.index
 				this.goodsRequest[num].pageNum++
-				this.$http.post('/recycle/goods/list', this.goodsRequest[num]).then(res => {
+				getGoods(this.goodsRequest[num]).then(res => {
 					let rows = res.data.rows
 					if (rows.length < this.goodsRequest[num].pageSize) {
 						this.goodsRequest[num].over = true
@@ -172,7 +173,7 @@
 			//发送渠道信息
 			sendChannel(channelName){
 				if (channelName != null) {
-					this.$http.post('recycle/channel/add', {'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
+					addChannel({'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
 					.catch(err => {
 							tip.confirm('渠道信息添加失败', true).then(() => {})
 					})
