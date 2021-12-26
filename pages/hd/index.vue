@@ -14,7 +14,7 @@
 				</view>
 			</scroll-view>
 		</view>
-		
+
 		<!-- 我的订单 -->
 		<view class="sticky">
 				<image @click="toRecycleOrders" src="@/static/wdddicon.png" />
@@ -120,12 +120,12 @@
 			uni.setNavigationBarTitle({ title: '' })
 			uni.setBackgroundColor({ backgroundColor: '#fafffc' })
 			uni.setNavigationBarColor({ backgroundColor: '#44aa67' })
-			let id = options.id ? options.id : 2
-			getActivityConfig(id, 'all').then(res => {
+			if(options.id) this.$store.commit('SET_HDID', options.id)
+			getActivityConfig('all').then(res => {
 				this.bannerList = [res.banner]
 				this.flow = res.flow
 			})
-			this.orderInfo.channelSource = id
+			this.orderInfo.channelSource = options.id ? options.id : 2
 			this.sendChannel(options.channelName)
 		},
 		onShow() {
@@ -219,7 +219,7 @@
 			toGoods(goodsId){
 				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + goodsId })
 			},
-			
+
 			toRecycleOrders() {
 				uni.navigateTo({ url: '/pages/recycle_orders/index' })
 			},
@@ -265,7 +265,7 @@
 		display: flex;
 		align-items: center;
 	}
-	
+
 	.sticky {
 		position: sticky;
 		margin-left: 624rpx;
@@ -278,13 +278,13 @@
 		border-bottom-left-radius: 53rpx;
 		z-index: 999;
 		overflow: hidden;
-	
+
 		&>image {
 			height: 100%;
 			width: 100%;
 		}
 	}
-		
+
 	.form {
 		margin-top: -88rpx;
 	}

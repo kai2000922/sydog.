@@ -162,7 +162,7 @@
 						}
 					},
 					fail: (err) => {
-						this.$tip.toast("请允许获取地址权限！")
+						this.$tip.toast("请稍后重试~")
 					}
 				})
 			},

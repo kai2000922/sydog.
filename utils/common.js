@@ -1,6 +1,7 @@
 import {
 	http,
-	BASE_URL
+	BASE_URL,
+	DOMAIN
 } from './request.js'
 import store from '@/store'
 import qs from 'qs'
@@ -18,7 +19,7 @@ export async function login() {
 	let flag = await helper.loginReq()
 	while (!flag) {
 		try {
-			await tip.confirm('获取用户信息失败，是否重试', true)
+			await tip.confirm('未获取到用户信息，是否重试', true)
 			flag = await helper.loginReq()
 		} catch (e) {
 			tip.toast('用户取消授权')
@@ -42,17 +43,11 @@ export async function getConfig(name) {
 }
 
 // 获取小程序活动配置
-export async function getActivityConfig(configNum, name) {
-	if (configNum) {
-		let flag = await helper.getActivityConfigs(configNum, 0)
-		if (flag) return name === 'all' ? store.getters.activityConfig : store.getters.activityConfig[name]
-		else return null
-	} else {
-		let activityConfig = store.getters.activityConfig
-		console.log(activityConfig);
-		if (activityConfig) return name === 'all' ? activityConfig : activityConfig[name]
-		else return null
-	}
+export async function getActivityConfig(name) {
+	let configNum = store.getters.hdid
+	let res = await helper.getActivityConfigs(configNum, 0)
+	if (res) return name === 'all' ? res : res[name]
+	else return null
 }
 
 // 跳转其他小程序
@@ -115,14 +110,14 @@ export function getShareObject() {
 		title: '旧衣回收换好礼',
 		desc: '0运费，最快2小时免费上门',
 		path: 'page/component/view/view',
-		imageUrl: 'https://hkkkkk.cn:8080/profile/upload/share.jpg',
-		bgImgUrl: 'https://hkkkkk.cn:8080/profile/upload/share.jpg'
+		imageUrl: BASE_URL + '/profile/upload/share.jpg',
+		bgImgUrl: BASE_URL + '/profile/upload/share.jpg'
 	}
 }
 
 // 获取图片连接
 export function getImgUrl(url) {
-	return url?.indexOf(BASE_URL) != -1 ? url : BASE_URL + url
+	return url?.indexOf(DOMAIN) != -1 ? url : BASE_URL + url
 }
 
 const helper = {
@@ -208,17 +203,17 @@ const helper = {
 			})
 			let temp = res.data.rows[0]
 			let banner = {
-				image: temp.banners.indexOf('hkkkkk.cn') != -1 ? temp.banners : BASE_URL + temp.banners,
+				image: temp.banners.indexOf(DOMAIN) != -1 ? temp.banners : BASE_URL + temp.banners,
 				param: temp.param,
 				toPages: temp.toPages
 			}
 			let coupon = {
-				image: temp.coupon.indexOf('hkkkkk.cn') != -1 ? temp.coupon : BASE_URL + temp.coupon,
+				image: temp.coupon.indexOf(DOMAIN) != -1 ? temp.coupon : BASE_URL + temp.coupon,
 				param: temp.param,
 				toPages: temp.toPages
 			}
 			let flow = {
-				image: temp.process.indexOf('hkkkkk.cn') != -1 ? temp.process : BASE_URL + temp.process
+				image: temp.process.indexOf(DOMAIN) != -1 ? temp.process : BASE_URL + temp.process
 			}
 			let activityConfig = {
 				banner: banner,
@@ -227,7 +222,7 @@ const helper = {
 			}
 			store.commit('SET_ACTIVITYCONFIG', activityConfig)
 			clearTimeout(timer)
-			return true
+			return activityConfig
 		} catch (e) {
 			if (num >= 10) return false
 			timer = setTimeout(() => {

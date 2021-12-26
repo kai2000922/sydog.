@@ -20,7 +20,7 @@
 					<image src="@/static/order_home.png"></image>
 				</view> -->
 			<view class="abs_view_btn">
-				<contact-button tnt-inst-id="n8c_Hb8w" scene="SCE01205269" color="#30BB63" size="50" icon="https://hkkkkk.cn:8080/profile/upload/2021/11/09/2a1f5a55-11a1-4d27-bcaa-f15416cfa50a.png"/>
+				<contact-button tnt-inst-id="n8c_Hb8w" scene="SCE01205269" color="#30BB63" size="50" :icon="getImgUrl('/profile/upload/2021/11/09/2a1f5a55-11a1-4d27-bcaa-f15416cfa50a.png')"/>
 			</view>
 		</view>
 		
@@ -31,7 +31,7 @@
 	import recycleSwiperItem from './components/recycle-swiper-item/index.vue'
 	import orderSwiperItem from './components/order-swiper-item'
 	
-	import { getShareObject } from '@/utils/common.js'
+	import { getShareObject, getImgUrl } from '@/utils/common.js'
 
 	export default {
 		components: {
@@ -53,7 +53,9 @@
 				// 回收订单刷新
 				recycleReload: false,
 				updateOrderInfo: {},
-				pagesFlag: false
+				pagesFlag: false,
+				// 
+				getImgUrl: getImgUrl
 			}
 		},
 		onLoad(option) {

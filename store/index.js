@@ -17,7 +17,9 @@ export default new Vuex.Store({
 		// 小程序配置（如首页banner，商城页banner）
 		config: null,
 		// 活动界面配置（如活动页banner，优惠券）
-		activityCongfig: null
+		activityCongfig: null,
+		// 活动id(默认为2)
+		hdid: 2
 	},
 	mutations: {
 		SET_USERID: (state, userid) => {
@@ -40,6 +42,9 @@ export default new Vuex.Store({
 		},
 		SET_ACTIVITYCONFIG: (state, activityConfig) => {
 			state.activityConfig = activityConfig
+		},
+		SET_HDID: (state, hdid) => {
+			state.hdid = hdid
 		}
 	},
 	getters: {
@@ -49,6 +54,7 @@ export default new Vuex.Store({
 		orderReload: state => state.orderReload,
 		ddTab: state => state.ddTab,
 		config: state => state.config,
-		activityConfig: state => state.activityConfig
+		activityConfig: state => state.activityConfig,
+		hdid: state => state.hdid
 	}
 })

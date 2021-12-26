@@ -22,7 +22,7 @@
 		</view>
 		
 		<!-- 按钮行 -->
-		<view style="margin-top: 40rpx; justify-content: space-around;" class="flex_row">
+		<view v-if="!isClose" style="margin-top: 40rpx; justify-content: space-around;" class="flex_row">
 			<!-- <contact-button tnt-inst-id="企业编码" scene="聊天窗编码" size="咨询按钮大小" color="咨询按钮颜色" icon="咨询按钮图片url" /> -->
 			<s-button v-if="waitPay" background="#ffffff" color="#06180C" width="184" height="64"  fontSize="28" :bold="false"
 				:custom-style="{border: '0px solid #707070'}"/>
@@ -35,7 +35,7 @@
 		</view>
 		
 		<!-- 订单详情 -->
-		<view style="margin-top: 30rpx;" class="flex_row flex_ai_center flex_jc_center" v-if="showDetails(item.ordersStatus)" @click="toDetails">
+		<view style="margin-top: 30rpx;" class="flex_row flex_ai_center flex_jc_center" v-if="showDetails(item.ordersStatus) && !isClose" @click="toDetails">
 			<text class="font_24 line_36 color_grey">查看订单详情</text>
 			<image style="width: 24rpx; height: 24rpx; vertical-align: middle;" src="@/static/arrow-right-24.png"/>
 		</view>
@@ -78,7 +78,9 @@
 					refund: '',
 				},
 				// 商品下架？
-				notHave: false
+				notHave: false,
+				// 订单关闭
+				isClose: false
 			}
 		},
 		created() {
@@ -140,6 +142,13 @@
 						this.text.logistics = '此订单已取消，金额已退回原账户'
 						this.text.refund = '已退款'
 						this.title = '已退款'
+						this.titleColor = '#B0B7B3'
+						break
+					case '已关闭':
+						this.waitPay = false
+						this.isClose = true
+						this.text.logistics = status
+						this.title = '订单已关闭'
 						this.titleColor = '#B0B7B3'
 						break
 				}
@@ -207,7 +216,7 @@
 			},
 			
 			toDetails() {
-				if(this.item.ordersStatus === '待支付') {
+				if(this.item.ordersStatus === '待支付' || this.item.ordersStatus === '已关闭') {
 					return
 				}
 				let that = this

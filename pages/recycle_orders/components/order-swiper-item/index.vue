@@ -6,7 +6,7 @@
 				<order :item="item" @zfClick="toPayment" @tkClick="refund"/>
 			</view>
 		</z-paging>
-		
+
 		<!-- 退款弹窗 -->
 		<refund :refund-show.sync="refundPopup" :ok-show.sync="refundOkPopup" :tkObj="tkObj"  @tk="tk"/>
 	</view>
@@ -16,10 +16,10 @@
 	import order from '../order'
 	import refund from '@/components/pages/refund'
 	// import sPanel from '@/components/pages/s-panel'
-	
+
 	import { login } from '@/utils/common.js'
 	import { getOrder, orderRefund } from '@/utils/api/order.js'
-	
+
 	export default {
 		components: {
 			order,
@@ -123,20 +123,20 @@
 					})
 				})
 			},
-			
+
 			// 前往支付页面
 			toPayment(waitPayOrder) {
 				this.$store.commit('SET_WAITPAYORDER', waitPayOrder)
 				uni.navigateTo({ url: '/pages/payment/index?from=order' });
 			},
-			
+
 			// 退款弹窗
 			refund(tkObj, tkQuery) {
 				this.tkObj = tkObj
 				this.tkQuery = tkQuery
 				this.refundPopup = true
 			},
-			
+
 			// 退款
 			tk() {
 				this.$tip.loading('退款中...')

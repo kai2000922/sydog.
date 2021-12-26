@@ -56,7 +56,7 @@
 		onLoad(option) {
 			this.from = option.from ? option.from: ''
 			if(this.from === 'hd') {
-				getActivityConfig(null, 'coupon').then(res => this.coupon = res)
+				getActivityConfig('coupon').then(res => this.coupon = res)
 			}
 			uni.setNavigationBarTitle({title: ''})
 			uni.setBackgroundColor({backgroundColor: '#fafffc'})
