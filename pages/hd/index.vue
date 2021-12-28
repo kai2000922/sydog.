@@ -121,6 +121,7 @@
 			uni.setBackgroundColor({ backgroundColor: '#fafffc' })
 			uni.setNavigationBarColor({ backgroundColor: '#44aa67' })
 			if(options.id) this.$store.commit('SET_HDID', options.id)
+			else this.$store.commit('SET_HDID', 2)
 			getActivityConfig('all').then(res => {
 				this.bannerList = [res.banner]
 				this.flow = res.flow
