@@ -92,7 +92,9 @@
 					expectWeight: 0,
 					expectAddressLabel: '',
 					expectAddress: {}
-				}
+				},
+				//认证码
+				authCode: ''
 			}
 		},
 		watch: {
@@ -193,16 +195,32 @@
 				省份 城市 地区 详细地址 姓名 联系电话 6部分组成，中间用英文";"分割。
 			*/
 			updateRecycle(recycleID, status) {
-				this.$tip.loading('修改中')
-				editRecycle({
-					orderStatus: status,
-					param: this.getAddressString(),
-					orderID: recycleID
-				}).then(res => {
-					this.$tip.success('修改成功！')
-				}).finally(() => {
-					this.$refs.paging.reload()
-					this.alterPopup = false
+				
+				my.getAuthCode({
+				  // 订单服务授权：order_service。如需同时获取用户多项授权，可在 scopes 中传入多个 scope 值。
+				  scopes: ['order_service', 'auth_base'],
+				  success: (res) => {
+					  this.authCode = res.authCode
+					  console.log(this.authCode)
+				  },
+				  fail: (res) => {
+					  console.log(res)
+				    // 订单服务授权失败，根据自己的业务场景来进行错误处理
+				  },
+				  complete: (res) => {
+					  this.$tip.loading('修改中')
+					  editRecycle({
+					  	orderStatus: status,
+					  	param: this.getAddressString(),
+					  	orderID: recycleID,
+						authCode: this.authCode
+					  }).then(res => {
+					  	this.$tip.success('修改成功！')
+					  }).finally(() => {
+					  	this.$refs.paging.reload()
+					  	this.alterPopup = false
+					  })
+				  }
 				})
 			},
 

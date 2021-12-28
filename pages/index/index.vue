@@ -174,44 +174,47 @@
 
 			// 创建回收订单
 			sendData(e) {
-				// 示例
-				my.getAuthCode({
-				  // 订单服务授权：order_service。如需同时获取用户多项授权，可在 scopes 中传入多个 scope 值。
-				  scopes: ['order_service'],
-				  success: (res) => {
-					console.log(res)
-				  },
-				  fail: (res) => {
-					  console.log(res)
-				    // 订单服务授权失败，根据自己的业务场景来进行错误处理
-				  },
-				});
+				
 				// 判断表单是否完整
 				if (this.orderInfo.expectTime == '' || this.addressInfo.prov == null) {
 					this.$tip.toast("请补全信息！")
 					return
 				}
-				// 判断是否登录
-				login().then(flag => {
-					if(flag) {
-						this.orderInfo.user = this.$store.getters.userid
-						this.orderInfo.name = this.addressInfo.fullname
-						this.orderInfo.phone = this.addressInfo.mobilePhone
-						this.orderInfo.prov = this.addressInfo.prov
-						this.orderInfo.city = this.addressInfo.city
-						this.orderInfo.area = this.addressInfo.area
-						this.orderInfo.authCode = e.detail.formId
-						this.orderInfo.address = this.addressInfo.prov + this.addressInfo.city + this.addressInfo.area + this
-							.addressInfo.street + this.addressInfo.address
-						this.$tip.loading('请求中')
-						addRecycle(this.orderInfo).then(res => {
-							this.getRecycle()
-							this.$store.commit('SET_RECYCLERELOAD', true)
-							this.$store.commit('SET_DDTAB', 0)
-							uni.navigateTo({ url: '/pages/collect/index' })
-						})
-					}
-				})
+				
+				my.getAuthCode({
+				  // 订单服务授权：order_service。如需同时获取用户多项授权，可在 scopes 中传入多个 scope 值。
+				  scopes: ['order_service', 'auth_base'],
+				  success: (res) => {
+					  this.orderInfo.isNow = res.authCode
+				  },
+				  fail: (res) => {
+					  console.log(res)
+				    // 订单服务授权失败，根据自己的业务场景来进行错误处理
+				  },
+				  complete: (res) => {
+					  // 判断是否登录
+					  login().then(flag => {
+					  	if(flag) {
+					  		this.orderInfo.user = this.$store.getters.userid
+					  		this.orderInfo.name = this.addressInfo.fullname
+					  		this.orderInfo.phone = this.addressInfo.mobilePhone
+					  		this.orderInfo.prov = this.addressInfo.prov
+					  		this.orderInfo.city = this.addressInfo.city
+					  		this.orderInfo.area = this.addressInfo.area
+					  		this.orderInfo.authCode = e.detail.formId
+					  		this.orderInfo.address = this.addressInfo.prov + this.addressInfo.city + this.addressInfo.area + this
+					  			.addressInfo.street + this.addressInfo.address
+					  		this.$tip.loading('请求中')
+					  		addRecycle(this.orderInfo).then(res => {
+					  			this.getRecycle()
+					  			this.$store.commit('SET_RECYCLERELOAD', true)
+					  			this.$store.commit('SET_DDTAB', 0)
+					  			uni.navigateTo({ url: '/pages/collect/index' })
+					  		})
+					  	}
+					  })
+				  }
+				});
 			},
 
 			// 获取订单
@@ -253,7 +256,7 @@
 			},
 
 			toGoods(goodsId){
-				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + goodsId + '&from=shopping' })
+				uni.navigateTo({ url: '/pages/goods/index?goodsID=' + goodsId})
 			},
 
 			sendChannel(channelName){
