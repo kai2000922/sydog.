@@ -118,7 +118,9 @@
 				// 地址信息
 				addressInfo: {},
 				// 商品展示列表
-				storeList: []
+				storeList: [],
+				// 公益服务标识
+				gyFlag: false
 			}
 		},
 		onShareAppMessage () {
@@ -209,7 +211,7 @@
 					  			this.getRecycle()
 					  			this.$store.commit('SET_RECYCLERELOAD', true)
 					  			this.$store.commit('SET_DDTAB', 0)
-					  			uni.navigateTo({ url: '/pages/collect/index' })
+					  			uni.navigateTo({ url: '/pages/collect/index?gyFlag=' + this.gyFlag })
 					  		})
 					  	}
 					  })
@@ -264,6 +266,14 @@
 					addChannel({'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
 					.catch(err => { tip.confirm('渠道信息添加失败', true).then(() => {}) })
 					this.orderInfo.channelSource = channelName
+					
+					if (channelName.indexOf("gongyifuwu") != -1){
+						this.gyFlag = true
+					}
+					
+				}else{
+					addChannel({'channelName': 'index', 'links': 'pages/index/index' + '?channelName=index'},).then(res => {})
+					.catch(err => { tip.confirm('渠道信息添加失败', true).then(() => {}) })
 				}
 			}
 		}

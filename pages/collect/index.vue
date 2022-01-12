@@ -50,13 +50,19 @@
 				from: '',
 				img: '/static/collect/coupons.gif',
 				haveCoupons: false,
-				coupon: {}
+				coupon: {},
+				gyFlag: false,
 			}
 		},
 		onLoad(option) {
 			this.from = option.from ? option.from: ''
 			if(this.from === 'hd') {
 				getActivityConfig('coupon').then(res => this.coupon = res)
+			}
+			console.log(option.gyFlag)
+			if (option.gyFlag){
+				this.gyFlag = option.gyFlag
+				console.log(this.gyFlag)
 			}
 			uni.setNavigationBarTitle({title: ''})
 			uni.setBackgroundColor({backgroundColor: '#fafffc'})
@@ -66,6 +72,21 @@
 
 			// 订单页
 			toRecycleOrders() {
+				
+				if (this.gyFlag == 'true'){
+					my.navigateToMiniProgram({
+					      appId: '2021002193653882', // 蚂上回收公域小程序appid
+					      path: 'pages/index/index',
+						  fail: (res) => {
+						          console.log(JSON.stringify(res))
+						  },
+						  success: (res) => {
+						          console.log(JSON.stringify(res))
+						  },
+					})
+					return
+				}
+				
 				if(this.from === 'hd') {
 					uni.navigateTo({ url: '/pages/recycle_orders/index' })
 				} else {

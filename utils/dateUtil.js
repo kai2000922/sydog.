@@ -21,7 +21,7 @@ function getDate(time) {
 
 	return {
 		isToday: date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate(),
-		distance: Math.ceil((date - today) / (1000 * 60 * 60 * 24)),
+		distance: parseInt(Math.abs((date - today) / (1000 * 60 * 60 * 24))),
 		month: date.getMonth() + 1,
 		day: date.getDate(),
 		week: week(date.getDay()),
