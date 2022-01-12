@@ -24,7 +24,7 @@
 						<text v-if="type === 'pickup' && !courierError" class="color_green ft_32 ln_48 font_bold">快递小哥正在赶来…</text>
 					</view>
 					<view style="margin-top: 8rpx;" class="flex_row flex_ai_center flex_jc_between">
-						<text class="ft_32 ln_34 color_black font_bold">10:00 ~ 11:00 上门取件</text>
+						<text class="ft_32 ln_34 color_black font_bold">{{ expectTime.startHour + ':00 ~ ' + expectTime.endHour + ':00 上门取件' }}</text>
 						<s-button v-if="type === 'stay'" background="rgba(0, 0, 0, 0)" color="#06180C" width="160" height="56" :bold="false" :custom-style="{border: '1px solid #7F8581'}" text="修改订单" font-size="28" @click="showUpdate"/>
 					</view>
 				</view>
@@ -71,7 +71,7 @@
 	import {
 		getDate
 	} from '@/utils/dateUtil.js'
-	
+
 	import { editRecycle } from '@/utils/api/recycle.js'
 
 	export default {
@@ -145,7 +145,8 @@
 				} else {
 					this.type = 'stay'
 				}
-				this.expectTime = getDate(this.item.expectTime)
+				this.expectTime = getDate(this.item .expectTime)
+				console.log(this.expectTime);
 			},
 			// 修改弹窗弹出
 			showUpdate() {
