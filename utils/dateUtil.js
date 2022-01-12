@@ -18,10 +18,12 @@ function getDate(time) {
 
 	var arr = time.split(/[- :]/)
 	let date = new Date(arr[0], arr[1] - 1, arr[2], arr[3], arr[4], arr[5]);
-
+	// console.log(Math.abs((date - today) / (1000 * 60 * 60 * 24)).toFixed());
+	// console.log(parseInt(Math.abs((date - today) / (1000 * 60 * 60 * 24))));
 	return {
 		isToday: date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate(),
-		distance: parseInt(Math.abs((date - today) / (1000 * 60 * 60 * 24))),
+		// distance: parseInt(Math.abs((date - today) / (1000 * 60 * 60 * 24))),
+		distance: Math.abs((date - today) / (1000 * 60 * 60 * 24)).toFixed(),
 		month: date.getMonth() + 1,
 		day: date.getDate(),
 		week: week(date.getDay()),

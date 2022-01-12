@@ -32,13 +32,13 @@
 				</form>
 			</view>
 		</s-panel>
-		
+
 		<s-panel :custom-style="{padding: '0rpx 14rpx'}">
 			<view class="flex_row flex_ai_center flex_jc_between">
 				<image style="width: 193rpx;" src="@/static/gzdhl.png" mode="widthFix"/>
 				<text style="font-size: 22rpx; font-weight: bold;">关注一下，免费领生活好物</text>
 				<life-follow sceneId="526bf04fae2647d5b90569a439a0574c"/>
-				
+
 			</view>
 		</s-panel>
 
@@ -64,7 +64,7 @@
 	import sButton from '@/components/pages/s-button'
 	import sProblem from './components/s-problem'
 	import sOrder from './components/s-order'
-	
+
 	import {getConfig, getShareObject, login, getImgUrl} from '@/utils/common.js'
 	import { addRecycle, getRecycle } from '@/utils/api/recycle.js'
 	import { getStoreList } from '@/utils/api/goods.js'
@@ -176,13 +176,13 @@
 
 			// 创建回收订单
 			sendData(e) {
-				
+
 				// 判断表单是否完整
 				if (this.orderInfo.expectTime == '' || this.addressInfo.prov == null) {
 					this.$tip.toast("请补全信息！")
 					return
 				}
-				
+
 				my.getAuthCode({
 				  // 订单服务授权：order_service。如需同时获取用户多项授权，可在 scopes 中传入多个 scope 值。
 				  scopes: ['order_service', 'auth_base'],
@@ -266,11 +266,11 @@
 					addChannel({'channelName': channelName, 'links': 'pages/index/index' + '?channelName=' + channelName},).then(res => {})
 					.catch(err => { tip.confirm('渠道信息添加失败', true).then(() => {}) })
 					this.orderInfo.channelSource = channelName
-					
+
 					if (channelName.indexOf("gongyifuwu") != -1){
 						this.gyFlag = true
 					}
-					
+
 				}else{
 					addChannel({'channelName': 'index', 'links': 'pages/index/index' + '?channelName=index'},).then(res => {})
 					.catch(err => { tip.confirm('渠道信息添加失败', true).then(() => {}) })
