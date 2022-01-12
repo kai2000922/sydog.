@@ -145,8 +145,7 @@
 				} else {
 					this.type = 'stay'
 				}
-				this.expectTime = getDate(this.item .expectTime)
-				console.log(this.expectTime);
+				this.expectTime = getDate(this.item.expectTime)
 			},
 			// 修改弹窗弹出
 			showUpdate() {
